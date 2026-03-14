@@ -26,17 +26,17 @@ import { NAV_LINKS, SITE_NAME } from '../lib/constants';
       <span class="header__burger-line"></span>
     </button>
   </nav>
-
-  <div class="header__mobile-menu" id="mobile-menu" aria-hidden="true">
-    <ul class="header__mobile-links" role="list">
-      {NAV_LINKS.map((link) => (
-        <li>
-          <a href={link.href}>{link.label}</a>
-        </li>
-      ))}
-    </ul>
-  </div>
 </header>
+
+<div class="header__mobile-menu" id="mobile-menu" aria-hidden="true">
+  <ul class="header__mobile-links" role="list">
+    {NAV_LINKS.map((link) => (
+      <li>
+        <a href={link.href}>{link.label}</a>
+      </li>
+    ))}
+  </ul>
+</div>
 
 <style>
   .header {
@@ -141,7 +141,7 @@ import { NAV_LINKS, SITE_NAME } from '../lib/constants';
   /* --- Menu mobile --- */
   .header__mobile-menu {
     position: fixed;
-    top: var(--nav-height);
+    top: 4.5rem;
     left: 0;
     right: 0;
     bottom: 0;
