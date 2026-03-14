@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SOCIAL_LINKS } from '../lib/constants';
-import { CLOUDINARY_CLOUD_NAME } from '../lib/constants';
+import { SOCIAL_LINKS, CLOUDINARY_CLOUD_NAME } from '../lib/constants';
 
 const CLOUD_VIDEO_BASE = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload`;
 
@@ -15,83 +14,67 @@ const videos = [
   { id: 'videos/ma-video-2', title: 'Panorama hivernal', orientation: 'portrait' as const },
 ];
 
-function getVideoUrl(cloudinaryId: string, quality = 'auto'): string {
-  return `${CLOUD_VIDEO_BASE}/q_${quality},f_auto/${cloudinaryId}`;
+function getVideoUrl(cloudinaryId: string): string {
+  return `${CLOUD_VIDEO_BASE}/q_auto,f_auto/${cloudinaryId}`;
 }
 
 function getPosterUrl(cloudinaryId: string): string {
-  return `${CLOUD_VIDEO_BASE}/so_0,w_800,f_auto,q_auto/${cloudinaryId}.jpg`;
+  return `${CLOUD_VIDEO_BASE}/so_0,w_1200,f_auto,q_auto/${cloudinaryId}.jpg`;
 }
 ---
 
 <BaseLayout
-  title="Vidéos — Vues aériennes"
+  title="Envol — Vues aériennes"
   description="Survols en drone et prises de vue aériennes des Alpes — Air-Ailes."
 >
-  <section class="videos-page">
+  <section class="videos-page" id="videos-page">
     <div class="videos-page__header">
       <h1 class="videos-page__title" id="videos-title">Envol</h1>
       <p class="videos-page__subtitle">Survols en drone et prises de vue aériennes</p>
     </div>
 
-    <div class="videos-page__grid">
-      {videos.map((video) => (
-        <article class:list={['video-card', `video-card--${video.orientation}`]}>
-          <div class="video-card__container">
-            <video
-              class="video-card__video"
-              poster={getPosterUrl(video.id)}
-              preload="none"
-              muted
-              loop
-              playsinline
-              data-video-src={getVideoUrl(video.id)}
-            >
-            </video>
-            <div class="video-card__play-overlay" data-video-play>
-              <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-                <circle cx="28" cy="28" r="27" stroke="currentColor" stroke-width="1" opacity="0.4" />
-                <polygon points="23,18 39,28 23,38" fill="currentColor" opacity="0.7" />
-              </svg>
-            </div>
-          </div>
-          <p class="video-card__title">{video.title}</p>
-        </article>
-      ))}
-    </div>
+    {videos.map((video, index) => (
+      <div
+        class="video-slide"
+        data-video-index={index}
+        data-video-src={getVideoUrl(video.id)}
+        data-video-orientation={video.orientation}
+      >
+        <div class="video-slide__wrap">
+          <video
+            class="video-slide__video"
+            poster={getPosterUrl(video.id)}
+            preload="none"
+            muted
+            loop
+            playsinline
+          />
+        </div>
+        <div class="video-slide__meta">
+          <span class="video-slide__title">{video.title}</span>
+          <span class="video-slide__counter">{String(index + 1).padStart(2, '0')} / {String(videos.length).padStart(2, '0')}</span>
+        </div>
+      </div>
+    ))}
 
-    <div class="videos-page__socials">
-      <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" class="videos-page__social-link">
+    <div class="videos-page__cta">
+      <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" class="videos-page__link">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
           <circle cx="12" cy="12" r="5" />
           <circle cx="17.5" cy="6.5" r="1" />
         </svg>
-        Instagram
+        Plus de vidéos sur Instagram
+        <span class="videos-page__arrow">&rarr;</span>
       </a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .videos-page {
-    padding-block: var(--space-3xl) var(--space-2xl);
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-inline: var(--container-padding);
-  }
-
   .videos-page__header {
+    padding-block: var(--space-3xl) var(--space-xl);
     text-align: center;
-    margin-bottom: var(--space-2xl);
-  }
-
-  .videos-page__eyebrow {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-secondary);
-    letter-spacing: var(--letter-spacing-uppercase);
-    text-transform: uppercase;
-    margin-bottom: var(--space-sm);
   }
 
   .videos-page__title {
@@ -103,122 +86,139 @@ function getPosterUrl(cloudinaryId: string): string {
 
   .videos-page__subtitle {
     font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
     color: var(--color-text-secondary);
     letter-spacing: var(--letter-spacing-wide);
-    max-width: 40ch;
-    margin-inline: auto;
-    line-height: var(--line-height-relaxed);
   }
 
-  /* --- Video Grid --- */
-  .videos-page__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-    max-width: 1100px;
-    margin-inline: auto;
-  }
-
-  @media (max-width: 1024px) {
-    .videos-page__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 600px) {
-    .videos-page__grid {
-      grid-template-columns: 1fr;
-      max-width: 400px;
-    }
-  }
-
-  /* --- Video Card --- */
-  .video-card__container {
+  /* ====== Video Slides — full-screen cinematic ====== */
+  .video-slide {
     position: relative;
-    border-radius: 4px;
+    height: 100vh;
     overflow: hidden;
-    background-color: var(--color-bg-secondary);
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .video-card--landscape .video-card__container {
-    aspect-ratio: 16 / 9;
+  /* First slide: visible immediately with subtle fade */
+  .video-slide:first-of-type .video-slide__wrap {
+    clip-path: inset(0% 0% 0% 0%);
+    transform: scale(1);
+    opacity: 0;
   }
 
-  .video-card--portrait .video-card__container {
-    aspect-ratio: 9 / 16;
+  .video-slide:first-of-type .video-slide__meta {
+    opacity: 0;
   }
 
-  /* Landscape cards span full width */
-  .video-card--landscape {
-    grid-column: 1 / -1;
+  .video-slide__wrap {
+    position: absolute;
+    inset: 0;
+    will-change: transform, clip-path;
+    clip-path: inset(15% 15% 15% 15%);
+    transform: scale(1.12);
+    background-color: var(--color-bg-primary);
   }
 
-  .video-card__video {
+  .video-slide__video {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .video-card__play-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-primary);
-    background: rgba(5, 5, 5, 0.2);
-    transition: opacity var(--duration-hover) var(--ease-out-expo);
+  /* Portrait videos: contain inside viewport, centered */
+  .video-slide[data-video-orientation="portrait"] .video-slide__video {
+    object-fit: contain;
   }
 
-  .video-card__play-overlay.is-hidden {
+  .video-slide__meta {
+    position: absolute;
+    bottom: var(--space-xl);
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
     opacity: 0;
+    transform: translateY(12px);
     pointer-events: none;
   }
 
-  .video-card__container:hover .video-card__play-overlay:not(.is-hidden) {
-    background: rgba(5, 5, 5, 0.1);
-  }
-
-  .video-card__title {
+  .video-slide__title {
     font-family: var(--font-family);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-light);
     letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .video-slide__counter {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
-    margin-top: var(--space-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    opacity: 0.5;
+  }
+
+  /* Subtle gradient at bottom for meta readability */
+  .video-slide::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    z-index: 1;
+    background: linear-gradient(to top, rgba(5, 5, 5, 0.6) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  /* ====== CTA ====== */
+  .videos-page__cta {
     text-align: center;
+    padding-block: var(--space-2xl) var(--space-3xl);
   }
 
-  /* --- Socials --- */
-  .videos-page__socials {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-lg);
-    margin-top: var(--space-2xl);
-  }
-
-  .videos-page__social-link {
+  .videos-page__link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 24px;
-    border: 1px solid var(--color-border-subtle);
-    border-radius: 2px;
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-light);
     letter-spacing: var(--letter-spacing-uppercase);
     text-transform: uppercase;
     color: var(--color-text-secondary);
-    transition: color var(--duration-hover) var(--ease-out-expo),
-                border-color var(--duration-hover) var(--ease-out-expo);
+    transition: color var(--duration-hover) var(--ease-out-expo);
   }
 
-  .videos-page__social-link:hover {
+  .videos-page__link:hover {
     color: var(--color-text-primary);
-    border-color: rgba(240, 237, 232, 0.2);
     opacity: 1;
+  }
+
+  .videos-page__arrow {
+    display: inline-block;
+    transition: transform var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .videos-page__link:hover .videos-page__arrow {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-slide__wrap {
+      clip-path: none;
+      transform: none;
+    }
+    .video-slide__meta {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>
 
@@ -234,54 +234,113 @@ function getPosterUrl(cloudinaryId: string): string {
     const title = document.getElementById('videos-title');
     if (!title) return;
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     ScrollTrigger.getAll().forEach((t) => t.kill());
 
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!reducedMotion) {
       animateText(title, { mode: 'letters', staggerDelay: 0.05 });
-
-      const cards = document.querySelectorAll('.video-card');
-      gsap.set(cards, { opacity: 0, y: 30 });
-      cards.forEach((card) => {
-        gsap.to(card, {
-          opacity: 1, y: 0, duration: 0.8,
-          ease: ANIMATION_EASING,
-          scrollTrigger: { trigger: card, start: 'top bottom-=10%', once: true },
-        });
-      });
     }
 
-    // Click to load + play/pause
-    document.querySelectorAll<HTMLElement>('.video-card__container').forEach((container) => {
-      const video = container.querySelector<HTMLVideoElement>('.video-card__video');
-      const overlay = container.querySelector<HTMLElement>('.video-card__play-overlay');
-      if (!video) return;
+    const slides = document.querySelectorAll<HTMLElement>('.video-slide');
 
-      const dataSrc = video.dataset.videoSrc;
+    slides.forEach((slide, i) => {
+      const wrap = slide.querySelector<HTMLElement>('.video-slide__wrap');
+      const video = slide.querySelector<HTMLVideoElement>('.video-slide__video');
+      const meta = slide.querySelector<HTMLElement>('.video-slide__meta');
+      const src = slide.dataset.videoSrc;
+      const isFirst = i === 0;
 
-      function loadAndPlay(): void {
-        if (!dataSrc) return;
+      if (!wrap || !video || !src) return;
 
-        // Load src if not yet set
-        if (!video.getAttribute('src')) {
-          video.src = dataSrc;
-          video.load();
-        }
+      let loaded = false;
 
-        video.play().then(() => {
-          overlay?.classList.add('is-hidden');
-        }).catch(() => {
-          // Autoplay blocked — keep overlay visible
-        });
+      function loadVideo(): void {
+        if (loaded) return;
+        loaded = true;
+        video!.src = src!;
+        video!.load();
       }
 
-      container.addEventListener('click', () => {
-        if (video.paused || !video.getAttribute('src')) {
-          loadAndPlay();
-        } else {
-          video.pause();
-          overlay?.classList.remove('is-hidden');
+      if (reducedMotion) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                loadVideo();
+                video!.play().catch(() => {});
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+        observer.observe(slide);
+        return;
+      }
+
+      if (isFirst) {
+        // === First video: load immediately, fade in, autoplay ===
+        loadVideo();
+
+        // Fade in the wrap + play once loaded
+        video.addEventListener('canplay', () => {
+          video.play().catch(() => {});
+          gsap.to(wrap, {
+            opacity: 1, duration: 1.2, ease: ANIMATION_EASING,
+          });
+          if (meta) {
+            gsap.to(meta, {
+              opacity: 1, y: 0, duration: 0.6, delay: 0.6, ease: ANIMATION_EASING,
+            });
+          }
+        }, { once: true });
+
+        // Pause when scrolled away
+        ScrollTrigger.create({
+          trigger: slide,
+          start: 'bottom top+=10%',
+          onEnterBack: () => video.play().catch(() => {}),
+          onLeave: () => video.pause(),
+        });
+
+      } else {
+        // === Other videos: clip-path reveal, load on enter, play when reveal complete ===
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: slide,
+            start: 'top top',
+            end: '+=120%',
+            pin: true,
+            scrub: 0.8,
+            onEnter: () => loadVideo(),
+            onEnterBack: () => video.play().catch(() => {}),
+            onLeave: () => video.pause(),
+            onLeaveBack: () => video.pause(),
+          },
+        });
+
+        // Clip-path opens + scale settles
+        tl.fromTo(wrap,
+          { clipPath: 'inset(15% 15% 15% 15%)', scale: 1.12 },
+          { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 0.7, ease: 'power2.out' },
+          0
+        );
+
+        // At end of reveal: play the video
+        tl.call(() => {
+          video.play().catch(() => {});
+        }, [], 0.7);
+
+        // Meta fades in
+        if (meta) {
+          tl.fromTo(meta,
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.3, ease: ANIMATION_EASING },
+            0.5
+          );
         }
-      });
+      }
     });
   }
 
