@@ -70,6 +70,9 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
 
   <!-- Showcase — 4 photos plein écran, une par une -->
   <section class="showcase" id="showcase">
+    <div class="showcase__header">
+      <h2 class="showcase__heading" id="showcase-title">Portfolio</h2>
+    </div>
     {showcasePhotos.map((photo, index) => (
       <div
         class="showcase__slide"
@@ -227,6 +230,17 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
      ====================================================== */
   .showcase {
     position: relative;
+  }
+
+  .showcase__header {
+    padding-block: var(--space-3xl) var(--space-2xl);
+    text-align: center;
+  }
+
+  .showcase__heading {
+    font-size: var(--font-size-2xl);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
   }
 
   .showcase__slide {
@@ -457,6 +471,16 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
             end: 'bottom top',
             scrub: true,
           },
+        });
+      }
+
+      // Showcase title reveal
+      const showcaseTitle = document.getElementById('showcase-title');
+      if (showcaseTitle) {
+        animateText(showcaseTitle, {
+          mode: 'words',
+          staggerDelay: 0.08,
+          scrollTrigger: { trigger: showcaseTitle, start: 'top bottom-=15%' },
         });
       }
 
