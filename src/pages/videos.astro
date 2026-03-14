@@ -30,8 +30,7 @@ function getPosterUrl(cloudinaryId: string): string {
 >
   <section class="videos-page">
     <div class="videos-page__header">
-      <p class="videos-page__eyebrow">En vol</p>
-      <h1 class="videos-page__title" id="videos-title">Vues aériennes</h1>
+      <h1 class="videos-page__title" id="videos-title">Envol</h1>
       <p class="videos-page__subtitle">Survols en drone et prises de vue aériennes</p>
     </div>
 
@@ -251,36 +250,33 @@ function getPosterUrl(cloudinaryId: string): string {
       });
     }
 
-    // Lazy load + click to play/pause
+    // Click to load + play/pause
     document.querySelectorAll<HTMLElement>('.video-card__container').forEach((container) => {
       const video = container.querySelector<HTMLVideoElement>('.video-card__video');
       const overlay = container.querySelector<HTMLElement>('.video-card__play-overlay');
       if (!video) return;
 
-      // Lazy load video src on intersection
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const src = video.dataset.videoSrc;
-              if (src && !video.src) {
-                video.src = src;
-              }
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { rootMargin: '200px 0px' }
-      );
-      observer.observe(container);
+      const dataSrc = video.dataset.videoSrc;
 
-      // Click to play/pause
-      container.addEventListener('click', () => {
-        if (!video.src) return;
+      function loadAndPlay(): void {
+        if (!dataSrc) return;
 
-        if (video.paused) {
-          video.play();
+        // Load src if not yet set
+        if (!video.getAttribute('src')) {
+          video.src = dataSrc;
+          video.load();
+        }
+
+        video.play().then(() => {
           overlay?.classList.add('is-hidden');
+        }).catch(() => {
+          // Autoplay blocked — keep overlay visible
+        });
+      }
+
+      container.addEventListener('click', () => {
+        if (video.paused || !video.getAttribute('src')) {
+          loadAndPlay();
         } else {
           video.pause();
           overlay?.classList.remove('is-hidden');
