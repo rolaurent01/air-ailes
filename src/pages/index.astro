@@ -253,6 +253,8 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
     font-size: var(--font-size-2xl);
     letter-spacing: var(--letter-spacing-wider);
     color: var(--color-text-primary);
+    opacity: 0;
+    transform: translateY(20px);
   }
 
   .showcase__slide {
@@ -486,13 +488,19 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
         });
       }
 
-      // Showcase title reveal
+      // Showcase title reveal — only when scrolled into view
       const showcaseTitle = document.getElementById('showcase-title');
       if (showcaseTitle) {
-        animateText(showcaseTitle, {
-          mode: 'words',
-          staggerDelay: 0.08,
-          scrollTrigger: { trigger: showcaseTitle, start: 'top bottom-=15%' },
+        gsap.to(showcaseTitle, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: ANIMATION_EASING,
+          scrollTrigger: {
+            trigger: showcaseTitle,
+            start: 'top 75%',
+            once: true,
+          },
         });
       }
 
