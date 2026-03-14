@@ -158,8 +158,7 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
 
   @media (max-width: 768px) {
     .hero {
-      align-items: flex-start;
-      padding-top: 35vh;
+      height: 60vh;
     }
   }
 
@@ -242,6 +241,12 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
   .showcase__header {
     padding-block: var(--space-3xl) var(--space-2xl);
     text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .showcase__header {
+      padding-block: var(--space-xl) var(--space-lg);
+    }
   }
 
   .showcase__heading {
