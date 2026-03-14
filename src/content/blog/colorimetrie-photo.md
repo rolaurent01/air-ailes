@@ -3,7 +3,7 @@ title: "Colorimétrie photo : sRGB, Adobe RGB et profils ICC"
 slug: colorimetrie-photo
 date: 2026-02-05
 excerpt: "Comprenez les espaces couleur et les profils ICC sans vous perdre. Choisissez sRGB ou Adobe RGB selon le web ou l'impression, avec une méthode claire."
-cover_cloudinary_id: paysage/dsc01861
+cover_svg: /blog/colorimetrie-photo.svg
 tags: ["post-production", "couleur", "avancé"]
 published: true
 ---

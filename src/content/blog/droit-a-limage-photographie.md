@@ -3,7 +3,7 @@ title: "Droit à l'image : ce qu'un photographe doit savoir"
 slug: droit-a-limage-photographie
 date: 2026-01-01
 excerpt: "Avant de publier, connaissez les règles du droit à l'image, le consentement (notamment pour les mineurs), et les bons réflexes pour éviter les litiges."
-cover_cloudinary_id: paysage/dsc06090
+cover_svg: /blog/droit-a-limage-photographie.svg
 tags: ["juridique", "professionnel", "publication"]
 published: true
 ---

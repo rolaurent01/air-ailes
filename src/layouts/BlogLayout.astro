@@ -1,18 +1,17 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import ProtectedImage from '../components/ProtectedImage.astro';
 
 interface Props {
   title: string;
   date: Date;
   excerpt: string;
-  coverCloudinaryId: string;
+  coverSvg: string;
   tags?: string[];
   prevPost?: { title: string; slug: string };
   nextPost?: { title: string; slug: string };
 }
 
-const { title, date, excerpt, coverCloudinaryId, tags, prevPost, nextPost } = Astro.props;
+const { title, date, excerpt, coverSvg, tags, prevPost, nextPost } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('fr-FR', {
   year: 'numeric',
@@ -24,7 +23,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 <BaseLayout
   title={title}
   description={excerpt}
-  image={coverCloudinaryId}
+  image={coverSvg}
   type="article"
   publishedDate={date.toISOString()}
 >
@@ -33,12 +32,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
   <article class="blog-article">
     <header class="blog-article__hero">
       <div class="blog-article__cover" id="blog-cover">
-        <ProtectedImage
-          cloudinaryId={coverCloudinaryId}
-          alt={title}
-          width={2000}
-          dominantColor="#111111"
-        />
+        <img src={coverSvg} alt={title} width="600" height="400" />
       </div>
       <div class="blog-article__hero-gradient"></div>
       <div class="blog-article__hero-content">
@@ -108,6 +102,13 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
     position: absolute;
     inset: 0;
     will-change: transform;
+  }
+
+  .blog-article__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .blog-article__hero-gradient {

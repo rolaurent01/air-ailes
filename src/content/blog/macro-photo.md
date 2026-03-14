@@ -3,7 +3,7 @@ title: "Bien débuter en macrophotographie"
 slug: macro-photo
 date: 2026-03-08
 excerpt: "Réussissez vos photos macro : mise au point, stabilité, lumière et profondeur de champ. Conseils concrets et exercices pour explorer le monde de l'infiniment petit."
-cover_cloudinary_id: paysage/dsc01861
+cover_svg: /blog/macro-photo.svg
 tags: ["technique", "macro", "nature"]
 published: true
 ---

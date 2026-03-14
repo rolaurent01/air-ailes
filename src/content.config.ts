@@ -32,7 +32,7 @@ const blog = defineCollection({
     slug: z.string(),
     date: z.coerce.date(),
     excerpt: z.string(),
-    cover_cloudinary_id: z.string(),
+    cover_svg: z.string(),
     tags: z.array(z.string()).optional(),
     published: z.boolean().default(true),
   }),

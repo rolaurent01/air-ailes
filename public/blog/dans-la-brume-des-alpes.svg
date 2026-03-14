@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- Background mountain layer (farthest, faintest) -->
+  <path d="M0,280 L80,180 L140,220 L200,150 L280,200 L350,130 L420,190 L500,160 L560,210 L600,190 L600,280 Z" fill="none" stroke="#7A7A72" stroke-width="0.6" stroke-opacity="0.25"/>
+  <!-- Mist layer 1 -->
+  <path d="M0,265 Q100,255 200,262 Q300,270 400,258 Q500,248 600,260" fill="none" stroke="#F0EDE8" stroke-width="0.4" stroke-opacity="0.12"/>
+  <!-- Middle mountain layer -->
+  <path d="M0,320 L60,250 L120,280 L180,210 L240,260 L320,190 L380,240 L460,200 L520,250 L580,230 L600,250 L600,320 Z" fill="none" stroke="#7A7A72" stroke-width="0.8" stroke-opacity="0.45"/>
+  <!-- Mist layer 2 -->
+  <path d="M0,305 Q80,295 160,302 Q260,312 360,298 Q460,288 540,300 Q580,305 600,300" fill="none" stroke="#F0EDE8" stroke-width="0.5" stroke-opacity="0.18"/>
+  <path d="M0,312 Q100,305 200,310 Q320,318 420,306 Q520,296 600,308" fill="none" stroke="#F0EDE8" stroke-width="0.4" stroke-opacity="0.12"/>
+  <!-- Foreground mountain layer (closest, strongest) -->
+  <path d="M0,380 L40,310 L100,340 L160,280 L220,320 L300,260 L360,300 L440,270 L500,310 L560,290 L600,320 L600,380 Z" fill="none" stroke="#F0EDE8" stroke-width="1.2" stroke-opacity="0.7"/>
+  <!-- Foreground mist -->
+  <path d="M0,365 Q120,355 240,362 Q360,370 480,358 Q560,352 600,360" fill="none" stroke="#F0EDE8" stroke-width="0.5" stroke-opacity="0.15"/>
+  <!-- Peak snow cap hint on tallest peak -->
+  <path d="M290,260 L300,250 L310,260" fill="none" stroke="#F0EDE8" stroke-width="0.6" stroke-opacity="0.4"/>
+  <!-- Very subtle sky gradient hint -->
+  <line x1="0" y1="120" x2="600" y2="120" stroke="#7A7A72" stroke-width="0.2" stroke-opacity="0.08"/>
+  <line x1="0" y1="80" x2="600" y2="80" stroke="#7A7A72" stroke-width="0.15" stroke-opacity="0.05"/>
+</svg>

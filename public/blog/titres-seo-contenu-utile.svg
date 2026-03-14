@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- H1 line (longest, brightest) -->
+  <rect x="150" y="90" width="220" height="8" rx="4" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- H2 lines -->
+  <rect x="150" y="130" width="180" height="6" rx="3" fill="none" stroke="#F0EDE8" stroke-width="1" stroke-opacity="0.8"/>
+  <!-- Body text lines -->
+  <line x1="150" y1="165" x2="380" y2="165" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="150" y1="180" x2="360" y2="180" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="150" y1="195" x2="370" y2="195" stroke="#7A7A72" stroke-width="0.6"/>
+  <!-- H2 line 2 -->
+  <rect x="150" y="230" width="160" height="6" rx="3" fill="none" stroke="#F0EDE8" stroke-width="1" stroke-opacity="0.8"/>
+  <!-- More body text -->
+  <line x1="150" y1="265" x2="370" y2="265" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="150" y1="280" x2="350" y2="280" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="150" y1="295" x2="380" y2="295" stroke="#7A7A72" stroke-width="0.6"/>
+  <!-- Search/magnifying glass icon -->
+  <circle cx="460" cy="140" r="30" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <line x1="481" y1="161" x2="505" y2="185" stroke="#F0EDE8" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Lens shine -->
+  <path d="M445,122 Q450,118 458,120" fill="none" stroke="#7A7A72" stroke-width="0.6" stroke-opacity="0.5"/>
+  <!-- Bracket indicators for heading hierarchy -->
+  <line x1="130" y1="88" x2="130" y2="100" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="94" x2="140" y2="94" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="135" y1="128" x2="135" y2="138" stroke="#7A7A72" stroke-width="0.5"/>
+  <line x1="135" y1="133" x2="142" y2="133" stroke="#7A7A72" stroke-width="0.5"/>
+  <line x1="135" y1="228" x2="135" y2="238" stroke="#7A7A72" stroke-width="0.5"/>
+  <line x1="135" y1="233" x2="142" y2="233" stroke="#7A7A72" stroke-width="0.5"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- Red circle -->
+  <circle cx="265" cy="165" r="80" fill="none" stroke="#BF5F5F" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="265" cy="165" r="80" fill="#BF5F5F" fill-opacity="0.04" stroke="none"/>
+  <!-- Green circle -->
+  <circle cx="335" cy="165" r="80" fill="none" stroke="#5FBF6F" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="335" cy="165" r="80" fill="#5FBF6F" fill-opacity="0.04" stroke="none"/>
+  <!-- Blue circle -->
+  <circle cx="300" cy="235" r="80" fill="none" stroke="#5F7FBF" stroke-width="1.2" stroke-opacity="0.7"/>
+  <circle cx="300" cy="235" r="80" fill="#5F7FBF" fill-opacity="0.04" stroke="none"/>
+  <!-- Center overlap area - subtle white dot -->
+  <circle cx="300" cy="195" r="4" fill="none" stroke="#F0EDE8" stroke-width="1" stroke-opacity="0.5"/>
+  <circle cx="300" cy="195" r="1.5" fill="#F0EDE8" fill-opacity="0.4" stroke="none"/>
+  <!-- Overlap intersection hints -->
+  <circle cx="283" cy="180" r="2" fill="#7A7A72" fill-opacity="0.4" stroke="none"/>
+  <circle cx="317" cy="180" r="2" fill="#7A7A72" fill-opacity="0.4" stroke="none"/>
+  <circle cx="300" cy="218" r="2" fill="#7A7A72" fill-opacity="0.4" stroke="none"/>
+</svg>

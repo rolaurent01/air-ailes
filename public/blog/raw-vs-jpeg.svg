@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- RAW file icon (left, more detailed) -->
+  <rect x="110" y="80" width="150" height="200" rx="4" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Folded corner -->
+  <path d="M225,80 L260,80 L260,115 L225,115 Z" fill="#111111" stroke="none"/>
+  <path d="M225,80 L260,115" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <line x1="225" y1="80" x2="225" y2="115" stroke="#F0EDE8" stroke-width="1.2"/>
+  <line x1="225" y1="115" x2="260" y2="115" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Detail lines inside RAW (lots of data) -->
+  <line x1="130" y1="140" x2="240" y2="140" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="152" x2="240" y2="152" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="164" x2="240" y2="164" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="176" x2="240" y2="176" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="188" x2="240" y2="188" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="200" x2="240" y2="200" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="212" x2="240" y2="212" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="224" x2="240" y2="224" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="236" x2="240" y2="236" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="248" x2="240" y2="248" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="130" y1="260" x2="200" y2="260" stroke="#7A7A72" stroke-width="0.6"/>
+  <!-- JPEG file icon (right, simplified) -->
+  <rect x="340" y="80" width="150" height="200" rx="4" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Folded corner -->
+  <path d="M455,80 L490,80 L490,115 L455,115 Z" fill="#111111" stroke="none"/>
+  <path d="M455,80 L490,115" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <line x1="455" y1="80" x2="455" y2="115" stroke="#F0EDE8" stroke-width="1.2"/>
+  <line x1="455" y1="115" x2="490" y2="115" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Simplified content inside JPEG -->
+  <line x1="360" y1="150" x2="470" y2="150" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="360" y1="170" x2="470" y2="170" stroke="#7A7A72" stroke-width="0.6"/>
+  <line x1="360" y1="190" x2="430" y2="190" stroke="#7A7A72" stroke-width="0.6"/>
+  <!-- VS divider -->
+  <line x1="300" y1="120" x2="300" y2="250" stroke="#7A7A72" stroke-width="0.4" stroke-dasharray="4,6"/>
+  <!-- Arrows indicating comparison -->
+  <line x1="270" y1="310" x2="290" y2="310" stroke="#7A7A72" stroke-width="0.8"/>
+  <line x1="310" y1="310" x2="330" y2="310" stroke="#7A7A72" stroke-width="0.8"/>
+  <circle cx="300" cy="310" r="10" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+</svg>

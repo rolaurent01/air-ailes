@@ -3,7 +3,7 @@ title: "Réussir ses photos en basse lumière"
 slug: photo-basse-lumiere
 date: 2026-02-22
 excerpt: "Réglages, stabilisation et astuces pour réussir vos photos en basse lumière sans flash. Limitez flou et bruit avec une méthode simple en 3 étapes."
-cover_cloudinary_id: paysage/dsc01861
+cover_svg: /blog/photo-basse-lumiere.svg
 tags: ["technique", "basse lumière", "nuit"]
 published: true
 ---

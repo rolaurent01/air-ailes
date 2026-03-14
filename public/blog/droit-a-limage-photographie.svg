@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- Balance beam -->
+  <line x1="180" y1="150" x2="420" y2="150" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Center pillar -->
+  <line x1="300" y1="150" x2="300" y2="340" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Fulcrum triangle -->
+  <polygon points="300,140 290,150 310,150" fill="none" stroke="#F0EDE8" stroke-width="1" stroke-linejoin="round"/>
+  <!-- Base -->
+  <line x1="260" y1="340" x2="340" y2="340" stroke="#F0EDE8" stroke-width="1.2"/>
+  <line x1="270" y1="340" x2="270" y2="345" stroke="#7A7A72" stroke-width="0.8"/>
+  <line x1="330" y1="340" x2="330" y2="345" stroke="#7A7A72" stroke-width="0.8"/>
+  <!-- Left pan - chains -->
+  <line x1="180" y1="150" x2="160" y2="210" stroke="#F0EDE8" stroke-width="0.8"/>
+  <line x1="180" y1="150" x2="200" y2="210" stroke="#F0EDE8" stroke-width="0.8"/>
+  <!-- Left pan plate -->
+  <path d="M150,210 Q180,220 210,210" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="150" y1="210" x2="210" y2="210" stroke="#F0EDE8" stroke-width="0.8"/>
+  <!-- Camera lens on left pan -->
+  <circle cx="180" cy="195" r="18" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <circle cx="180" cy="195" r="12" fill="none" stroke="#7A7A72" stroke-width="0.8"/>
+  <circle cx="180" cy="195" r="5" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+  <!-- Right pan - chains -->
+  <line x1="420" y1="150" x2="400" y2="210" stroke="#F0EDE8" stroke-width="0.8"/>
+  <line x1="420" y1="150" x2="440" y2="210" stroke="#F0EDE8" stroke-width="0.8"/>
+  <!-- Right pan plate -->
+  <path d="M390,210 Q420,220 450,210" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="390" y1="210" x2="450" y2="210" stroke="#F0EDE8" stroke-width="0.8"/>
+  <!-- Document/person symbol on right pan -->
+  <circle cx="420" cy="185" r="8" fill="none" stroke="#F0EDE8" stroke-width="0.8"/>
+  <path d="M408,205 Q420,198 432,205" fill="none" stroke="#7A7A72" stroke-width="0.8"/>
+  <!-- Decorative balance indicator -->
+  <circle cx="300" cy="130" r="4" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+  <circle cx="300" cy="130" r="1.5" fill="#7A7A72" stroke="none"/>
+</svg>

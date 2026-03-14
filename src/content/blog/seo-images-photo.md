@@ -3,7 +3,7 @@ title: "SEO des images : rendre vos photos trouvables sur Google"
 slug: seo-images-photo
 date: 2026-02-19
 excerpt: "Noms de fichiers, texte alternatif, légendes, données structurées et performance : les bonnes pratiques pour référencer vos photos sur le web."
-cover_cloudinary_id: paysage/dsc01861
+cover_svg: /blog/seo-images-photo.svg
 tags: ["SEO", "web", "professionnel"]
 published: true
 ---

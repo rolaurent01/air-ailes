@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- Outer frame -->
+  <rect x="100" y="60" width="400" height="280" fill="none" stroke="#F0EDE8" stroke-width="1.2" rx="2"/>
+  <!-- Vertical lines -->
+  <line x1="233" y1="60" x2="233" y2="340" stroke="#F0EDE8" stroke-width="0.8" stroke-opacity="0.7"/>
+  <line x1="367" y1="60" x2="367" y2="340" stroke="#F0EDE8" stroke-width="0.8" stroke-opacity="0.7"/>
+  <!-- Horizontal lines -->
+  <line x1="100" y1="153" x2="500" y2="153" stroke="#F0EDE8" stroke-width="0.8" stroke-opacity="0.7"/>
+  <line x1="100" y1="247" x2="500" y2="247" stroke="#F0EDE8" stroke-width="0.8" stroke-opacity="0.7"/>
+  <!-- Intersection circles -->
+  <circle cx="233" cy="153" r="6" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <circle cx="367" cy="153" r="6" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <circle cx="233" cy="247" r="6" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <circle cx="367" cy="247" r="6" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Center dots at intersections -->
+  <circle cx="233" cy="153" r="2" fill="#7A7A72" stroke="none"/>
+  <circle cx="367" cy="153" r="2" fill="#7A7A72" stroke="none"/>
+  <circle cx="233" cy="247" r="2" fill="#7A7A72" stroke="none"/>
+  <circle cx="367" cy="247" r="2" fill="#7A7A72" stroke="none"/>
+  <!-- Diagonal guide (golden ratio hint) -->
+  <line x1="100" y1="60" x2="500" y2="340" stroke="#7A7A72" stroke-width="0.4" stroke-dasharray="6,8"/>
+</svg>

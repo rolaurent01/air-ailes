@@ -1,15 +1,13 @@
 ---
-import ProtectedImage from './ProtectedImage.astro';
-
 interface Props {
   title: string;
   slug: string;
   date: Date;
   excerpt: string;
-  coverCloudinaryId: string;
+  coverSvg: string;
 }
 
-const { title, slug, date, excerpt, coverCloudinaryId } = Astro.props;
+const { title, slug, date, excerpt, coverSvg } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('fr-FR', {
   year: 'numeric',
@@ -20,13 +18,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 
 <a href={`/blog/${slug}`} class="blog-post-card">
   <div class="blog-post-card__image">
-    <ProtectedImage
-      cloudinaryId={coverCloudinaryId}
-      alt={title}
-      width={600}
-      height={400}
-      dominantColor="#111111"
-    />
+    <img src={coverSvg} alt={title} width="600" height="400" loading="lazy" />
   </div>
   <div class="blog-post-card__content">
     <time class="blog-post-card__date" datetime={date.toISOString()}>{formattedDate}</time>
@@ -66,6 +58,13 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
     overflow: hidden;
     border-radius: 2px;
     transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .blog-post-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .blog-post-card:hover .blog-post-card__image {

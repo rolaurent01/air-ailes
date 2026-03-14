@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- Main triangle -->
+  <polygon points="300,80 140,320 460,320" fill="none" stroke="#F0EDE8" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- Aperture icon at top vertex -->
+  <circle cx="300" cy="65" r="18" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="300" y1="47" x2="295" y2="60" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="314" y1="53" x2="305" y2="63" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="318" y1="68" x2="307" y2="68" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="314" y1="77" x2="305" y2="67" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="300" y1="83" x2="295" y2="70" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="286" y1="77" x2="295" y2="67" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="282" y1="68" x2="293" y2="68" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="286" y1="53" x2="295" y2="63" stroke="#7A7A72" stroke-width="1"/>
+  <!-- Shutter/clock icon at bottom-left vertex -->
+  <circle cx="125" cy="335" r="18" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="125" y1="335" x2="125" y2="322" stroke="#7A7A72" stroke-width="1"/>
+  <line x1="125" y1="335" x2="135" y2="340" stroke="#7A7A72" stroke-width="1"/>
+  <circle cx="125" cy="335" r="2" fill="#7A7A72" stroke="none"/>
+  <!-- ISO symbol at bottom-right vertex -->
+  <circle cx="475" cy="335" r="18" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <rect x="465" y="328" width="4" height="14" rx="1" fill="none" stroke="#7A7A72" stroke-width="1"/>
+  <rect x="473" y="328" width="4" height="14" rx="1" fill="none" stroke="#7A7A72" stroke-width="1"/>
+  <rect x="481" y="328" width="4" height="14" rx="1" fill="none" stroke="#7A7A72" stroke-width="1"/>
+  <!-- Subtle connecting dots along triangle edges -->
+  <circle cx="220" cy="200" r="2" fill="#7A7A72" stroke="none"/>
+  <circle cx="380" cy="200" r="2" fill="#7A7A72" stroke="none"/>
+  <circle cx="300" cy="320" r="2" fill="#7A7A72" stroke="none"/>
+</svg>
