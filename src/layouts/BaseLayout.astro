@@ -2,20 +2,27 @@
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_NAME } from '../lib/constants';
+import SEO from '../components/SEO.astro';
+import { SITE_NAME, SITE_DESCRIPTION } from '../lib/constants';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'profile';
+  publishedDate?: string;
+  noindex?: boolean;
 }
 
 const {
-  title = SITE_NAME,
-  description = 'Photographie — Paysage & Portrait',
+  title = '',
+  description = SITE_DESCRIPTION,
+  image,
+  type = 'website',
+  publishedDate,
+  noindex = false,
 } = Astro.props;
-
-const pageTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
 ---
 
 <!doctype html>
@@ -23,10 +30,16 @@ const pageTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      publishedDate={publishedDate}
+      noindex={noindex}
+    />
     <ClientRouter />
   </head>
   <body>
@@ -39,10 +52,8 @@ const pageTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
     <script>
       import { initSmoothScroll, destroySmoothScroll } from '../lib/animations/smooth-scroll';
 
-      // Initialisation Lenis
       initSmoothScroll();
 
-      // Réinitialiser après navigation (View Transitions)
       document.addEventListener('astro:after-swap', () => {
         destroySmoothScroll();
         initSmoothScroll();

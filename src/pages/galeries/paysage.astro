@@ -23,6 +23,8 @@ const galleryPhotos = photos.map((p) => p.data);
 <GalleryLayout
   title="Paysage & Nature"
   subtitle="Montagnes, lacs, forêts — la nature dans toute sa splendeur"
+  description="Galerie paysage Air-Ailes — montagnes, lacs, forêts et lumières naturelles capturés au fil des saisons."
+  image={photos[0]?.data.cloudinary_id}
   prevGallery={undefined}
   nextGallery={{ label: 'Portrait', href: '/galeries/portrait' }}
 >

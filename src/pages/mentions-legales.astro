@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Mentions légales"
+  description="Mentions légales du site Air-Ailes."
+  noindex={true}
+>
+  <section class="legal">
+    <h1 class="legal__title">Mentions légales</h1>
+
+    <div class="legal__content">
+      <h2>Éditeur du site</h2>
+      <p>
+        Le site air-ailes.com est édité par Air-Ailes.<br />
+        Responsable de la publication : Air-Ailes<br />
+        Contact : contact@air-ailes.com
+      </p>
+
+      <h2>Hébergeur</h2>
+      <p>
+        Le site est hébergé par Vercel Inc.<br />
+        440 N Baxter St, Los Angeles, CA 90004, États-Unis<br />
+        Site : vercel.com
+      </p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L'ensemble des photographies, textes, éléments graphiques et contenus
+        présents sur ce site sont la propriété exclusive d'Air-Ailes, sauf mention contraire.
+        Toute reproduction, représentation, modification, publication ou adaptation
+        de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé,
+        est interdite sans l'autorisation écrite préalable d'Air-Ailes.
+      </p>
+      <p>
+        Les photographies présentées sur ce site sont protégées par le droit d'auteur
+        (Code de la propriété intellectuelle). Leur téléchargement, copie ou utilisation
+        sans autorisation constitue une contrefaçon passible de poursuites.
+      </p>
+
+      <h2>Protection des données personnelles</h2>
+      <p>
+        Ce site ne collecte aucune donnée personnelle. Aucun cookie de suivi ou d'analyse
+        n'est déposé. Seuls les cookies strictement nécessaires au fonctionnement technique
+        du site peuvent être utilisés.
+      </p>
+      <p>
+        Les images sont servies via le CDN Cloudinary. Aucune donnée personnelle n'est
+        transmise à ce service lors de la consultation du site.
+      </p>
+
+      <h2>Crédits</h2>
+      <p>
+        Site conçu et développé avec Astro.<br />
+        Typographie : Outfit (Google Fonts).<br />
+        Hébergement : Vercel.<br />
+        Stockage images : Cloudinary.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding-block: var(--space-3xl) var(--space-2xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .legal__title {
+    font-size: clamp(1.8rem, 5vw, var(--font-size-2xl));
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .legal__content {
+    max-width: 65ch;
+    margin-inline: auto;
+  }
+
+  .legal__content h2 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .legal__content h2:first-child {
+    margin-top: 0;
+  }
+
+  .legal__content p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-sm);
+    max-width: none;
+  }
+</style>

@@ -17,7 +17,11 @@ const paysageCover = paysagePhotos[0];
 const portraitCover = portraitPhotos[0];
 ---
 
-<BaseLayout title="Galeries">
+<BaseLayout
+  title="Galeries"
+  description="Explorez les galeries photo Air-Ailes — paysages de montagne, lacs, forêts et portraits en lumière naturelle."
+  image={paysageCover?.data.cloudinary_id}
+>
   <section class="galeries-index">
     <h1 class="galeries-index__title" id="galeries-title">Galeries</h1>
 

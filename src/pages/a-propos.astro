@@ -1,0 +1,310 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProtectedImage from '../components/ProtectedImage.astro';
+import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
+---
+
+<BaseLayout
+  title="À propos"
+  description="Photographe passionné par les paysages et les portraits — découvrez ma démarche artistique."
+  type="profile"
+>
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="about-hero__image" id="about-hero-image">
+      <ProtectedImage
+        cloudinaryId="portrait/lumiere-naturelle"
+        alt="Portrait du photographe"
+        width={1200}
+        dominantColor="#1A1A1A"
+      />
+    </div>
+    <div class="about-hero__gradient"></div>
+    <div class="about-hero__content">
+      <h1 class="about-hero__title" id="about-title">À propos</h1>
+      <p class="about-hero__tagline">Capturer l'éphémère, révéler l'invisible</p>
+    </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="about-bio">
+    <div class="about-bio__text">
+      <h2 class="about-bio__heading">La démarche</h2>
+      <p>
+        La photographie est née d'un besoin de fixer ce qui échappe — une lumière qui ne durera pas,
+        un regard qui ne se reproduira plus, un paysage que le prochain orage transformera. Chaque image
+        est un fragment de temps arraché au flux, une tentative de donner de la permanence à l'éphémère.
+      </p>
+      <p>
+        Mon travail se partage entre deux univers complémentaires : le paysage et le portrait.
+        Dans le paysage, je cherche les ambiances — la brume matinale qui enveloppe une vallée,
+        la lumière rasante qui sculpte une crête de montagne, le silence d'un lac immobile à l'aube.
+        Ces images demandent de la patience, de l'anticipation, et l'acceptation que la nature
+        décide seule du moment parfait.
+      </p>
+      <p>
+        Le portrait est un tout autre exercice. Il s'agit de créer une connexion, de mettre à l'aise,
+        de trouver la lumière qui révèle un visage plutôt que de l'exposer. Je privilégie la lumière
+        naturelle — sa douceur, son imprévisibilité, sa capacité à créer des ambiances que le flash
+        ne reproduit jamais tout à fait.
+      </p>
+
+      <h2 class="about-bio__heading">L'approche</h2>
+      <p>
+        Je ne cherche pas la perfection technique. Je cherche l'émotion. Une image légèrement
+        imparfaite qui touche vaudra toujours plus qu'une image techniquement irréprochable qui
+        laisse indifférent. C'est cette conviction qui guide chaque déclenchement, chaque choix
+        de cadrage, chaque décision au post-traitement.
+      </p>
+      <p>
+        Si une image vous parle, si elle vous transporte un instant dans un autre lieu ou une autre
+        lumière — alors elle a accompli sa mission.
+      </p>
+    </div>
+  </section>
+
+  <hr class="section-separator" />
+
+  <!-- Contact -->
+  <section class="about-contact">
+    <h2 class="about-contact__title" id="contact-title">Me contacter</h2>
+    <p class="about-contact__text">
+      Pour une collaboration, une commande de tirage ou simplement échanger sur la photographie.
+    </p>
+
+    <a href="mailto:contact@air-ailes.com" class="about-contact__email">
+      contact@air-ailes.com
+    </a>
+
+    <div class="about-contact__socials">
+      <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" class="about-contact__social">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="17.5" cy="6.5" r="1" />
+        </svg>
+        Instagram
+      </a>
+      <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" class="about-contact__social">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+        </svg>
+        TikTok
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* --- Hero --- */
+  .about-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 350px;
+    max-height: 600px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .about-hero__image {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+  }
+
+  .about-hero__gradient {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(5, 5, 5, 0.1) 0%,
+      rgba(5, 5, 5, 0.6) 60%,
+      rgba(5, 5, 5, 1) 100%
+    );
+  }
+
+  .about-hero__content {
+    position: relative;
+    z-index: 2;
+    padding: var(--space-xl) var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .about-hero__title {
+    font-size: clamp(2rem, 6vw, var(--font-size-2xl));
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .about-hero__tagline {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    font-style: italic;
+  }
+
+  /* --- Bio --- */
+  .about-bio {
+    padding-block: var(--space-2xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .about-bio__text {
+    max-width: 65ch;
+    margin-inline: auto;
+  }
+
+  .about-bio__text p {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5em;
+    max-width: none;
+  }
+
+  .about-bio__heading {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    margin-top: 4rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .about-bio__heading:first-child {
+    margin-top: 0;
+  }
+
+  /* --- Contact --- */
+  .about-contact {
+    text-align: center;
+    padding-block: var(--space-2xl) var(--space-3xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .about-contact__title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .about-contact__text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+  }
+
+  .about-contact__email {
+    display: inline-block;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    border-bottom: 1px solid rgba(240, 237, 232, 0.2);
+    padding-bottom: 4px;
+    transition: border-color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .about-contact__email:hover {
+    border-color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .about-contact__socials {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+  }
+
+  .about-contact__social {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 2px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo),
+                border-color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .about-contact__social:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(240, 237, 232, 0.2);
+    opacity: 1;
+  }
+</style>
+
+<script>
+  import { animateText } from '../lib/animations/text';
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ANIMATION_EASING } from '../lib/constants';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initAbout(): void {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) return;
+
+    const title = document.getElementById('about-title');
+    if (title) animateText(title, { mode: 'words', staggerDelay: 0.08 });
+
+    const heroImage = document.getElementById('about-hero-image');
+    if (heroImage) {
+      gsap.to(heroImage, {
+        yPercent: 15,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.about-hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    }
+
+    // Bio paragraphs fade-up
+    const paragraphs = document.querySelectorAll('.about-bio__text p, .about-bio__heading');
+    gsap.set(paragraphs, { opacity: 0, y: 20 });
+    paragraphs.forEach((p) => {
+      gsap.to(p, {
+        opacity: 1, y: 0, duration: 0.6, ease: ANIMATION_EASING,
+        scrollTrigger: { trigger: p, start: 'top bottom-=10%', once: true },
+      });
+    });
+
+    // Contact section
+    const contactTitle = document.getElementById('contact-title');
+    if (contactTitle) {
+      animateText(contactTitle, {
+        mode: 'words',
+        staggerDelay: 0.08,
+        scrollTrigger: { trigger: contactTitle, start: 'top bottom-=15%' },
+      });
+    }
+  }
+
+  initAbout();
+  document.addEventListener('astro:after-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    initAbout();
+  });
+</script>

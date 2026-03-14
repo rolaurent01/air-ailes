@@ -28,7 +28,10 @@ const lightboxPhotos = selectionPhotos.map((p) => ({
 }));
 ---
 
-<BaseLayout>
+<BaseLayout
+  description="Photographie de paysage et portrait — découvrez l'univers visuel d'Air-Ailes."
+  image={heroPhoto.data.cloudinary_id}
+>
   <!-- Hero -->
   <section class="hero" id="hero">
     <div class="hero__bg" id="hero-bg">

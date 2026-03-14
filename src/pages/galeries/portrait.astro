@@ -23,6 +23,8 @@ const galleryPhotos = photos.map((p) => p.data);
 <GalleryLayout
   title="Portrait & Mode"
   subtitle="Regards, expressions, lumière — l'humain au centre de l'image"
+  description="Galerie portrait Air-Ailes — regards, expressions et lumière naturelle pour des portraits authentiques."
+  image={photos[0]?.data.cloudinary_id}
   prevGallery={{ label: 'Paysage', href: '/galeries/paysage' }}
   nextGallery={undefined}
 >

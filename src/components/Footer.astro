@@ -6,6 +6,8 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
   <div class="footer__inner container">
     <p class="footer__copy">© {new Date().getFullYear()} {SITE_NAME}</p>
 
+    <a href="/mentions-legales" class="footer__legal">Mentions légales</a>
+
     <div class="footer__socials">
       <a
         href={SOCIAL_LINKS.instagram}
@@ -52,6 +54,18 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     color: var(--color-text-secondary);
     font-weight: var(--font-weight-light);
     letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .footer__legal {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    opacity: 0.5;
+    letter-spacing: var(--letter-spacing-wide);
+    transition: opacity var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .footer__legal:hover {
+    opacity: 0.8;
   }
 
   .footer__socials {

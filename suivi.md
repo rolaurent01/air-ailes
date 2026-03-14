@@ -2,6 +2,45 @@
 
 ---
 
+## [2026-03-14 14:52] — Blog, Vidéos, Pages statiques et SEO (étapes 1.11 à 1.13)
+
+**Type :** `feature`
+**Phase :** `1-blog`, `1-videos`, `1-pages`, `1-seo`
+**Fichiers concernés :** `src/components/SEO.astro`, `src/components/VideoEmbed.astro`, `src/components/BlogPostCard.astro`, `src/layouts/BaseLayout.astro`, `src/layouts/BlogLayout.astro`, `src/layouts/GalleryLayout.astro`, `src/pages/videos.astro`, `src/pages/blog/index.astro`, `src/pages/blog/[...slug].astro`, `src/pages/a-propos.astro`, `src/pages/mentions-legales.astro`, `src/pages/index.astro`, `src/pages/galeries/*.astro`, `src/components/Footer.astro`, `astro.config.mjs`, `public/robots.txt`
+
+### Description
+Toutes les pages du site sont en place : vidéos, blog complet, à propos, mentions légales. SEO intégré sur chaque page. Sitemap généré.
+
+### Détails techniques
+- **SEO.astro** : composant réutilisable — title, meta description, canonical, Open Graph complet (og:title, og:description, og:image via Cloudinary 1200x630, og:locale fr_FR), Twitter Card (summary_large_image), Schema.org JSON-LD (WebSite/BlogPosting), noindex optionnel
+- **Sitemap** : @astrojs/sitemap installé, site URL configurée, sitemap-index.xml généré
+- **robots.txt** : Allow all, Disallow /original/, référence sitemap
+- **VideoEmbed** : container 9:16, placeholder avec bouton play SVG, lazy loading iframe via IntersectionObserver, badge platform, support Instagram/TikTok
+- **Page vidéos** : grille responsive 1/2/3 colonnes, stagger reveal clip-path, liens profils sociaux
+- **BlogLayout** : hero 70vh avec couverture + parallax + gradient, titre fade-up, métadonnées (date, tags), prose premium (65ch, 18px, line-height 1.8), barre de progression de lecture (2px, fixed top, scroll-driven), navigation prev/next articles
+- **BlogPostCard** : grille 2fr/3fr, hover avec zoom image + élévation, excerpt tronqué 3 lignes, lien "Lire l'article →"
+- **Pages blog** : index avec liste triée par date + stagger reveal, [...slug].astro avec getStaticPaths + render()
+- **Page À propos** : hero 60vh avec parallax, bio prose (démarche, approche), contact (email mailto + réseaux sociaux), reveal au scroll (paragraphes + headings en fade-up)
+- **Mentions légales** : page utilitaire noindex, contenu placeholder (éditeur, hébergeur, PI, données, crédits)
+- **Footer** : ajout lien "Mentions légales" discret
+- **Pages existantes** : SEO props ajoutées sur accueil (image hero), galeries index (image cover), paysage, portrait
+- **GalleryLayout** : ajout props description + image pour SEO
+- Build vérifié : 10 pages en 1.32s, aucune erreur
+
+### Pages du site
+1. `/` — Accueil (hero + portfolio + journal)
+2. `/galeries` — Index galeries
+3. `/galeries/paysage` — Galerie paysage
+4. `/galeries/portrait` — Galerie portrait
+5. `/videos` — Vidéos (embeds Instagram/TikTok)
+6. `/blog` — Liste des articles
+7. `/blog/dans-la-brume-des-alpes` — Article
+8. `/blog/lumiere-et-portraits` — Article
+9. `/a-propos` — Bio, démarche, contact
+10. `/mentions-legales` — Mentions légales
+
+---
+
 ## [2026-03-14 14:42] — Repasse design (skills frontend-design + marketing-psychology)
 
 **Type :** `enhancement`

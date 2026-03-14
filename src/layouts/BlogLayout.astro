@@ -1,0 +1,348 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ProtectedImage from '../components/ProtectedImage.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  excerpt: string;
+  coverCloudinaryId: string;
+  tags?: string[];
+  prevPost?: { title: string; slug: string };
+  nextPost?: { title: string; slug: string };
+}
+
+const { title, date, excerpt, coverCloudinaryId, tags, prevPost, nextPost } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={title}
+  description={excerpt}
+  image={coverCloudinaryId}
+  type="article"
+  publishedDate={date.toISOString()}
+>
+  <div class="blog-progress" id="blog-progress"></div>
+
+  <article class="blog-article">
+    <header class="blog-article__hero">
+      <div class="blog-article__cover" id="blog-cover">
+        <ProtectedImage
+          cloudinaryId={coverCloudinaryId}
+          alt={title}
+          width={2000}
+          dominantColor="#111111"
+        />
+      </div>
+      <div class="blog-article__hero-gradient"></div>
+      <div class="blog-article__hero-content">
+        <h1 class="blog-article__title" id="blog-title">{title}</h1>
+        <div class="blog-article__meta">
+          <time datetime={date.toISOString()}>{formattedDate}</time>
+          {tags && tags.length > 0 && (
+            <span class="blog-article__tags">
+              {tags.map((tag) => (
+                <span class="blog-article__tag">{tag}</span>
+              ))}
+            </span>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <div class="blog-article__prose">
+      <slot />
+    </div>
+
+    <nav class="blog-article__nav" aria-label="Navigation entre articles">
+      {prevPost ? (
+        <a href={`/blog/${prevPost.slug}`} class="blog-article__nav-link blog-article__nav-link--prev">
+          <span class="blog-article__nav-arrow">&larr;</span>
+          <span class="blog-article__nav-label">{prevPost.title}</span>
+        </a>
+      ) : <span />}
+      <a href="/blog" class="blog-article__nav-back">Tous les articles</a>
+      {nextPost ? (
+        <a href={`/blog/${nextPost.slug}`} class="blog-article__nav-link blog-article__nav-link--next">
+          <span class="blog-article__nav-label">{nextPost.title}</span>
+          <span class="blog-article__nav-arrow">&rarr;</span>
+        </a>
+      ) : <span />}
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  /* --- Progress bar --- */
+  .blog-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--color-text-primary);
+    z-index: 9999;
+    transition: none;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* --- Hero --- */
+  .blog-article__hero {
+    position: relative;
+    height: 70vh;
+    min-height: 400px;
+    max-height: 700px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .blog-article__cover {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+  }
+
+  .blog-article__hero-gradient {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(5, 5, 5, 0.1) 0%,
+      rgba(5, 5, 5, 0.5) 60%,
+      rgba(5, 5, 5, 0.9) 100%
+    );
+  }
+
+  .blog-article__hero-content {
+    position: relative;
+    z-index: 2;
+    padding: var(--space-xl) var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .blog-article__title {
+    font-size: clamp(1.8rem, 5vw, var(--font-size-2xl));
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    max-width: 20ch;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .blog-article__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .blog-article__tags {
+    display: flex;
+    gap: 8px;
+  }
+
+  .blog-article__tag {
+    padding: 2px 8px;
+    border: 1px solid rgba(240, 237, 232, 0.1);
+    border-radius: 2px;
+    font-size: var(--font-size-xs);
+  }
+
+  /* --- Prose --- */
+  .blog-article__prose {
+    max-width: 65ch;
+    margin-inline: auto;
+    padding: var(--space-2xl) var(--container-padding);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-primary);
+  }
+
+  .blog-article__prose :global(h2) {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    margin-top: 4rem;
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+  }
+
+  .blog-article__prose :global(h3) {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-regular);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-primary);
+  }
+
+  .blog-article__prose :global(p) {
+    margin-bottom: 1.5em;
+    max-width: none;
+  }
+
+  .blog-article__prose :global(blockquote) {
+    border-left: 1px solid var(--color-text-secondary);
+    padding-left: var(--space-md);
+    font-style: italic;
+    opacity: 0.8;
+    margin-block: var(--space-lg);
+  }
+
+  .blog-article__prose :global(img) {
+    width: 100%;
+    border-radius: 4px;
+    margin-block: var(--space-lg);
+  }
+
+  .blog-article__prose :global(a) {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(240, 237, 232, 0.3);
+    transition: border-color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .blog-article__prose :global(a:hover) {
+    border-color: var(--color-text-primary);
+  }
+
+  /* --- Nav --- */
+  .blog-article__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 65ch;
+    margin-inline: auto;
+    padding: var(--space-2xl) var(--container-padding);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .blog-article__nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+    max-width: 30%;
+  }
+
+  .blog-article__nav-link:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .blog-article__nav-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .blog-article__nav-arrow {
+    flex-shrink: 0;
+    transition: transform var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .blog-article__nav-link--prev:hover .blog-article__nav-arrow {
+    transform: translateX(-4px);
+  }
+
+  .blog-article__nav-link--next:hover .blog-article__nav-arrow {
+    transform: translateX(4px);
+  }
+
+  .blog-article__nav-back {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .blog-article__nav-back:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .blog-article__nav {
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    .blog-article__nav-link {
+      max-width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ANIMATION_EASING } from '../lib/constants';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initBlogArticle(): void {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const titleEl = document.getElementById('blog-title');
+    const coverEl = document.getElementById('blog-cover');
+    const progressEl = document.getElementById('blog-progress');
+
+    if (titleEl && !reducedMotion) {
+      gsap.to(titleEl, {
+        opacity: 1, y: 0, duration: 0.6, delay: 0.3, ease: ANIMATION_EASING,
+      });
+    } else if (titleEl) {
+      titleEl.style.opacity = '1';
+      titleEl.style.transform = 'none';
+    }
+
+    if (coverEl && !reducedMotion) {
+      gsap.to(coverEl, {
+        yPercent: 15,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.blog-article__hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+    }
+
+    // Barre de progression
+    if (progressEl) {
+      const updateProgress = (): void => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressEl.style.width = `${progress}%`;
+      };
+
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+    }
+  }
+
+  initBlogArticle();
+  document.addEventListener('astro:after-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    initBlogArticle();
+  });
+</script>

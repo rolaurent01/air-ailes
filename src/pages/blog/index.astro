@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter((p) => p.data.published)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout
+  title="Blog"
+  description="Récits de terrain, réflexions sur la lumière et coulisses de mes séances photo."
+>
+  <section class="blog-index">
+    <div class="blog-index__header">
+      <h1 class="blog-index__title" id="blog-index-title">Journal</h1>
+      <p class="blog-index__subtitle">Récits, coulisses et réflexions</p>
+    </div>
+
+    {posts.length > 0 ? (
+      <div class="blog-index__list">
+        {posts.map((post) => (
+          <BlogPostCard
+            title={post.data.title}
+            slug={post.data.slug}
+            date={post.data.date}
+            excerpt={post.data.excerpt}
+            coverCloudinaryId={post.data.cover_cloudinary_id}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="blog-index__empty">Bientôt de nouveaux articles</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-index {
+    padding-block: var(--space-3xl) var(--space-2xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .blog-index__header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .blog-index__title {
+    font-size: clamp(2rem, 6vw, var(--font-size-2xl));
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .blog-index__subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .blog-index__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
+  .blog-index__empty {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    padding-block: var(--space-2xl);
+  }
+</style>
+
+<script>
+  import { animateText } from '../../lib/animations/text';
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ANIMATION_EASING } from '../../lib/constants';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initBlogIndex(): void {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const title = document.getElementById('blog-index-title');
+    if (title) animateText(title, { mode: 'letters', staggerDelay: 0.05 });
+
+    const cards = document.querySelectorAll('.blog-post-card');
+    gsap.set(cards, { opacity: 0, y: 30 });
+    cards.forEach((card) => {
+      gsap.to(card, {
+        opacity: 1, y: 0, duration: 0.6,
+        ease: ANIMATION_EASING,
+        scrollTrigger: { trigger: card, start: 'top bottom-=10%', once: true },
+      });
+    });
+  }
+
+  initBlogIndex();
+  document.addEventListener('astro:after-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    initBlogIndex();
+  });
+</script>

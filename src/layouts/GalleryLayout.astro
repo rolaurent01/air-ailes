@@ -4,14 +4,16 @@ import BaseLayout from './BaseLayout.astro';
 interface Props {
   title: string;
   subtitle?: string;
+  description?: string;
+  image?: string;
   prevGallery?: { label: string; href: string };
   nextGallery?: { label: string; href: string };
 }
 
-const { title, subtitle, prevGallery, nextGallery } = Astro.props;
+const { title, subtitle, description, image, prevGallery, nextGallery } = Astro.props;
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} description={description ?? subtitle ?? `Galerie ${title} — Air-Ailes`} image={image}>
   <section class="gallery-header">
     <h1 class="gallery-header__title" id="gallery-title">{title}</h1>
     {subtitle && <p class="gallery-header__subtitle">{subtitle}</p>}
