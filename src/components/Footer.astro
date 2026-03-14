@@ -5,13 +5,7 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
 <footer class="footer">
   <div class="footer__inner container">
     <div class="footer__logo" id="footer-logo">
-      <svg class="footer__logo-icon" width="40" height="40" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="14" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="16" cy="14" r="3" fill="currentColor"/>
-        <rect x="8" y="9" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <rect x="13" y="7" width="6" height="3" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
-      </svg>
-      <span class="footer__logo-name">{SITE_NAME}</span>
+      <img class="footer__logo-img" src="/logo.png" alt={SITE_NAME} width="120" height="120" loading="lazy" />
     </div>
 
     <p class="footer__copy">© {new Date().getFullYear()} {SITE_NAME}</p>
@@ -67,22 +61,15 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     transform: translateY(0);
   }
 
-  .footer__logo-icon {
-    color: var(--color-text-secondary);
-    opacity: 0.6;
+  .footer__logo-img {
+    width: 120px;
+    height: auto;
+    opacity: 0.7;
     transition: opacity var(--duration-hover) var(--ease-out-expo);
   }
 
-  .footer__logo:hover .footer__logo-icon {
+  .footer__logo:hover .footer__logo-img {
     opacity: 1;
-  }
-
-  .footer__logo-name {
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-md);
-    letter-spacing: var(--letter-spacing-wider);
-    color: var(--color-text-secondary);
-    opacity: 0.5;
   }
 
   .footer__copy {
