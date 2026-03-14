@@ -314,8 +314,8 @@ function getPosterUrl(cloudinaryId: string): string {
           scrub: 0.6,
           onEnter: () => ensureLoaded(),
           onUpdate: (self) => {
-            // Play video once reveal is ~80% complete
-            if (self.progress > 0.8 && !hasPlayed) {
+            // Play video once reveal is ~30% complete
+            if (self.progress > 0.3 && !hasPlayed) {
               hasPlayed = true;
               playVideo();
               if (meta) {
