@@ -527,76 +527,64 @@ const { photos } = Astro.props;
     const lightbox = getLightboxEl();
     if (!lightbox) return;
 
-    const photosData = lightbox.dataset.photos;
-    if (photosData) {
+    const raw = lightbox.getAttribute('data-photos');
+    if (raw) {
       try {
-        photos = JSON.parse(photosData);
+        photos = JSON.parse(raw);
       } catch {
         photos = [];
       }
     }
   }
 
-  // Event delegation — works across View Transitions without rebinding
-  let delegationBound = false;
+  // Single global delegation — bound once, works forever
+  let bound = false;
 
   function initLightbox(): void {
     reloadPhotos();
 
-    if (delegationBound) return;
-    delegationBound = true;
+    if (bound) return;
+    bound = true;
 
-    // Clic sur les PhotoCards (event delegation on document)
-    document.addEventListener('click', (e: Event) => {
-      const target = e.target as HTMLElement;
+    document.addEventListener('click', (e: MouseEvent) => {
+      const el = e.target as HTMLElement;
 
       // PhotoCard trigger → open lightbox
-      const trigger = target.closest<HTMLElement>('.photo-card__trigger');
+      const trigger = el.closest('.photo-card__trigger') as HTMLElement | null;
       if (trigger) {
-        const card = trigger.closest<HTMLElement>('.photo-card');
+        e.preventDefault();
+        e.stopPropagation();
+        const card = trigger.closest('.photo-card') as HTMLElement | null;
         if (!card) return;
-        // Reload photos data in case DOM changed via View Transitions
         reloadPhotos();
-        const index = parseInt(card.dataset.photoIndex ?? '0', 10);
-        openLightbox(index);
+        const idx = parseInt(card.getAttribute('data-photo-index') ?? '0', 10);
+        if (idx >= 0 && idx < photos.length) {
+          openLightbox(idx);
+        }
         return;
       }
 
-      // Close buttons
-      if (target.closest('[data-lightbox-close]')) {
+      // Lightbox close
+      if (el.closest('[data-lightbox-close]')) {
         closeLightbox();
         return;
       }
 
-      // Navigation
-      if (target.closest('[data-lightbox-prev]')) {
-        goPrev();
-        return;
-      }
-      if (target.closest('[data-lightbox-next]')) {
-        goNext();
-        return;
-      }
-    });
+      // Lightbox nav
+      if (el.closest('[data-lightbox-prev]')) { goPrev(); return; }
+      if (el.closest('[data-lightbox-next]')) { goNext(); return; }
+    }, true); // useCapture = true to catch events before anything else
 
-    // Clavier
     document.addEventListener('keydown', handleKeydown);
 
-    // Swipe mobile
     document.addEventListener('touchstart', (e: TouchEvent) => {
-      const lightbox = getLightboxEl();
-      if (!lightbox || !isOpen) return;
-      if (e.target && (e.target as HTMLElement).closest('.lightbox__content')) {
-        handleTouchStart(e);
-      }
+      if (!isOpen) return;
+      if ((e.target as HTMLElement)?.closest('.lightbox__content')) handleTouchStart(e);
     }, { passive: true });
 
     document.addEventListener('touchend', (e: TouchEvent) => {
-      const lightbox = getLightboxEl();
-      if (!lightbox || !isOpen) return;
-      if (e.target && (e.target as HTMLElement).closest('.lightbox__content')) {
-        handleTouchEnd(e);
-      }
+      if (!isOpen) return;
+      if ((e.target as HTMLElement)?.closest('.lightbox__content')) handleTouchEnd(e);
     }, { passive: true });
   }
 
