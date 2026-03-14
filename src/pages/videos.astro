@@ -302,20 +302,21 @@ function getPosterUrl(cloudinaryId: string): string {
         return;
       }
 
-      // GSAP: pin slide, reveal clip-path, then play
+      // GSAP: pin slide, reveal clip-path, hold, then release
       let hasPlayed = false;
 
-      gsap.timeline({
+      // end: +=250% = reveal takes ~40% of the scroll, then holds for ~60%
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: slide,
           start: 'top top',
-          end: '+=100%',
+          end: '+=250%',
           pin: true,
           scrub: 0.6,
           onEnter: () => ensureLoaded(),
           onUpdate: (self) => {
-            // Play video once reveal is ~30% complete
-            if (self.progress > 0.3 && !hasPlayed) {
+            // Play video once reveal is ~12% (= ~30% of the reveal phase)
+            if (self.progress > 0.12 && !hasPlayed) {
               hasPlayed = true;
               playVideo();
               if (meta) {
@@ -331,10 +332,15 @@ function getPosterUrl(cloudinaryId: string): string {
             if (meta) gsap.set(meta, { opacity: 1 });
           },
         },
-      }).fromTo(wrap,
+      });
+
+      // Reveal happens in the first 40% of the timeline
+      tl.fromTo(wrap,
         { clipPath: 'inset(12% 12% 12% 12%)', scale: 1.1 },
-        { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1, ease: 'power2.out' },
+        { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 0.4, ease: 'power2.out' },
+        0
       );
+      // Remaining 60% = video plays while pinned (scroll blocked visually)
     });
   }
 
