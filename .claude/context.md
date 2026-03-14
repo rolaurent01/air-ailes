@@ -12,7 +12,7 @@ Site portfolio personnel pour exposer des photos (paysage/nature et portrait/mod
 
 - **Niveau technique** : non-développeur — toute maintenance et évolution du site se fait via Claude Code
 - **Nom du projet** : Air-Ailes
-- **Identité visuelle** : logo et nom existants (à intégrer)
+- **Identité visuelle** : logo et nom existants dans /public
 - **Univers photo** : paysage/nature + portrait/mode
 - **Réseaux** : Instagram et TikTok actifs (vidéos courtes)
 - **Volume au lancement** : ~50 photos
@@ -30,6 +30,9 @@ Site portfolio personnel pour exposer des photos (paysage/nature et portrait/mod
 | Vidéos | **Embeds Instagram / TikTok** | Intégration iframe native | Gratuit |
 | Blog | **Markdown + Astro Content Collections** | Articles en fichiers .md | Gratuit |
 | Paiement (phase 2) | **Stripe Checkout** | Vente de tirages | 0€ fixe, 1.4% + 0.25€/transaction |
+
+UTILISE LES SKILLS DANS .agents
+
 
 ### Pourquoi Astro
 
@@ -101,7 +104,8 @@ Le contenu (photos, articles, métadonnées) vit directement dans le repo Git so
 │   └── lib/
 │       └── cloudinary.ts           # Helpers URL Cloudinary (tailles, watermark)
 ├── scripts/
-│   └── sync-gallery.ts            # Scan Cloudinary → crée les fiches .md manquantes
+│   ├── sync-gallery.ts            # Compress + upload Cloudinary + crée les fiches .md
+│   └── fill-metadata.ts           # Complète les champs vides (alt, mood, location)
 ├── astro.config.mjs
 ├── package.json
 ├── tsconfig.json
@@ -114,42 +118,49 @@ Le contenu (photos, articles, métadonnées) vit directement dans le repo Git so
 
 ### Principe : 1 upload, toutes les tailles via l'URL
 
-Contrairement à un stockage classique où il faut générer et stocker plusieurs tailles, Cloudinary transforme les images **à la volée** via des paramètres dans l'URL. On uploade une seule fois l'original, et le site demande la taille dont il a besoin :
+Contrairement à un stockage classique où il faut générer et stocker plusieurs tailles, Cloudinary transforme les images **à la volée** via des paramètres dans l'URL. On uploade une seule fois la photo (compressée pour respecter la limite de 10 Mo du tier gratuit), et le site demande la taille dont il a besoin :
 
 | Usage | Paramètres URL | Résultat |
 |-------|---------------|----------|
 | Galerie (miniature) | `/w_400,h_300,c_fill,f_auto,q_auto/` | 400px, WebP auto, ~30 Ko |
 | Lightbox (plein écran) | `/w_2000,f_auto,q_auto/` | 2000px, WebP auto, ~200 Ko |
 | Lightbox + filigrane | `/w_2000,f_auto,q_auto,l_logo,o_30,g_south_east/` | 2000px + logo semi-transparent |
-| Impression (phase 2) | URL signée, accès restreint | Original HD, après achat Stripe |
+| Impression (phase 2) | Fichier original sur le disque du photographe | 6000px+, qualité maximale |
 
 **Exemple d'URL complète :**
 ```
 https://res.cloudinary.com/air-ailes/image/upload/w_2000,f_auto,q_auto,l_logo,o_30,g_south_east/paysage/coucher-soleil-alps.jpg
 ```
 
+### Contrainte Cloudinary : limite de 10 Mo par fichier (tier gratuit)
+
+Les photos originales d'un appareil photo font souvent 15-25 Mo. Le script `sync-gallery.ts` compresse automatiquement chaque photo **avant** l'upload :
+- Redimensionne à **4000px** (largeur max) via sharp
+- Exporte en JPEG qualité **90**
+- Résultat : 3-7 Mo par photo → toujours sous la limite de 10 Mo
+
+**4000px à qualité 90 = aucune différence visible sur écran.** Les visiteurs voient au maximum une version 2000px (via l'URL Cloudinary). La compression n'affecte donc jamais la qualité perçue.
+
+**Pour l'impression (phase 2)** : les originaux pleine résolution (6000px+, RAW ou JPEG non compressé) restent sur le disque dur du photographe. Quand un tirage est commandé, le photographe envoie l'original au labo depuis son propre stockage. Cloudinary ne sert que le web.
+
 ### Workflow d'ajout de photos
 
-#### Étape 1 — Upload (toi)
+#### Étape 1 — Dépôt des photos (toi)
 
-Tu déposes tes photos en vrac sur Cloudinary via :
-- **Le dashboard web Cloudinary** (drag-and-drop, le plus simple)
-- **L'app mobile Cloudinary** (upload depuis ton téléphone)
-- Ou un outil comme `rclone` / l'API si tu préfères
+Tu places tes photos originales dans un dossier local sur ton ordinateur (par exemple `~/Photos/air-ailes/inbox/`). Aucun nommage ni tri requis.
 
-Tu les mets dans un dossier `inbox/` sur Cloudinary. Aucun nommage ni tri requis.
-
-#### Étape 2 — Classement (Claude Code)
+#### Étape 2 — Traitement et upload (Claude Code)
 
 Tu demandes à Claude Code : **"Traite les nouvelles photos"**
 
-Claude Code exécute `sync-gallery.ts` qui, pour chaque photo dans `inbox/` :
+Claude Code exécute `sync-gallery.ts` qui, pour chaque photo dans le dossier local inbox/ :
 
-1. **Analyse** : lit les métadonnées EXIF via l'API Cloudinary (date, appareil, GPS)
-2. **Classe** : te propose un classement par galerie (paysage/portrait)
-3. **Déplace** la photo dans le bon dossier Cloudinary (`paysage/`, `portrait/`)
-4. **Renomme** avec un slug propre
-5. **Crée le fichier `.md`** dans `content/galeries/{galerie}/` avec le frontmatter :
+1. **Compresse** : redimensionne à 4000px max, JPEG qualité 90 via sharp (passe sous 10 Mo)
+2. **Analyse** : lit les métadonnées EXIF (date, appareil, GPS)
+3. **Classe** : te propose un classement par galerie (paysage/portrait)
+4. **Uploade** la version compressée sur Cloudinary dans le bon dossier
+5. **Renomme** avec un slug propre sur Cloudinary
+6. **Crée le fichier `.md`** dans `content/galeries/{galerie}/` avec le frontmatter :
    ```yaml
    ---
    title: "Coucher de soleil sur les Alpes"
@@ -167,26 +178,27 @@ Claude Code exécute `sync-gallery.ts` qui, pour chaque photo dans `inbox/` :
 #### Exemple de session
 
 ```
-Propriétaire : "Il y a 12 nouvelles photos dans l'inbox, traite-les"
-Claude Code  : "J'ai trouvé 12 photos. Je te propose :
+Propriétaire : "J'ai mis 12 nouvelles photos dans ~/Photos/air-ailes/inbox/"
+Claude Code  : "J'ai trouvé 12 photos. Compression en cours...
+                ✓ Toutes sous 10 Mo. Je te propose :
                 - 8 → galerie paysage (détecté via EXIF GPS : montagne)
                 - 4 → galerie portrait
                 Ça te va ?"
 Propriétaire : "Oui, mais la photo IMG_4521 va dans portrait"
-Claude Code  : "C'est noté. Je traite les 12 photos... ✓ Terminé.
-                12 photos traitées, site mis à jour."
+Claude Code  : "C'est noté. Upload sur Cloudinary + création des fiches...
+                ✓ 12 photos traitées, site mis à jour."
 ```
 
 #### Ajout en masse au lancement
 
-Pour les ~50 photos initiales, le même processus fonctionne en batch. Tu uploades tout dans `inbox/` via le dashboard, et Claude Code traite le lot en une session.
+Pour les ~50 photos initiales, le même processus fonctionne en batch. Tu déposes tout dans ton dossier inbox local, et Claude Code traite le lot complet en une session.
 
-### Organisation Cloudinary
+### Stockage des photos — deux emplacements
 
+**Sur Cloudinary** (versions web, compressées < 10 Mo) :
 ```
 air-ailes/                        ← compte Cloudinary
-├── inbox/                        ← photos en vrac déposées ici
-├── paysage/                      ← photos classées (un seul fichier par photo)
+├── paysage/                      ← photos classées (compressées, 4000px)
 │   ├── coucher-soleil-alps.jpg
 │   └── brume-matinale.jpg
 ├── portrait/
@@ -196,11 +208,26 @@ air-ailes/                        ← compte Cloudinary
     └── logo.png                  ← logo utilisé pour le filigrane via URL
 ```
 
+**Sur ton disque dur** (originaux pleine résolution) :
+```
+~/Photos/air-ailes/
+├── inbox/                        ← photos en vrac à traiter
+├── originaux/                    ← originaux archivés après traitement
+│   ├── paysage/
+│   │   ├── coucher-soleil-alps-ORIGINAL.jpg
+│   │   └── brume-matinale-ORIGINAL.jpg
+│   └── portrait/
+│       └── studio-marie-ORIGINAL.jpg
+```
+
+Le script `sync-gallery.ts` archive automatiquement l'original dans `originaux/` après compression et upload. Tu ne perds jamais la version pleine qualité.
+
 ### Tier gratuit Cloudinary
 
 - **25 crédits/mois** (≈ 25 Go de bande passante OU 25 000 transformations)
 - **Pas de carte bancaire requise**
-- **Stockage** : inclus dans les crédits, largement suffisant pour ~50 photos
+- **Limite par fichier : 10 Mo** (géré par la compression automatique du script)
+- **Stockage** : inclus dans les crédits, largement suffisant pour ~50 photos compressées
 - **CDN intégré** : images servies depuis le serveur le plus proche du visiteur
 - Les transformations (resize, watermark) sont mises en cache — une transformation = 1 crédit, les visites suivantes = 0 crédit
 
@@ -210,7 +237,7 @@ air-ailes/                        ← compte Cloudinary
 
 ### Couche 1 — Résolution limitée via URL (la plus efficace)
 
-Les visiteurs ne voient jamais l'original. Le site demande systématiquement la version `w_2000` via l'URL Cloudinary — belle sur écran, mais inutilisable pour une impression de qualité au-delà de 17 cm. L'original HD reste sur Cloudinary avec un accès restreint (URL signée, phase 2 uniquement après achat Stripe).
+Les visiteurs ne voient jamais l'original. Le site demande systématiquement la version `w_2000` via l'URL Cloudinary — belle sur écran, mais inutilisable pour une impression de qualité au-delà de 17 cm. L'original pleine résolution (6000px+) reste sur le disque dur du photographe, jamais en ligne. Même la version stockée sur Cloudinary est compressée à 4000px — un visiteur qui contournerait toutes les protections n'obtiendrait qu'une version déjà réduite.
 
 ### Couche 2 — Filigrane automatique via URL
 
@@ -233,8 +260,8 @@ Le composant `ProtectedImage.astro` implémente :
 
 ### Couche 4 — Restriction d'accès Cloudinary
 
-- **Strict transformations** : activé → seules les transformations pré-définies fonctionnent, un visiteur ne peut pas bidouiller l'URL pour demander l'original
-- **Signed URLs** pour l'original (phase 2) → l'URL expire après téléchargement
+- **Strict transformations** : activé → seules les transformations pré-définies fonctionnent, un visiteur ne peut pas bidouiller l'URL pour demander la version 4000px non watermarkée
+- **Les originaux (6000px+) ne sont jamais en ligne** — ils restent sur le disque dur du photographe, inaccessibles depuis le web
 
 ---
 
@@ -542,7 +569,7 @@ CONTACT_EMAIL=              # Email du photographe
 
 Exemples de demandes que le propriétaire fera à Claude Code :
 
-- "Il y a des nouvelles photos dans l'inbox, traite-les"
+- "J'ai mis des nouvelles photos dans inbox, traite-les"
 - "Mets les 5 dernières photos dans la galerie portrait"
 - "Crée un nouvel article de blog avec ce texte et cette photo de couverture"
 - "Ajoute cette vidéo Instagram à la page vidéos"

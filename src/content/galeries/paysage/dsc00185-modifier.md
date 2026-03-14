@@ -1,8 +1,8 @@
 ---
 title: "DSC00185 Modifier"
 slug: dsc00185-modifier
-cloudinary_id: macro/dsc00185-modifier
-gallery: macro
+cloudinary_id: paysage/dsc00185-modifier
+gallery: paysage
 date: 2021-03-28
 camera: "SONY ILCE-7M3"
 orientation: landscape

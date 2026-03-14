@@ -71,6 +71,10 @@ const aspectRatio = aspectRatioMap[orientation] ?? '3 / 2';
     column-span: all;
   }
 
+  .photo-card--wide .photo-card__image-wrapper {
+    aspect-ratio: 21 / 9;
+  }
+
   .photo-card__trigger {
     display: block;
     width: 100%;
