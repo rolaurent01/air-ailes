@@ -239,5 +239,5 @@ import { NAV_LINKS, SITE_NAME } from '../lib/constants';
 
   // Initialisation au chargement et après navigation (View Transitions)
   initHeader();
-  document.addEventListener('astro:after-swap', initHeader);
+  document.addEventListener('astro:page-load', initHeader);
 </script>

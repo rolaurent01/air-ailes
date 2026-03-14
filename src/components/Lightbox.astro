@@ -528,5 +528,5 @@ const { photos } = Astro.props;
   }
 
   initLightbox();
-  document.addEventListener('astro:after-swap', initLightbox);
+  document.addEventListener('astro:page-load', initLightbox);
 </script>

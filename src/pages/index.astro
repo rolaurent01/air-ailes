@@ -471,7 +471,7 @@ const lightboxPhotos = selectionPhotos.map((p) => ({
   }
 
   initHome();
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener('astro:page-load', () => {
     ScrollTrigger.getAll().forEach((t) => t.kill());
     initHome();
   });

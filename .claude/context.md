@@ -554,7 +554,7 @@ Claude Code modifie le code
 ### Variables d'environnement (Vercel)
 
 ```
-CLOUDINARY_CLOUD_NAME=air-ailes
+CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 STRIPE_SECRET_KEY=          # Phase 2

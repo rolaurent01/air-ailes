@@ -297,7 +297,7 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
   }
 
   initAbout();
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener('astro:page-load', () => {
     ScrollTrigger.getAll().forEach((t) => t.kill());
     initAbout();
   });

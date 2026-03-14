@@ -96,7 +96,7 @@ const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
   }
 
   initGalleryReveal();
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener('astro:page-load', () => {
     ScrollTrigger.getAll().forEach((t) => t.kill());
     initGalleryReveal();
   });

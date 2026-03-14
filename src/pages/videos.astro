@@ -146,7 +146,7 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
   }
 
   initVideosPage();
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener('astro:page-load', () => {
     ScrollTrigger.getAll().forEach((t) => t.kill());
     initVideosPage();
   });

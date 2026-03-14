@@ -54,7 +54,7 @@ const {
 
       initSmoothScroll();
 
-      document.addEventListener('astro:after-swap', () => {
+      document.addEventListener('astro:page-load', () => {
         destroySmoothScroll();
         initSmoothScroll();
       });

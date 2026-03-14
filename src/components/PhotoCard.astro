@@ -51,9 +51,6 @@ const aspectRatio = aspectRatioMap[orientation] ?? '3 / 2';
         dominantColor={dominantColor}
       />
     </div>
-    <div class="photo-card__overlay">
-      <span class="photo-card__title">{title}</span>
-    </div>
   </button>
 </article>
 
@@ -99,67 +96,8 @@ const aspectRatio = aspectRatioMap[orientation] ?? '3 / 2';
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
-  .photo-card__overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    padding: var(--space-sm);
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.6) 0%,
-      transparent 50%
-    );
-    opacity: 0;
-    transition: opacity var(--duration-hover) var(--ease-out-expo);
-  }
-
-  .photo-card:hover .photo-card__overlay,
-  .photo-card:focus-within .photo-card__overlay {
-    opacity: 1;
-  }
-
-  .photo-card__title {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-light);
-    letter-spacing: var(--letter-spacing-wide);
-    color: var(--color-text-primary);
-    transform: translateY(8px);
-    transition: transform var(--duration-hover) var(--ease-out-expo);
-  }
-
-  .photo-card:hover .photo-card__title,
-  .photo-card:focus-within .photo-card__title {
-    transform: translateY(0);
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .photo-card:hover .photo-card__image-wrapper {
-      transform: none;
-    }
-    .photo-card__title {
-      transform: none;
-    }
-    .photo-card__overlay {
-      opacity: 1;
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.4) 0%,
-        transparent 40%
-      );
-    }
-  }
-
-  @media (hover: none) {
-    .photo-card__overlay {
-      opacity: 1;
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.4) 0%,
-        transparent 40%
-      );
-    }
-    .photo-card__title {
       transform: none;
     }
   }

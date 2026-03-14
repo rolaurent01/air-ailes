@@ -155,5 +155,5 @@ const platformLabel = platform === 'instagram' ? 'Instagram' : 'TikTok';
   }
 
   initVideoEmbeds();
-  document.addEventListener('astro:after-swap', initVideoEmbeds);
+  document.addEventListener('astro:page-load', initVideoEmbeds);
 </script>

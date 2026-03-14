@@ -122,36 +122,36 @@ const lqipUrl = getImageUrl(cloudinaryId, {
 </style>
 
 <script>
+  let imageObserver: IntersectionObserver | null = null;
+
   function initProtectedImages(): void {
-    const images = document.querySelectorAll<HTMLElement>('.protected-image');
+    if (imageObserver) imageObserver.disconnect();
+
+    const images = document.querySelectorAll<HTMLElement>('.protected-image:not(.is-loaded)');
 
     if (!('IntersectionObserver' in window)) {
       images.forEach((container) => loadImage(container));
       return;
     }
 
-    const observer = new IntersectionObserver(
+    imageObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             loadImage(entry.target as HTMLElement);
-            observer.unobserve(entry.target);
+            imageObserver?.unobserve(entry.target);
           }
         });
       },
-      { rootMargin: '200px 0px' }
+      { rootMargin: '300px 0px' }
     );
 
-    images.forEach((container) => {
-      if (!container.classList.contains('is-loaded')) {
-        observer.observe(container);
-      }
-    });
+    images.forEach((container) => imageObserver!.observe(container));
   }
 
   function loadImage(container: HTMLElement): void {
     const mainEl = container.querySelector<HTMLElement>('.protected-image__main');
-    if (!mainEl) return;
+    if (!mainEl || mainEl.style.backgroundImage) return;
 
     const src = mainEl.dataset.src;
     if (!src) return;
@@ -166,5 +166,5 @@ const lqipUrl = getImageUrl(cloudinaryId, {
   }
 
   initProtectedImages();
-  document.addEventListener('astro:after-swap', initProtectedImages);
+  document.addEventListener('astro:page-load', initProtectedImages);
 </script>

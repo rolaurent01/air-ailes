@@ -341,7 +341,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
   }
 
   initBlogArticle();
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener('astro:page-load', () => {
     ScrollTrigger.getAll().forEach((t) => t.kill());
     initBlogArticle();
   });
