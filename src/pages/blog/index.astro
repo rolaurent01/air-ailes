@@ -7,28 +7,64 @@ const allPosts = await getCollection('blog');
 const posts = allPosts
   .filter((p) => p.data.published)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Extract unique tags
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags ?? []))].sort();
+
+// Group by category
+const categoryMap: Record<string, string[]> = {
+  'Technique': ['technique', 'exposition', 'débutant', 'basse lumière', 'nuit', 'flash', 'macro'],
+  'Composition': ['composition', 'créativité', 'portrait', 'paysage', 'nature'],
+  'Post-production': ['post-production', 'lightroom', 'workflow', 'couleur', 'impression', 'avancé'],
+  'Professionnel': ['professionnel', 'portfolio', 'juridique', 'publication', 'SEO', 'web', 'rédaction'],
+  'Récits': ['montagne', 'behind the scenes', 'lumière'],
+};
+
+const categories = Object.entries(categoryMap).filter(([_, tags]) =>
+  tags.some((tag) => allTags.includes(tag))
+);
 ---
 
 <BaseLayout
-  title="Blog"
-  description="Récits de terrain, réflexions sur la lumière et coulisses de mes séances photo."
+  title="Blog — Journal & Apprentissage Photo"
+  description="Articles techniques, récits de terrain et guides pratiques pour progresser en photographie. Triangle d'exposition, composition, post-production et plus."
 >
   <section class="blog-index">
     <div class="blog-index__header">
-      <h1 class="blog-index__title" id="blog-index-title">Journal</h1>
-      <p class="blog-index__subtitle">Récits, coulisses et réflexions</p>
+      <p class="blog-index__eyebrow">Journal</p>
+      <h1 class="blog-index__title" id="blog-index-title">Apprendre & Créer</h1>
+      <p class="blog-index__subtitle">
+        Techniques, récits de terrain et guides pratiques pour progresser en photographie
+      </p>
+    </div>
+
+    {categories.length > 0 && (
+      <nav class="blog-index__filters" aria-label="Filtrer par catégorie">
+        <button class="blog-index__filter active" data-filter="all">Tous</button>
+        {categories.map(([name, tags]) => (
+          <button class="blog-index__filter" data-filter={tags.join(',')}>
+            {name}
+          </button>
+        ))}
+      </nav>
+    )}
+
+    <div class="blog-index__count">
+      <span id="post-count">{posts.length}</span> articles
     </div>
 
     {posts.length > 0 ? (
-      <div class="blog-index__list">
+      <div class="blog-index__list" id="blog-list">
         {posts.map((post) => (
-          <BlogPostCard
-            title={post.data.title}
-            slug={post.data.slug}
-            date={post.data.date}
-            excerpt={post.data.excerpt}
-            coverCloudinaryId={post.data.cover_cloudinary_id}
-          />
+          <div class="blog-index__item" data-tags={(post.data.tags ?? []).join(',')}>
+            <BlogPostCard
+              title={post.data.title}
+              slug={post.data.slug}
+              date={post.data.date}
+              excerpt={post.data.excerpt}
+              coverCloudinaryId={post.data.cover_cloudinary_id}
+            />
+          </div>
         ))}
       </div>
     ) : (
@@ -50,6 +86,14 @@ const posts = allPosts
     margin-bottom: var(--space-xl);
   }
 
+  .blog-index__eyebrow {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+  }
+
   .blog-index__title {
     font-size: clamp(2rem, 6vw, var(--font-size-2xl));
     font-weight: var(--font-weight-light);
@@ -62,14 +106,72 @@ const posts = allPosts
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
     letter-spacing: var(--letter-spacing-wide);
+    max-width: 50ch;
+    margin-inline: auto;
+    line-height: var(--line-height-relaxed);
   }
 
+  /* --- Filters --- */
+  .blog-index__filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: var(--space-lg);
+    padding-inline: var(--space-sm);
+  }
+
+  .blog-index__filter {
+    background: transparent;
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-secondary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    padding: 6px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition:
+      color var(--duration-hover) var(--ease-out-expo),
+      border-color var(--duration-hover) var(--ease-out-expo),
+      background var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .blog-index__filter:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(240, 237, 232, 0.2);
+  }
+
+  .blog-index__filter.active {
+    color: var(--color-text-primary);
+    border-color: rgba(240, 237, 232, 0.3);
+    background: rgba(240, 237, 232, 0.05);
+  }
+
+  /* --- Count --- */
+  .blog-index__count {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* --- List --- */
   .blog-index__list {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
     max-width: 900px;
     margin-inline: auto;
+  }
+
+  .blog-index__item {
+    transition: opacity var(--duration-default) var(--ease-out-expo);
+  }
+
+  .blog-index__item.hidden {
+    display: none;
   }
 
   .blog-index__empty {
@@ -106,9 +208,37 @@ const posts = allPosts
     });
   }
 
+  function initFilters(): void {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.blog-index__filter');
+    const items = document.querySelectorAll<HTMLElement>('.blog-index__item');
+    const countEl = document.getElementById('post-count');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        const filterTags = filter === 'all' ? null : filter?.split(',') ?? null;
+        let visible = 0;
+
+        items.forEach((item) => {
+          const itemTags = item.dataset.tags?.split(',') ?? [];
+          const show = !filterTags || itemTags.some((t) => filterTags.includes(t));
+          item.classList.toggle('hidden', !show);
+          if (show) visible++;
+        });
+
+        if (countEl) countEl.textContent = String(visible);
+      });
+    });
+  }
+
   initBlogIndex();
-  document.addEventListener('astro:page-load', () => {
+  initFilters();
+  document.addEventListener('astro:after-swap', () => {
     ScrollTrigger.getAll().forEach((t) => t.kill());
     initBlogIndex();
+    initFilters();
   });
 </script>

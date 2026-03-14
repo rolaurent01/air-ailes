@@ -221,6 +221,53 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
     border-color: var(--color-text-primary);
   }
 
+  /* --- SVG Illustrations --- */
+  .blog-article__prose :global(.svg-illustration) {
+    display: flex;
+    justify-content: center;
+    margin-block: var(--space-xl);
+  }
+
+  .blog-article__prose :global(.svg-illustration svg) {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+  }
+
+  .blog-article__prose :global(.svg-caption) {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    margin-top: var(--space-xs);
+    font-style: italic;
+  }
+
+  /* --- Pour aller plus loin links --- */
+  .blog-article__prose :global(h2:last-of-type + p a),
+  .blog-article__prose :global(.further-reading a) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* --- Ordered/Unordered lists --- */
+  .blog-article__prose :global(ol),
+  .blog-article__prose :global(ul) {
+    padding-left: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  .blog-article__prose :global(li) {
+    margin-bottom: 0.5em;
+    line-height: 1.7;
+  }
+
+  .blog-article__prose :global(strong) {
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-primary);
+  }
+
   /* --- Nav --- */
   .blog-article__nav {
     display: flex;
