@@ -6,7 +6,7 @@ import Lightbox from '../../components/Lightbox.astro';
 
 const allPhotos = await getCollection('galeries');
 const photos = allPhotos
-  .filter((p) => p.data.gallery === 'paysage')
+  .filter((p) => p.data.gallery === 'macro')
   .sort((a, b) => a.data.display_order - b.data.display_order);
 
 const lightboxPhotos = photos.map((p) => ({
@@ -21,12 +21,12 @@ const galleryPhotos = photos.map((p) => p.data);
 ---
 
 <GalleryLayout
-  title="Paysage & Nature"
-  subtitle="Montagnes, lacs, forêts — la nature dans toute sa splendeur"
-  description="Galerie paysage Air-Ailes — montagnes, lacs, forêts et lumières naturelles capturés au fil des saisons."
+  title="Macro & Détails"
+  subtitle="L'infiniment proche — fleurs, insectes, textures et détails du quotidien"
+  description="Galerie macro Air-Ailes — photographie rapprochée de la nature, des textures et des détails architecturaux."
   image={photos[0]?.data.cloudinary_id}
-  prevGallery={undefined}
-  nextGallery={{ label: 'Macro', href: '/galeries/macro' }}
+  prevGallery={{ label: 'Paysage', href: '/galeries/paysage' }}
+  nextGallery={undefined}
 >
   <Gallery photos={galleryPhotos} columns={3} />
   <Lightbox photos={lightboxPhotos} />

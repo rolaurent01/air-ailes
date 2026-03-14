@@ -7,7 +7,7 @@ const galeries = defineCollection({
     title: z.string(),
     slug: z.string(),
     cloudinary_id: z.string(),
-    gallery: z.enum(['paysage', 'portrait']),
+    gallery: z.enum(['paysage', 'macro']),
     date: z.coerce.date().optional(),
     location: z.string().optional(),
     camera: z.string().optional(),

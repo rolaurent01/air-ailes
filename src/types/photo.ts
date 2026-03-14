@@ -2,7 +2,7 @@
 export interface Photo {
   title: string;
   slug: string;
-  gallery: 'paysage' | 'portrait';
+  gallery: 'paysage' | 'macro';
   cloudinaryId: string;
   date: Date;
   location?: string;
