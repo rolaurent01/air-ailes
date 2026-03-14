@@ -187,7 +187,7 @@ export function getLightboxImageUrl(cloudinaryId: string): string {
   return getImageUrl(cloudinaryId, {
     width: 2000,
     crop: 'limit',
-    watermark: true,
+    watermark: false,
   });
 }
 
