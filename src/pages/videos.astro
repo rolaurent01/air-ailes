@@ -52,7 +52,6 @@ function getPosterUrl(cloudinaryId: string): string {
         </div>
         <div class="video-slide__meta">
           <span class="video-slide__name">{video.title}</span>
-          <span class="video-slide__counter">{String(index + 1).padStart(2, '0')} / {String(videos.length).padStart(2, '0')}</span>
         </div>
       </div>
     ))}
@@ -152,14 +151,6 @@ function getPosterUrl(cloudinaryId: string): string {
     letter-spacing: var(--letter-spacing-wide);
     color: var(--color-text-primary);
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-  }
-
-  .video-slide__counter {
-    font-family: var(--font-family);
-    font-size: var(--font-size-xs);
-    color: var(--color-text-secondary);
-    letter-spacing: var(--letter-spacing-uppercase);
-    opacity: 0.5;
   }
 
   .video-slide::after {
