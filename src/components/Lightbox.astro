@@ -523,7 +523,7 @@ const { photos } = Astro.props;
     }
   }
 
-  function initLightbox(): void {
+  function reloadPhotos(): void {
     const lightbox = getLightboxEl();
     if (!lightbox) return;
 
@@ -535,35 +535,69 @@ const { photos } = Astro.props;
         photos = [];
       }
     }
+  }
 
-    // Clic sur les PhotoCards pour ouvrir la lightbox
-    document.querySelectorAll<HTMLElement>('.photo-card__trigger').forEach((trigger) => {
-      trigger.addEventListener('click', () => {
+  // Event delegation — works across View Transitions without rebinding
+  let delegationBound = false;
+
+  function initLightbox(): void {
+    reloadPhotos();
+
+    if (delegationBound) return;
+    delegationBound = true;
+
+    // Clic sur les PhotoCards (event delegation on document)
+    document.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+
+      // PhotoCard trigger → open lightbox
+      const trigger = target.closest<HTMLElement>('.photo-card__trigger');
+      if (trigger) {
         const card = trigger.closest<HTMLElement>('.photo-card');
         if (!card) return;
+        // Reload photos data in case DOM changed via View Transitions
+        reloadPhotos();
         const index = parseInt(card.dataset.photoIndex ?? '0', 10);
         openLightbox(index);
-      });
-    });
+        return;
+      }
 
-    // Fermer
-    lightbox.querySelectorAll('[data-lightbox-close]').forEach((el) => {
-      el.addEventListener('click', closeLightbox);
-    });
+      // Close buttons
+      if (target.closest('[data-lightbox-close]')) {
+        closeLightbox();
+        return;
+      }
 
-    // Navigation
-    lightbox.querySelector('[data-lightbox-prev]')?.addEventListener('click', goPrev);
-    lightbox.querySelector('[data-lightbox-next]')?.addEventListener('click', goNext);
+      // Navigation
+      if (target.closest('[data-lightbox-prev]')) {
+        goPrev();
+        return;
+      }
+      if (target.closest('[data-lightbox-next]')) {
+        goNext();
+        return;
+      }
+    });
 
     // Clavier
     document.addEventListener('keydown', handleKeydown);
 
     // Swipe mobile
-    const content = lightbox.querySelector('.lightbox__content');
-    if (content) {
-      content.addEventListener('touchstart', handleTouchStart as EventListener, { passive: true });
-      content.addEventListener('touchend', handleTouchEnd as EventListener, { passive: true });
-    }
+    document.addEventListener('touchstart', (e: TouchEvent) => {
+      const lightbox = getLightboxEl();
+      if (!lightbox || !isOpen) return;
+      if (e.target && (e.target as HTMLElement).closest('.lightbox__content')) {
+        handleTouchStart(e);
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e: TouchEvent) => {
+      const lightbox = getLightboxEl();
+      if (!lightbox || !isOpen) return;
+      if (e.target && (e.target as HTMLElement).closest('.lightbox__content')) {
+        handleTouchEnd(e);
+      }
+    }, { passive: true });
   }
 
   initLightbox();
