@@ -197,48 +197,70 @@ import { NAV_LINKS, SITE_NAME } from '../lib/constants';
 </style>
 
 <script>
-  function initHeader(): void {
-    const header = document.getElementById('main-header');
+  let headerBound = false;
+
+  function closeMenu(): void {
     const toggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
+    if (!toggle || !mobileMenu) return;
+    toggle.classList.remove('header__burger--open');
+    mobileMenu.classList.remove('header__mobile-menu--open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
 
-    if (!header || !toggle || !mobileMenu) return;
+  function initHeader(): void {
+    // Update scroll state for current header
+    const header = document.getElementById('main-header');
+    if (!header) return;
 
-    // Scroll : fond semi-opaque
     const onScroll = (): void => {
+      const h = document.getElementById('main-header');
+      if (!h) return;
       if (window.scrollY > 50) {
-        header.classList.add('header--scrolled');
+        h.classList.add('header--scrolled');
       } else {
-        header.classList.remove('header--scrolled');
+        h.classList.remove('header--scrolled');
       }
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // Close menu on page navigation
+    closeMenu();
     onScroll();
 
-    // Toggle menu mobile
-    toggle.addEventListener('click', () => {
-      const isOpen = toggle.classList.toggle('header__burger--open');
-      mobileMenu.classList.toggle('header__mobile-menu--open', isOpen);
-      mobileMenu.setAttribute('aria-hidden', String(!isOpen));
-      toggle.setAttribute('aria-expanded', String(isOpen));
-      toggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
+    if (headerBound) return;
+    headerBound = true;
 
-    // Fermer le menu au clic sur un lien
-    mobileMenu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        toggle.classList.remove('header__burger--open');
-        mobileMenu.classList.remove('header__mobile-menu--open');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+    // Scroll listener (persists across navigations)
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Event delegation for burger + mobile links
+    document.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+
+      // Burger toggle
+      if (target.closest('#menu-toggle')) {
+        const toggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (!toggle || !mobileMenu) return;
+
+        const isOpen = toggle.classList.toggle('header__burger--open');
+        mobileMenu.classList.toggle('header__mobile-menu--open', isOpen);
+        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+        return;
+      }
+
+      // Mobile menu link click → close menu
+      if (target.closest('#mobile-menu a')) {
+        closeMenu();
+      }
     });
   }
 
-  // Initialisation au chargement et après navigation (View Transitions)
   initHeader();
   document.addEventListener('astro:page-load', initHeader);
 </script>
