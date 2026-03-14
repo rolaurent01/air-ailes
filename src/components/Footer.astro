@@ -1,0 +1,71 @@
+---
+import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
+---
+
+<footer class="footer">
+  <div class="footer__inner container">
+    <p class="footer__copy">© {new Date().getFullYear()} {SITE_NAME}</p>
+
+    <div class="footer__socials">
+      <a
+        href={SOCIAL_LINKS.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="17.5" cy="6.5" r="1"/>
+        </svg>
+      </a>
+      <a
+        href={SOCIAL_LINKS.tiktok}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="TikTok"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-bg-footer);
+    border-top: 1px solid var(--color-border-subtle);
+    padding-block: var(--space-lg);
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .footer__copy {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .footer__socials {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .footer__socials a {
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .footer__socials a:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+</style>
