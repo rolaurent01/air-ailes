@@ -141,7 +141,10 @@ import { NAV_LINKS, SITE_NAME } from '../lib/constants';
   /* --- Menu mobile --- */
   .header__mobile-menu {
     position: fixed;
-    inset: 0;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: var(--color-bg-primary);
     display: flex;
     align-items: center;
@@ -150,7 +153,7 @@ import { NAV_LINKS, SITE_NAME } from '../lib/constants';
     visibility: hidden;
     transition: opacity var(--duration-default) var(--ease-out-expo),
                 visibility var(--duration-default) var(--ease-out-expo);
-    z-index: 105;
+    z-index: 99;
   }
 
   .header__mobile-menu--open {
