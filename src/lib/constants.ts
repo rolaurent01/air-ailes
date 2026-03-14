@@ -3,9 +3,6 @@ export const CLOUDINARY_CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME ?? 'd
 export const CLOUDINARY_BASE_URL = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
 // --- Images ---
-export const IMAGE_THUMB_WIDTH = 400;
-export const IMAGE_THUMB_HEIGHT = 300;
-export const IMAGE_WEB_WIDTH = 2000;
 export const IMAGE_WATERMARK_OPACITY = 30;
 export const IMAGE_WATERMARK_GRAVITY = 'south_east';
 export const IMAGE_WATERMARK_WIDTH = 150;

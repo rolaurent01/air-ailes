@@ -1,60 +1,96 @@
 ---
-import { getImageUrl } from '../lib/cloudinary';
+import { getImageUrl, getLqipUrl } from '../lib/cloudinary';
 
 interface Props {
   cloudinaryId: string;
   alt: string;
+  /** Primary display width (px). Used as the default src. */
   width?: number;
+  /** Primary display height (px). If set, uses fill crop. */
   height?: number;
+  /** srcset string — pass a pre-built srcset for responsive images. */
+  srcset?: string;
+  /** sizes attribute for responsive images. */
   sizes?: string;
+  /** Focal point for Cloudinary gravity (e.g. 'auto', 'face', 'north'). */
+  focalPoint?: string;
+  /** Use eager loading (for above-the-fold hero). Default: lazy. */
+  eager?: boolean;
+  /** Add fetchpriority="high" (for hero/LCP image). */
+  fetchPriority?: boolean;
+  /** Apply watermark overlay. */
   watermark?: boolean;
+  /** CSS class. */
   class?: string;
+  /** Dominant color fallback background. */
   dominantColor?: string;
+  /** Intrinsic aspect ratio for the container (e.g. '3 / 2'). */
+  aspectRatio?: string;
 }
 
 const {
   cloudinaryId,
   alt,
-  width = 2000,
+  width = 800,
   height,
-  sizes = '100vw',
+  srcset,
+  sizes,
+  focalPoint = 'auto',
+  eager = false,
+  fetchPriority = false,
   watermark = false,
   class: className = '',
   dominantColor = '#111111',
+  aspectRatio,
 } = Astro.props;
 
 const mainUrl = getImageUrl(cloudinaryId, {
   width,
   height,
   crop: height ? 'fill' : 'limit',
+  gravity: focalPoint,
   watermark,
 });
 
-const lqipUrl = getImageUrl(cloudinaryId, {
-  width: 30,
-  crop: 'limit',
-  quality: '30',
-});
+const lqipUrl = getLqipUrl(cloudinaryId);
+
+const imgWidth = width;
+const imgHeight = height ?? Math.round(width * (2 / 3));
 ---
 
 <div
   class:list={['protected-image', className]}
-  role="img"
-  aria-label={alt}
-  data-cloudinary-id={cloudinaryId}
-  style={`--dominant-color: ${dominantColor};`}
+  style={`--dominant-color: ${dominantColor};${aspectRatio ? ` --aspect-ratio: ${aspectRatio};` : ''}`}
 >
-  <div
+  {/* LQIP placeholder — inline, always visible until img loads */}
+  <img
     class="protected-image__lqip"
-    style={`background-image: url(${lqipUrl});`}
-  ></div>
-  <div
+    src={lqipUrl}
+    alt=""
+    aria-hidden="true"
+    width={imgWidth}
+    height={imgHeight}
+    decoding="async"
+  />
+
+  {/* Main image — native <img> with srcset/sizes */}
+  <img
     class="protected-image__main"
-    data-src={mainUrl}
-    data-sizes={sizes}
+    src={mainUrl}
+    srcset={srcset}
+    sizes={sizes}
+    alt={alt}
+    width={imgWidth}
+    height={imgHeight}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding={eager ? 'sync' : 'async'}
+    fetchpriority={fetchPriority ? 'high' : undefined}
     oncontextmenu="return false"
     ondragstart="return false"
-  ></div>
+    draggable="false"
+  />
+
+  {/* Transparent overlay — anti-save protection */}
   <div class="protected-image__overlay"></div>
 </div>
 
@@ -63,39 +99,39 @@ const lqipUrl = getImageUrl(cloudinaryId, {
     position: relative;
     overflow: hidden;
     background-color: var(--dominant-color, var(--color-bg-secondary));
-    width: 100%;
-    height: 100%;
+    aspect-ratio: var(--aspect-ratio, auto);
   }
 
   .protected-image__lqip {
     position: absolute;
     inset: 0;
-    background-size: cover;
-    background-position: center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     filter: blur(20px);
     transform: scale(1.1);
-    transition: opacity var(--duration-slow) var(--ease-out-expo);
+    transition: opacity var(--duration-slow, 0.8s) var(--ease-out-expo, ease-out);
     z-index: 1;
   }
 
   .protected-image__main {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity var(--duration-slow) var(--ease-out-expo);
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: 2;
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
+    opacity: 0;
+    transition: opacity var(--duration-slow, 0.8s) var(--ease-out-expo, ease-out);
   }
 
   .protected-image__main.is-loaded {
     opacity: 1;
   }
 
-  .protected-image__main.is-loaded + .protected-image__overlay ~ .protected-image__lqip,
   .protected-image.is-loaded .protected-image__lqip {
     opacity: 0;
   }
@@ -111,58 +147,31 @@ const lqipUrl = getImageUrl(cloudinaryId, {
     .protected-image__lqip {
       filter: none;
       transform: none;
-    }
-    .protected-image__main {
       transition: none;
     }
-    .protected-image__lqip {
+    .protected-image__main {
       transition: none;
     }
   }
 </style>
 
 <script>
-  let imageObserver: IntersectionObserver | null = null;
-
   function initProtectedImages(): void {
-    if (imageObserver) imageObserver.disconnect();
+    const images = document.querySelectorAll<HTMLImageElement>('.protected-image__main:not(.is-loaded)');
 
-    const images = document.querySelectorAll<HTMLElement>('.protected-image:not(.is-loaded)');
-
-    if (!('IntersectionObserver' in window)) {
-      images.forEach((container) => loadImage(container));
-      return;
-    }
-
-    imageObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            loadImage(entry.target as HTMLElement);
-            imageObserver?.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: '300px 0px' }
-    );
-
-    images.forEach((container) => imageObserver!.observe(container));
+    images.forEach((img) => {
+      if (img.complete && img.naturalWidth > 0) {
+        markLoaded(img);
+      } else {
+        img.addEventListener('load', () => markLoaded(img), { once: true });
+      }
+    });
   }
 
-  function loadImage(container: HTMLElement): void {
-    const mainEl = container.querySelector<HTMLElement>('.protected-image__main');
-    if (!mainEl || mainEl.style.backgroundImage) return;
-
-    const src = mainEl.dataset.src;
-    if (!src) return;
-
-    const img = new Image();
-    img.onload = () => {
-      mainEl.style.backgroundImage = `url(${src})`;
-      mainEl.classList.add('is-loaded');
-      container.classList.add('is-loaded');
-    };
-    img.src = src;
+  function markLoaded(img: HTMLImageElement): void {
+    img.classList.add('is-loaded');
+    const container = img.closest('.protected-image');
+    if (container) container.classList.add('is-loaded');
   }
 
   initProtectedImages();

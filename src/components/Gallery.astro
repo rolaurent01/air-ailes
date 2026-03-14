@@ -5,8 +5,7 @@ interface PhotoData {
   title: string;
   cloudinary_id: string;
   alt: string;
-  orientation: 'landscape' | 'portrait' | 'square';
-  grid_size?: 'normal' | 'wide';
+  focal_point?: string;
   dominant_color?: string;
   display_order: number;
 }
@@ -31,8 +30,7 @@ const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
       title={photo.title}
       cloudinaryId={photo.cloudinary_id}
       alt={photo.alt}
-      orientation={photo.orientation}
-      gridSize={photo.grid_size}
+      focalPoint={photo.focal_point}
       dominantColor={photo.dominant_color}
       index={index}
     />
@@ -41,8 +39,9 @@ const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
 
 <style>
   .gallery {
-    column-count: var(--gallery-columns, 2);
-    column-gap: 28px;
+    display: grid;
+    grid-template-columns: repeat(var(--gallery-columns, 3), 1fr);
+    gap: var(--space-md, 1.5rem);
     padding-inline: var(--container-padding);
     max-width: var(--container-max);
     margin-inline: auto;
@@ -50,13 +49,14 @@ const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
 
   @media (max-width: 768px) {
     .gallery {
-      column-count: 1;
+      grid-template-columns: 1fr;
+      gap: var(--space-sm, 1rem);
     }
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
     .gallery {
-      column-count: 2;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>
@@ -64,7 +64,7 @@ const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  import { ANIMATION_EASING, ANIMATION_STAGGER_DELAY } from '../lib/constants';
+  import { ANIMATION_EASING } from '../lib/constants';
 
   gsap.registerPlugin(ScrollTrigger);
 

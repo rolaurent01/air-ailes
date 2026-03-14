@@ -33,8 +33,7 @@ const lightboxPhotos = photos.map((p) => ({
           title={photo.data.title}
           cloudinaryId={photo.data.cloudinary_id}
           alt={photo.data.alt}
-          orientation={photo.data.orientation}
-          gridSize={photo.data.grid_size}
+          focalPoint={photo.data.focal_point}
           dominantColor={photo.data.dominant_color}
           index={index}
         />
@@ -75,25 +74,21 @@ const lightboxPhotos = photos.map((p) => ({
   }
 
   .gallery-page__grid {
-    column-count: 2;
-    column-gap: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md, 1.5rem);
   }
 
   @media (max-width: 768px) {
     .gallery-page__grid {
-      column-count: 1;
-      column-gap: 20px;
+      grid-template-columns: 1fr;
+      gap: var(--space-sm, 1rem);
     }
   }
 
-  /* Override PhotoCard gap for this page */
-  .gallery-page__grid :global(.photo-card) {
-    margin-bottom: 28px;
-  }
-
-  @media (max-width: 768px) {
-    .gallery-page__grid :global(.photo-card) {
-      margin-bottom: 20px;
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .gallery-page__grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>

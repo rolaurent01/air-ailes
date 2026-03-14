@@ -1,13 +1,12 @@
 ---
 import ProtectedImage from './ProtectedImage.astro';
-import { getThumbUrl } from '../lib/cloudinary';
+import { getGridImageUrl, getGridSrcSet, GRID_SIZES } from '../lib/cloudinary';
 
 interface Props {
   title: string;
   cloudinaryId: string;
   alt: string;
-  orientation: 'landscape' | 'portrait' | 'square';
-  gridSize?: 'normal' | 'wide';
+  focalPoint?: string;
   dominantColor?: string;
   index?: number;
 }
@@ -16,60 +15,38 @@ const {
   title,
   cloudinaryId,
   alt,
-  orientation,
-  gridSize = 'normal',
+  focalPoint = 'auto',
   dominantColor,
   index = 0,
 } = Astro.props;
-
-const aspectRatioMap: Record<string, string> = {
-  landscape: '3 / 2',
-  portrait: '2 / 3',
-  square: '1 / 1',
-};
-
-const aspectRatio = aspectRatioMap[orientation] ?? '3 / 2';
 ---
 
 <article
-  class:list={[
-    'photo-card',
-    `photo-card--${orientation}`,
-    { 'photo-card--wide': gridSize === 'wide' },
-  ]}
+  class="photo-card"
   data-cloudinary-id={cloudinaryId}
   data-photo-index={index}
-  style={`--aspect-ratio: ${aspectRatio};`}
 >
   <button class="photo-card__trigger" type="button" aria-label={`Ouvrir ${title} en plein écran`}>
-    <div class="photo-card__image-wrapper">
-      <ProtectedImage
-        cloudinaryId={cloudinaryId}
-        alt={alt}
-        width={gridSize === 'wide' ? 800 : 400}
-        height={gridSize === 'wide' ? 500 : undefined}
-        dominantColor={dominantColor}
-      />
-    </div>
+    <ProtectedImage
+      cloudinaryId={cloudinaryId}
+      alt={alt}
+      width={600}
+      height={400}
+      srcset={getGridSrcSet(cloudinaryId, focalPoint)}
+      sizes={GRID_SIZES}
+      focalPoint={focalPoint}
+      dominantColor={dominantColor}
+      aspectRatio="3 / 2"
+    />
   </button>
 </article>
 
 <style>
   .photo-card {
     position: relative;
-    break-inside: avoid;
-    margin-bottom: var(--gallery-gap, 14px);
     border-radius: 2px;
     overflow: hidden;
     cursor: pointer;
-  }
-
-  .photo-card--wide {
-    column-span: all;
-  }
-
-  .photo-card--wide .photo-card__image-wrapper {
-    aspect-ratio: 21 / 9;
   }
 
   .photo-card__trigger {
@@ -83,21 +60,19 @@ const aspectRatio = aspectRatioMap[orientation] ?? '3 / 2';
     font: inherit;
   }
 
-  .photo-card__image-wrapper {
-    aspect-ratio: var(--aspect-ratio);
-    overflow: hidden;
-    transition: transform var(--duration-hover) var(--ease-out-expo),
-                box-shadow var(--duration-hover) var(--ease-out-expo);
+  .photo-card :global(.protected-image) {
+    transition: transform var(--duration-hover, 0.25s) var(--ease-out-expo, ease-out),
+                box-shadow var(--duration-hover, 0.25s) var(--ease-out-expo, ease-out);
   }
 
-  .photo-card:hover .photo-card__image-wrapper,
-  .photo-card:focus-within .photo-card__image-wrapper {
+  .photo-card:hover :global(.protected-image),
+  .photo-card:focus-within :global(.protected-image) {
     transform: scale(1.03);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .photo-card:hover .photo-card__image-wrapper {
+    .photo-card:hover :global(.protected-image) {
       transform: none;
     }
   }

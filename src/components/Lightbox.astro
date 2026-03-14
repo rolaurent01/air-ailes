@@ -3,6 +3,12 @@
  * Lightbox — composant interactif plein écran pour afficher les photos.
  * Ce composant fonctionne comme un island : tout le comportement est côté client.
  * Il reçoit les données des photos via un data-attribute JSON sur l'élément racine.
+ *
+ * Améliorations :
+ * - Utilise <img> natif (meilleur rendu, ratio respecté)
+ * - c_limit : aucun crop destructif, ratio original préservé
+ * - Préchargement des images voisines (prev/next)
+ * - Fond noir profond avec texture subtile
  */
 
 interface PhotoMeta {
@@ -56,7 +62,13 @@ const { photos } = Astro.props;
       oncontextmenu="return false"
       ondragstart="return false"
     >
-      <div class="lightbox__image" id="lightbox-image"></div>
+      <img
+        class="lightbox__image"
+        id="lightbox-image"
+        src=""
+        alt=""
+        draggable="false"
+      />
       <div class="lightbox__image-overlay"></div>
     </div>
 
@@ -96,7 +108,7 @@ const { photos } = Astro.props;
   .lightbox__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.96);
     cursor: pointer;
   }
 
@@ -187,6 +199,9 @@ const { photos } = Astro.props;
 
   .lightbox__image-container {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     max-width: 100%;
     max-height: calc(100vh - 12rem);
     pointer-events: auto;
@@ -196,16 +211,18 @@ const { photos } = Astro.props;
   }
 
   .lightbox__image {
-    width: auto;
-    height: auto;
+    display: block;
     max-width: calc(100vw - 6rem);
     max-height: calc(100vh - 12rem);
-    min-width: 300px;
-    min-height: 200px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: opacity 0.2s var(--ease-out-expo);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out-expo);
+  }
+
+  .lightbox__image.is-loaded {
+    opacity: 1;
   }
 
   .lightbox__image-overlay {
@@ -275,8 +292,6 @@ const { photos } = Astro.props;
     .lightbox__image {
       max-width: calc(100vw - 2rem);
       max-height: calc(100vh - 10rem);
-      min-width: 200px;
-      min-height: 150px;
     }
 
     .lightbox__nav {
@@ -307,7 +322,7 @@ const { photos } = Astro.props;
 </style>
 
 <script>
-  import { getWebUrl } from '../lib/cloudinary';
+  import { getLightboxImageUrl, getLightboxPreloadUrl } from '../lib/cloudinary';
 
   interface LightboxPhoto {
     cloudinary_id: string;
@@ -323,6 +338,9 @@ const { photos } = Astro.props;
   let touchStartX = 0;
   let touchEndX = 0;
   let previouslyFocused: HTMLElement | null = null;
+
+  // Cache for preloaded images
+  const preloadCache = new Map<string, HTMLImageElement>();
 
   function getLightboxEl(): HTMLElement | null {
     return document.getElementById('lightbox');
@@ -359,40 +377,61 @@ const { photos } = Astro.props;
     }
   }
 
+  function preloadNeighbors(): void {
+    if (!photos.length) return;
+
+    const indices = [
+      (currentIndex + 1) % photos.length,
+      (currentIndex - 1 + photos.length) % photos.length,
+    ];
+
+    for (const idx of indices) {
+      const id = photos[idx].cloudinary_id;
+      if (!preloadCache.has(id)) {
+        const img = new Image();
+        img.src = getLightboxPreloadUrl(id);
+        preloadCache.set(id, img);
+      }
+    }
+  }
+
   function updatePhoto(): void {
     if (!photos.length) return;
 
     const photo = photos[currentIndex];
-    const imageEl = document.getElementById('lightbox-image');
+    const imageEl = document.getElementById('lightbox-image') as HTMLImageElement | null;
     const titleEl = document.getElementById('lightbox-title');
     const infoEl = document.getElementById('lightbox-info');
     const counterEl = document.getElementById('lightbox-counter');
 
     if (!imageEl) return;
 
-    imageEl.style.opacity = '0';
+    // Fade out current
+    imageEl.classList.remove('is-loaded');
 
-    const url = getWebUrl(photo.cloudinary_id, { watermark: true });
-    const img = new Image();
+    const url = getLightboxImageUrl(photo.cloudinary_id);
 
-    img.onload = () => {
-      const ratio = img.naturalWidth / img.naturalHeight;
-      const maxW = window.innerWidth - (window.innerWidth <= 768 ? 32 : 96);
-      const maxH = window.innerHeight - (window.innerWidth <= 768 ? 160 : 192);
+    // Check preload cache
+    const cached = preloadCache.get(photo.cloudinary_id);
+    if (cached?.complete) {
+      imageEl.src = url;
+      imageEl.alt = photo.alt;
+      imageEl.classList.add('is-loaded');
+    } else {
+      const loader = new Image();
+      loader.onload = () => {
+        imageEl.src = url;
+        imageEl.alt = photo.alt;
+        imageEl.classList.add('is-loaded');
+        preloadCache.set(photo.cloudinary_id, loader);
+      };
+      loader.src = url;
+    }
 
-      let w = img.naturalWidth;
-      let h = img.naturalHeight;
+    // Preload neighbors
+    preloadNeighbors();
 
-      if (w > maxW) { w = maxW; h = w / ratio; }
-      if (h > maxH) { h = maxH; w = h * ratio; }
-
-      imageEl.style.width = `${Math.round(w)}px`;
-      imageEl.style.height = `${Math.round(h)}px`;
-      imageEl.style.backgroundImage = `url(${url})`;
-      imageEl.style.opacity = '1';
-    };
-    img.src = url;
-
+    // Update metadata
     if (titleEl) titleEl.textContent = photo.title;
     if (infoEl) {
       const parts: string[] = [];

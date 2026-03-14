@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProtectedImage from '../components/ProtectedImage.astro';
 import PhotoCard from '../components/PhotoCard.astro';
 import Lightbox from '../components/Lightbox.astro';
-import { getWebUrl } from '../lib/cloudinary';
+import { getHeroImageUrl, getHeroSrcSet, HERO_SIZES } from '../lib/cloudinary';
 import { SITE_NAME, SITE_DESCRIPTION } from '../lib/constants';
 
 const allPhotos = await getCollection('galeries');
@@ -39,6 +39,12 @@ const lightboxPhotos = selectionPhotos.map((p) => ({
         cloudinaryId={heroPhoto.data.cloudinary_id}
         alt={heroPhoto.data.alt}
         width={2000}
+        height={1333}
+        srcset={getHeroSrcSet(heroPhoto.data.cloudinary_id, heroPhoto.data.focal_point)}
+        sizes={HERO_SIZES}
+        focalPoint={heroPhoto.data.focal_point}
+        eager={true}
+        fetchPriority={true}
         dominantColor={heroPhoto.data.dominant_color}
       />
     </div>
@@ -65,8 +71,7 @@ const lightboxPhotos = selectionPhotos.map((p) => ({
           title={photo.data.title}
           cloudinaryId={photo.data.cloudinary_id}
           alt={photo.data.alt}
-          orientation={photo.data.orientation}
-          gridSize={photo.data.grid_size}
+          focalPoint={photo.data.focal_point}
           dominantColor={photo.data.dominant_color}
           index={index}
         />
@@ -226,13 +231,14 @@ const lightboxPhotos = selectionPhotos.map((p) => ({
   }
 
   .selection__grid {
-    column-count: 2;
-    column-gap: 28px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
   }
 
   @media (max-width: 768px) {
     .selection__grid {
-      column-count: 1;
+      grid-template-columns: 1fr;
     }
   }
 
