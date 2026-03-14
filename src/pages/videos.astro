@@ -15,11 +15,11 @@ const videos = [
 ];
 
 function getVideoUrl(cloudinaryId: string): string {
-  return `${CLOUD_VIDEO_BASE}/q_auto,f_auto/${cloudinaryId}`;
+  return `${CLOUD_VIDEO_BASE}/q_auto/${cloudinaryId}.mp4`;
 }
 
 function getPosterUrl(cloudinaryId: string): string {
-  return `${CLOUD_VIDEO_BASE}/so_0,w_1200,f_auto,q_auto/${cloudinaryId}.jpg`;
+  return `${CLOUD_VIDEO_BASE}/so_0,w_800,f_jpg,q_auto/${cloudinaryId}.jpg`;
 }
 ---
 
@@ -27,7 +27,7 @@ function getPosterUrl(cloudinaryId: string): string {
   title="Envol — Vues aériennes"
   description="Survols en drone et prises de vue aériennes des Alpes — Air-Ailes."
 >
-  <section class="videos-page" id="videos-page">
+  <section class="videos-page">
     <div class="videos-page__header">
       <h1 class="videos-page__title" id="videos-title">Envol</h1>
       <p class="videos-page__subtitle">Survols en drone et prises de vue aériennes</p>
@@ -35,8 +35,7 @@ function getPosterUrl(cloudinaryId: string): string {
 
     {videos.map((video, index) => (
       <div
-        class="video-slide"
-        data-video-index={index}
+        class:list={['video-slide', { 'video-slide--first': index === 0 }]}
         data-video-src={getVideoUrl(video.id)}
         data-video-orientation={video.orientation}
       >
@@ -44,14 +43,15 @@ function getPosterUrl(cloudinaryId: string): string {
           <video
             class="video-slide__video"
             poster={getPosterUrl(video.id)}
-            preload="none"
+            preload={index === 0 ? 'auto' : 'none'}
             muted
             loop
             playsinline
+            src={index === 0 ? getVideoUrl(video.id) : undefined}
           />
         </div>
         <div class="video-slide__meta">
-          <span class="video-slide__title">{video.title}</span>
+          <span class="video-slide__name">{video.title}</span>
           <span class="video-slide__counter">{String(index + 1).padStart(2, '0')} / {String(videos.length).padStart(2, '0')}</span>
         </div>
       </div>
@@ -91,34 +91,32 @@ function getPosterUrl(cloudinaryId: string): string {
     letter-spacing: var(--letter-spacing-wide);
   }
 
-  /* ====== Video Slides — full-screen cinematic ====== */
+  /* ====== Video Slides ====== */
   .video-slide {
     position: relative;
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* First slide: visible immediately with subtle fade */
-  .video-slide:first-of-type .video-slide__wrap {
-    clip-path: inset(0% 0% 0% 0%);
-    transform: scale(1);
-    opacity: 0;
-  }
-
-  .video-slide:first-of-type .video-slide__meta {
-    opacity: 0;
   }
 
   .video-slide__wrap {
     position: absolute;
     inset: 0;
-    will-change: transform, clip-path;
-    clip-path: inset(15% 15% 15% 15%);
-    transform: scale(1.12);
     background-color: var(--color-bg-primary);
+    /* Default: hidden with clip-path for scroll-reveal slides */
+    clip-path: inset(12% 12% 12% 12%);
+    transform: scale(1.1);
+  }
+
+  /* First slide: no clip-path, just opacity fade */
+  .video-slide--first .video-slide__wrap {
+    clip-path: none;
+    transform: none;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-out-expo);
+  }
+
+  .video-slide--first .video-slide__wrap.is-playing {
+    opacity: 1;
   }
 
   .video-slide__video {
@@ -128,9 +126,9 @@ function getPosterUrl(cloudinaryId: string): string {
     object-fit: cover;
   }
 
-  /* Portrait videos: contain inside viewport, centered */
   .video-slide[data-video-orientation="portrait"] .video-slide__video {
     object-fit: contain;
+    background-color: var(--color-bg-primary);
   }
 
   .video-slide__meta {
@@ -144,11 +142,10 @@ function getPosterUrl(cloudinaryId: string): string {
     align-items: center;
     gap: 4px;
     opacity: 0;
-    transform: translateY(12px);
     pointer-events: none;
   }
 
-  .video-slide__title {
+  .video-slide__name {
     font-family: var(--font-family);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-light);
@@ -165,7 +162,6 @@ function getPosterUrl(cloudinaryId: string): string {
     opacity: 0.5;
   }
 
-  /* Subtle gradient at bottom for meta readability */
   .video-slide::after {
     content: '';
     position: absolute;
@@ -174,7 +170,7 @@ function getPosterUrl(cloudinaryId: string): string {
     right: 0;
     height: 30%;
     z-index: 1;
-    background: linear-gradient(to top, rgba(5, 5, 5, 0.6) 0%, transparent 100%);
+    background: linear-gradient(to top, rgba(5, 5, 5, 0.5) 0%, transparent 100%);
     pointer-events: none;
   }
 
@@ -212,12 +208,12 @@ function getPosterUrl(cloudinaryId: string): string {
 
   @media (prefers-reduced-motion: reduce) {
     .video-slide__wrap {
-      clip-path: none;
-      transform: none;
+      clip-path: none !important;
+      transform: none !important;
+      opacity: 1 !important;
     }
     .video-slide__meta {
       opacity: 1;
-      transform: none;
     }
   }
 </style>
@@ -248,28 +244,64 @@ function getPosterUrl(cloudinaryId: string): string {
       const wrap = slide.querySelector<HTMLElement>('.video-slide__wrap');
       const video = slide.querySelector<HTMLVideoElement>('.video-slide__video');
       const meta = slide.querySelector<HTMLElement>('.video-slide__meta');
-      const src = slide.dataset.videoSrc;
+      const dataSrc = slide.dataset.videoSrc;
       const isFirst = i === 0;
 
-      if (!wrap || !video || !src) return;
+      if (!wrap || !video) return;
 
-      let loaded = false;
-
-      function loadVideo(): void {
-        if (loaded) return;
-        loaded = true;
-        video!.src = src!;
-        video!.load();
+      // --- Helper: load video src if not already loaded ---
+      function ensureLoaded(): void {
+        if (!video!.getAttribute('src') && dataSrc) {
+          video!.src = dataSrc;
+          video!.load();
+        }
       }
 
+      // --- Helper: play video safely ---
+      function playVideo(): void {
+        ensureLoaded();
+        video!.play().catch(() => {});
+      }
+
+      // ============================================
+      // FIRST VIDEO: auto-load, fade in when ready
+      // ============================================
+      if (isFirst) {
+        // src is already set in HTML for the first video
+        video.addEventListener('canplay', () => {
+          wrap!.classList.add('is-playing');
+          video!.play().catch(() => {});
+          if (meta && !reducedMotion) {
+            gsap.to(meta, { opacity: 1, duration: 0.6, delay: 0.8, ease: ANIMATION_EASING });
+          }
+        }, { once: true });
+
+        // Pause when off-screen
+        if (!reducedMotion) {
+          ScrollTrigger.create({
+            trigger: slide,
+            start: 'top bottom',
+            end: 'bottom top',
+            onLeave: () => video.pause(),
+            onEnterBack: () => video.play().catch(() => {}),
+            onLeaveBack: () => video.pause(),
+          });
+        }
+        return;
+      }
+
+      // ============================================
+      // OTHER VIDEOS: scroll reveal + autoplay
+      // ============================================
       if (reducedMotion) {
+        // Simple intersection-based load & play
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                loadVideo();
-                video!.play().catch(() => {});
-                observer.unobserve(entry.target);
+                playVideo();
+              } else {
+                video.pause();
               }
             });
           },
@@ -279,68 +311,39 @@ function getPosterUrl(cloudinaryId: string): string {
         return;
       }
 
-      if (isFirst) {
-        // === First video: load immediately, fade in, autoplay ===
-        loadVideo();
+      // GSAP: pin slide, reveal clip-path, then play
+      let hasPlayed = false;
 
-        // Fade in the wrap + play once loaded
-        video.addEventListener('canplay', () => {
-          video.play().catch(() => {});
-          gsap.to(wrap, {
-            opacity: 1, duration: 1.2, ease: ANIMATION_EASING,
-          });
-          if (meta) {
-            gsap.to(meta, {
-              opacity: 1, y: 0, duration: 0.6, delay: 0.6, ease: ANIMATION_EASING,
-            });
-          }
-        }, { once: true });
-
-        // Pause when scrolled away
-        ScrollTrigger.create({
+      gsap.timeline({
+        scrollTrigger: {
           trigger: slide,
-          start: 'bottom top+=10%',
-          onEnterBack: () => video.play().catch(() => {}),
-          onLeave: () => video.pause(),
-        });
-
-      } else {
-        // === Other videos: clip-path reveal, load on enter, play when reveal complete ===
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: slide,
-            start: 'top top',
-            end: '+=120%',
-            pin: true,
-            scrub: 0.8,
-            onEnter: () => loadVideo(),
-            onEnterBack: () => video.play().catch(() => {}),
-            onLeave: () => video.pause(),
-            onLeaveBack: () => video.pause(),
+          start: 'top top',
+          end: '+=100%',
+          pin: true,
+          scrub: 0.6,
+          onEnter: () => ensureLoaded(),
+          onUpdate: (self) => {
+            // Play video once reveal is ~80% complete
+            if (self.progress > 0.8 && !hasPlayed) {
+              hasPlayed = true;
+              playVideo();
+              if (meta) {
+                gsap.to(meta, { opacity: 1, duration: 0.4, ease: ANIMATION_EASING });
+              }
+            }
           },
-        });
-
-        // Clip-path opens + scale settles
-        tl.fromTo(wrap,
-          { clipPath: 'inset(15% 15% 15% 15%)', scale: 1.12 },
-          { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 0.7, ease: 'power2.out' },
-          0
-        );
-
-        // At end of reveal: play the video
-        tl.call(() => {
-          video.play().catch(() => {});
-        }, [], 0.7);
-
-        // Meta fades in
-        if (meta) {
-          tl.fromTo(meta,
-            { opacity: 0, y: 12 },
-            { opacity: 1, y: 0, duration: 0.3, ease: ANIMATION_EASING },
-            0.5
-          );
-        }
-      }
+          onLeave: () => video.pause(),
+          onLeaveBack: () => { video.pause(); hasPlayed = false; },
+          onEnterBack: () => {
+            playVideo();
+            hasPlayed = true;
+            if (meta) gsap.set(meta, { opacity: 1 });
+          },
+        },
+      }).fromTo(wrap,
+        { clipPath: 'inset(12% 12% 12% 12%)', scale: 1.1 },
+        { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1, ease: 'power2.out' },
+      );
     });
   }
 
