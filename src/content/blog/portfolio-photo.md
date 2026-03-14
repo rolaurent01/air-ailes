@@ -3,7 +3,7 @@ title: "Construire un portfolio photo qui montre votre maîtrise"
 slug: portfolio-photo
 date: 2026-01-08
 excerpt: "Créez un portfolio clair et convaincant : sélection rigoureuse, cohérence des séries, textes courts et liens vers vos méthodes. Qualité plutôt que quantité."
-cover_cloudinary_id: portrait/lumiere-naturelle
+cover_cloudinary_id: paysage/dsc06090
 tags: ["portfolio", "créativité", "professionnel"]
 published: true
 ---

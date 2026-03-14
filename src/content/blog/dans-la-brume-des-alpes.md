@@ -3,7 +3,7 @@ title: "Dans la brume des Alpes"
 slug: dans-la-brume-des-alpes
 date: 2025-08-20
 excerpt: "Récit d'un shooting au lever du jour dans les Alpes françaises, entre brume épaisse et lumière naissante."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["paysage", "montagne", "behind the scenes"]
 published: true
 ---

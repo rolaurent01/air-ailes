@@ -3,7 +3,7 @@ title: "Profondeur de champ : maîtriser le flou et la netteté"
 slug: profondeur-de-champ
 date: 2026-02-01
 excerpt: "Comprenez la profondeur de champ et obtenez soit un arrière-plan flou en portrait, soit une netteté maximale en paysage. Réglages et exercices simples."
-cover_cloudinary_id: portrait/lumiere-naturelle
+cover_cloudinary_id: paysage/dsc06090
 tags: ["technique", "portrait", "paysage"]
 published: true
 ---

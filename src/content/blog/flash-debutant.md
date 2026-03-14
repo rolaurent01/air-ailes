@@ -3,7 +3,7 @@ title: "Apprendre le flash : TTL, manuel et nombre-guide"
 slug: flash-debutant
 date: 2026-03-15
 excerpt: "Comprenez le flash sans jargon : TTL vs manuel, nombre-guide, distance et qualité de lumière. Exercices pour progresser en une soirée."
-cover_cloudinary_id: portrait/lumiere-naturelle
+cover_cloudinary_id: paysage/dsc06090
 tags: ["technique", "flash", "portrait"]
 published: true
 ---

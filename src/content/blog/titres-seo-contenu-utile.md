@@ -3,7 +3,7 @@ title: "Titres SEO et contenu utile : la méthode pour mieux ranker"
 slug: titres-seo-contenu-utile
 date: 2026-02-26
 excerpt: "Écrivez de meilleurs titres et structurez vos articles avec les bonnes pratiques officielles Google. Hn, données structurées et E-E-A-T expliqués simplement."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["SEO", "web", "rédaction"]
 published: true
 ---

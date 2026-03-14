@@ -3,7 +3,7 @@ title: "Développer ses photos dans Lightroom : workflow en 7 étapes"
 slug: lightroom-developpement
 date: 2026-01-29
 excerpt: "Une méthode simple et non destructive pour développer vos photos dans Lightroom : balance des blancs, exposition, tonalité, couleur, détails et export."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["post-production", "lightroom", "workflow"]
 published: true
 ---

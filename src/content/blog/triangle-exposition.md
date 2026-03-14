@@ -3,7 +3,7 @@ title: "Triangle d'exposition : comprendre ouverture, vitesse et ISO"
 slug: triangle-exposition
 date: 2026-01-15
 excerpt: "Comprenez le triangle d'exposition et réglez ouverture, vitesse et ISO sans deviner. Exemples concrets et exercices pour débuter sereinement."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["technique", "exposition", "débutant"]
 published: true
 ---

@@ -3,7 +3,7 @@ title: "Composition photo : voir, organiser, raconter"
 slug: composition-photo
 date: 2026-02-15
 excerpt: "Améliorez vos photos avec la règle des tiers, les lignes directrices, le cadrage et l'espace négatif. Exercices concrets et erreurs à éviter."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["composition", "créativité", "débutant"]
 published: true
 ---

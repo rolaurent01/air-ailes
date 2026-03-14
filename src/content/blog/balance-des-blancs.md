@@ -3,7 +3,7 @@ title: "Balance des blancs : obtenir des couleurs justes en toute lumière"
 slug: balance-des-blancs
 date: 2026-02-08
 excerpt: "Comprenez la balance des blancs et évitez les dominantes jaune ou bleu. WB auto vs Kelvin vs préréglages, avec exercices rapides."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["technique", "couleur", "débutant"]
 published: true
 ---

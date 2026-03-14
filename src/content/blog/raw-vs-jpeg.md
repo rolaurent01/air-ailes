@@ -3,7 +3,7 @@ title: "RAW vs JPEG : quel format choisir et quand"
 slug: raw-vs-jpeg
 date: 2026-03-01
 excerpt: "RAW ou JPEG ? Comparez avantages, limites et usages réels. Choisissez le bon format selon votre flux de travail avec des exemples concrets."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["technique", "post-production", "workflow"]
 published: true
 ---

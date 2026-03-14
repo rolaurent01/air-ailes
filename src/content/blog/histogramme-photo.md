@@ -3,7 +3,7 @@ title: "Comment lire un histogramme en photo"
 slug: histogramme-photo
 date: 2026-01-22
 excerpt: "L'histogramme vous aide à vérifier l'exposition sur le terrain. Apprenez à lire luminance et RVB, repérez le clipping et corrigez avant qu'il ne soit trop tard."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["technique", "exposition", "post-production"]
 published: true
 ---

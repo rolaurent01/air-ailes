@@ -3,7 +3,7 @@ title: "Lumière et portraits"
 slug: lumiere-et-portraits
 date: 2025-10-05
 excerpt: "Réflexion sur l'utilisation de la lumière naturelle en portrait, et pourquoi je la préfère souvent au flash de studio."
-cover_cloudinary_id: portrait/lumiere-naturelle
+cover_cloudinary_id: paysage/dsc06090
 tags: ["portrait", "technique", "lumière"]
 published: true
 ---

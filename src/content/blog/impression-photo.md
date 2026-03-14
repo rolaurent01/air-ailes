@@ -3,7 +3,7 @@ title: "Réussir ses impressions photo sans mauvaises surprises"
 slug: impression-photo
 date: 2026-02-12
 excerpt: "Préparez vos tirages : profil ICC, soft proofing, résolution et contrôles avant envoi. La méthode pour que vos prints ressemblent à votre écran."
-cover_cloudinary_id: paysage/brume-matinale
+cover_cloudinary_id: paysage/dsc01861
 tags: ["post-production", "impression", "avancé"]
 published: true
 ---
