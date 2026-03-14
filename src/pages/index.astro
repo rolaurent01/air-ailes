@@ -1,28 +1,165 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ProtectedImage from '../components/ProtectedImage.astro';
+import PhotoCard from '../components/PhotoCard.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { getWebUrl } from '../lib/cloudinary';
 import { SITE_NAME, SITE_DESCRIPTION } from '../lib/constants';
+
+const allPhotos = await getCollection('galeries');
+const sorted = allPhotos.sort((a, b) => a.data.display_order - b.data.display_order);
+
+const heroPhoto = sorted[0];
+const selectionPhotos = sorted.slice(0, 6);
+
+const blogEntries = await getCollection('blog');
+const recentPosts = blogEntries
+  .filter((p) => p.data.published)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
+
+const lightboxPhotos = selectionPhotos.map((p) => ({
+  cloudinary_id: p.data.cloudinary_id,
+  title: p.data.title,
+  alt: p.data.alt,
+  location: p.data.location,
+  date: p.data.date?.toISOString(),
+}));
 ---
 
 <BaseLayout>
-  <section class="hero">
-    <h1 class="hero__title" id="hero-title">{SITE_NAME}</h1>
-    <p class="hero__subtitle" id="hero-subtitle">{SITE_DESCRIPTION}</p>
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" id="hero-bg">
+      <ProtectedImage
+        cloudinaryId={heroPhoto.data.cloudinary_id}
+        alt={heroPhoto.data.alt}
+        width={2000}
+        dominantColor={heroPhoto.data.dominant_color}
+      />
+    </div>
+    <div class="hero__gradient"></div>
+    <div class="hero__content">
+      <h1 class="hero__title" id="hero-title">{SITE_NAME}</h1>
+      <p class="hero__subtitle" id="hero-subtitle">{SITE_DESCRIPTION}</p>
+    </div>
     <div class="hero__scroll-indicator" id="scroll-indicator">
       <span class="hero__scroll-line"></span>
     </div>
   </section>
+
+  <hr class="section-separator" />
+
+  <!-- Sélection -->
+  <section class="selection" id="selection">
+    <div class="selection__header">
+      <h2 class="selection__title" id="selection-title">Portfolio</h2>
+    </div>
+    <div class="selection__grid">
+      {selectionPhotos.map((photo, index) => (
+        <PhotoCard
+          title={photo.data.title}
+          cloudinaryId={photo.data.cloudinary_id}
+          alt={photo.data.alt}
+          orientation={photo.data.orientation}
+          gridSize={photo.data.grid_size}
+          dominantColor={photo.data.dominant_color}
+          index={index}
+        />
+      ))}
+    </div>
+    <div class="selection__cta">
+      <a href="/galeries" class="selection__link">
+        Voir toutes les galeries
+        <span class="selection__arrow">&rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <hr class="section-separator" />
+
+  <!-- Blog -->
+  {recentPosts.length > 0 && (
+    <section class="blog-preview" id="blog-preview">
+      <div class="blog-preview__header">
+        <h2 class="blog-preview__title" id="blog-title">Journal</h2>
+      </div>
+      <div class="blog-preview__grid">
+        {recentPosts.map((post) => (
+          <article class="blog-card">
+            <div class="blog-card__image">
+              <ProtectedImage
+                cloudinaryId={post.data.cover_cloudinary_id}
+                alt={post.data.title}
+                width={600}
+                dominantColor="#111111"
+              />
+            </div>
+            <div class="blog-card__content">
+              <time class="blog-card__date" datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString('fr-FR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+              <h3 class="blog-card__heading">{post.data.title}</h3>
+              <p class="blog-card__excerpt">{post.data.excerpt}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="blog-preview__cta">
+        <a href="/blog" class="selection__link">
+          Lire le journal
+          <span class="selection__arrow">&rarr;</span>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <Lightbox photos={lightboxPhotos} />
 </BaseLayout>
 
 <style>
+  /* --- Hero --- */
   .hero {
+    position: relative;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    will-change: transform;
+  }
+
+  .hero__gradient {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(5, 5, 5, 0) 0%, rgba(5, 5, 5, 0.3) 70%),
+      linear-gradient(
+        to bottom,
+        rgba(5, 5, 5, 0.15) 0%,
+        rgba(5, 5, 5, 0.05) 40%,
+        rgba(5, 5, 5, 0.4) 75%,
+        rgba(5, 5, 5, 0.85) 100%
+      );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 2;
     text-align: center;
     padding-inline: var(--space-md);
-    position: relative;
   }
 
   .hero__title {
@@ -46,6 +183,7 @@ import { SITE_NAME, SITE_DESCRIPTION } from '../lib/constants';
   .hero__scroll-indicator {
     position: absolute;
     bottom: var(--space-xl);
+    z-index: 2;
     display: flex;
     justify-content: center;
     opacity: 0;
@@ -64,19 +202,165 @@ import { SITE_NAME, SITE_DESCRIPTION } from '../lib/constants';
   }
 
   @keyframes scroll-pulse {
-    0% {
-      transform: scaleY(0);
-      transform-origin: top;
-      opacity: 0;
+    0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: scaleY(1); transform-origin: top; opacity: 0; }
+  }
+
+  /* --- Sélection --- */
+  .selection {
+    padding-block: var(--space-3xl) var(--space-2xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .selection__header {
+    margin-bottom: var(--space-xl);
+    text-align: center;
+  }
+
+  .selection__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+  }
+
+  .selection__grid {
+    column-count: 3;
+    column-gap: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .selection__grid {
+      column-count: 1;
     }
-    30% {
-      opacity: 1;
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .selection__grid {
+      column-count: 2;
     }
-    100% {
-      transform: scaleY(1);
-      transform-origin: top;
-      opacity: 0;
+  }
+
+  .selection__cta {
+    text-align: center;
+    margin-top: var(--space-xl);
+  }
+
+  .selection__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .selection__link:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .selection__arrow {
+    display: inline-block;
+    transition: transform var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .selection__link:hover .selection__arrow {
+    transform: translateX(4px);
+  }
+
+  /* --- Blog preview --- */
+  .blog-preview {
+    padding-block: var(--space-2xl) var(--space-3xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .blog-preview__header {
+    margin-bottom: var(--space-xl);
+    text-align: center;
+  }
+
+  .blog-preview__title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+  }
+
+  .blog-preview__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  @media (max-width: 768px) {
+    .blog-preview__grid {
+      grid-template-columns: 1fr;
     }
+  }
+
+  .blog-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .blog-card {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .blog-card__image {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 2px;
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .blog-card:hover .blog-card__image {
+    transform: scale(1.03);
+  }
+
+  .blog-card__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-xs);
+  }
+
+  .blog-card__date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .blog-card__heading {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+  }
+
+  .blog-card__excerpt {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .blog-preview__cta {
+    text-align: center;
+    margin-top: var(--space-xl);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -84,51 +368,114 @@ import { SITE_NAME, SITE_DESCRIPTION } from '../lib/constants';
       animation: none;
       opacity: 0.5;
     }
+    .blog-card:hover .blog-card__image {
+      transform: none;
+    }
   }
 </style>
 
 <script>
   import { animateText } from '../lib/animations/text';
   import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import { ANIMATION_EASING } from '../lib/constants';
 
-  function initHero(): void {
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initHome(): void {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const title = document.getElementById('hero-title');
     const subtitle = document.getElementById('hero-subtitle');
     const scrollIndicator = document.getElementById('scroll-indicator');
+    const heroBg = document.getElementById('hero-bg');
+    const selectionTitle = document.getElementById('selection-title');
+    const blogTitle = document.getElementById('blog-title');
 
     if (!title) return;
 
-    // Animation titre lettre par lettre
+    // Titre lettre par lettre
     animateText(title, { mode: 'letters', staggerDelay: 0.05 });
 
-    // Animation sous-titre en fade-up après le titre
-    if (subtitle && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.to(subtitle, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        delay: 0.8,
-        ease: ANIMATION_EASING,
-      });
-    } else if (subtitle) {
-      subtitle.style.opacity = '1';
-      subtitle.style.transform = 'none';
-    }
+    if (!reducedMotion) {
+      // Sous-titre fade-up
+      if (subtitle) {
+        gsap.to(subtitle, {
+          opacity: 1, y: 0, duration: 0.6, delay: 0.8, ease: ANIMATION_EASING,
+        });
+      }
 
-    // Animation scroll indicator
-    if (scrollIndicator && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.to(scrollIndicator, {
-        opacity: 1,
-        duration: 0.6,
-        delay: 1.4,
-        ease: ANIMATION_EASING,
+      // Scroll indicator
+      if (scrollIndicator) {
+        gsap.to(scrollIndicator, {
+          opacity: 1, duration: 0.6, delay: 1.4, ease: ANIMATION_EASING,
+        });
+      }
+
+      // Parallax hero
+      if (heroBg) {
+        gsap.to(heroBg, {
+          yPercent: 20,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      }
+
+      // Section titles text reveal
+      [selectionTitle, blogTitle].forEach((el) => {
+        if (el) {
+          animateText(el, {
+            mode: 'words',
+            staggerDelay: 0.08,
+            scrollTrigger: { trigger: el, start: 'top bottom-=15%' },
+          });
+        }
       });
-    } else if (scrollIndicator) {
-      scrollIndicator.style.opacity = '1';
+
+      // Stagger reveal photos sélection (clip-path cinématique)
+      const selectionCards = document.querySelectorAll('.selection__grid .photo-card');
+      gsap.set(selectionCards, { opacity: 0, y: 30, clipPath: 'inset(12% 0% 12% 0%)' });
+      selectionCards.forEach((card) => {
+        gsap.to(card, {
+          opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)',
+          duration: 0.8,
+          ease: ANIMATION_EASING,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top bottom-=10%',
+            once: true,
+          },
+        });
+      });
+
+      // Blog cards fade-up
+      const blogCards = document.querySelectorAll('.blog-card');
+      gsap.set(blogCards, { opacity: 0, y: 30 });
+      blogCards.forEach((card, i) => {
+        gsap.to(card, {
+          opacity: 1, y: 0, duration: 0.6, delay: i * 0.1,
+          ease: ANIMATION_EASING,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top bottom-=10%',
+            once: true,
+          },
+        });
+      });
+    } else {
+      // Reduced motion : tout visible immédiatement
+      if (subtitle) { subtitle.style.opacity = '1'; subtitle.style.transform = 'none'; }
+      if (scrollIndicator) { scrollIndicator.style.opacity = '1'; }
     }
   }
 
-  initHero();
-  document.addEventListener('astro:after-swap', initHero);
+  initHome();
+  document.addEventListener('astro:after-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    initHome();
+  });
 </script>

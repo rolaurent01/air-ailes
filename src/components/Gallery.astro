@@ -1,0 +1,103 @@
+---
+import PhotoCard from './PhotoCard.astro';
+
+interface PhotoData {
+  title: string;
+  cloudinary_id: string;
+  alt: string;
+  orientation: 'landscape' | 'portrait' | 'square';
+  grid_size?: 'normal' | 'wide';
+  dominant_color?: string;
+  display_order: number;
+}
+
+interface Props {
+  photos: PhotoData[];
+  columns?: number;
+}
+
+const { photos, columns = 3 } = Astro.props;
+
+const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
+---
+
+<div
+  class="gallery"
+  id="gallery-grid"
+  style={`--gallery-columns: ${columns};`}
+>
+  {sorted.map((photo, index) => (
+    <PhotoCard
+      title={photo.title}
+      cloudinaryId={photo.cloudinary_id}
+      alt={photo.alt}
+      orientation={photo.orientation}
+      gridSize={photo.grid_size}
+      dominantColor={photo.dominant_color}
+      index={index}
+    />
+  ))}
+</div>
+
+<style>
+  .gallery {
+    column-count: var(--gallery-columns, 3);
+    column-gap: var(--gallery-gap, 14px);
+    padding-inline: var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  @media (max-width: 768px) {
+    .gallery {
+      column-count: 1;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .gallery {
+      column-count: 2;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ANIMATION_EASING, ANIMATION_STAGGER_DELAY } from '../lib/constants';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initGalleryReveal(): void {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const cards = document.querySelectorAll<HTMLElement>('.photo-card');
+
+    gsap.set(cards, {
+      opacity: 0,
+      y: 30,
+      clipPath: 'inset(12% 0% 12% 0%)',
+    });
+
+    cards.forEach((card) => {
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        clipPath: 'inset(0% 0% 0% 0%)',
+        duration: 0.8,
+        ease: ANIMATION_EASING,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top bottom-=10%',
+          once: true,
+        },
+      });
+    });
+  }
+
+  initGalleryReveal();
+  document.addEventListener('astro:after-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    initGalleryReveal();
+  });
+</script>

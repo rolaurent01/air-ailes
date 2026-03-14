@@ -1,9 +1,12 @@
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   ANIMATION_DURATION_DEFAULT,
   ANIMATION_STAGGER_DELAY,
   ANIMATION_EASING,
 } from '../constants';
+
+gsap.registerPlugin(ScrollTrigger);
 
 type SplitMode = 'letters' | 'words';
 
@@ -12,6 +15,7 @@ interface TextAnimationOptions {
   duration?: number;
   staggerDelay?: number;
   distance?: number;
+  scrollTrigger?: { trigger: HTMLElement; start?: string };
 }
 
 /**
@@ -29,6 +33,7 @@ export function animateText(element: HTMLElement, options: TextAnimationOptions 
     duration = ANIMATION_DURATION_DEFAULT,
     staggerDelay = ANIMATION_STAGGER_DELAY,
     distance = 30,
+    scrollTrigger: scrollTriggerOpts,
   } = options;
 
   const text = element.textContent ?? '';
@@ -55,15 +60,25 @@ export function animateText(element: HTMLElement, options: TextAnimationOptions 
 
   const spans = element.querySelectorAll<HTMLElement>('span');
 
+  const toVars: gsap.TweenVars = {
+    opacity: 1,
+    y: 0,
+    duration,
+    stagger: staggerDelay,
+    ease: ANIMATION_EASING,
+  };
+
+  if (scrollTriggerOpts) {
+    toVars.scrollTrigger = {
+      trigger: scrollTriggerOpts.trigger,
+      start: scrollTriggerOpts.start ?? 'top bottom-=15%',
+      once: true,
+    };
+  }
+
   gsap.fromTo(
     spans,
     { opacity: 0, y: distance },
-    {
-      opacity: 1,
-      y: 0,
-      duration,
-      stagger: staggerDelay,
-      ease: ANIMATION_EASING,
-    }
+    toVars,
   );
 }

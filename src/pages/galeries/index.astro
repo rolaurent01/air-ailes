@@ -1,0 +1,220 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProtectedImage from '../../components/ProtectedImage.astro';
+
+const allPhotos = await getCollection('galeries');
+
+const paysagePhotos = allPhotos
+  .filter((p) => p.data.gallery === 'paysage')
+  .sort((a, b) => a.data.display_order - b.data.display_order);
+
+const portraitPhotos = allPhotos
+  .filter((p) => p.data.gallery === 'portrait')
+  .sort((a, b) => a.data.display_order - b.data.display_order);
+
+const paysageCover = paysagePhotos[0];
+const portraitCover = portraitPhotos[0];
+---
+
+<BaseLayout title="Galeries">
+  <section class="galeries-index">
+    <h1 class="galeries-index__title" id="galeries-title">Galeries</h1>
+
+    <div class="galeries-index__grid">
+      {paysageCover && (
+        <a href="/galeries/paysage" class="gallery-block">
+          <div class="gallery-block__image">
+            <ProtectedImage
+              cloudinaryId={paysageCover.data.cloudinary_id}
+              alt={`Galerie Paysage — ${paysageCover.data.alt}`}
+              width={800}
+              dominantColor={paysageCover.data.dominant_color}
+            />
+          </div>
+          <div class="gallery-block__overlay">
+            <h2 class="gallery-block__name">Paysage & Nature</h2>
+            <span class="gallery-block__count">{paysagePhotos.length} photos</span>
+          </div>
+        </a>
+      )}
+
+      {portraitCover && (
+        <a href="/galeries/portrait" class="gallery-block">
+          <div class="gallery-block__image">
+            <ProtectedImage
+              cloudinaryId={portraitCover.data.cloudinary_id}
+              alt={`Galerie Portrait — ${portraitCover.data.alt}`}
+              width={800}
+              dominantColor={portraitCover.data.dominant_color}
+            />
+          </div>
+          <div class="gallery-block__overlay">
+            <h2 class="gallery-block__name">Portrait & Mode</h2>
+            <span class="gallery-block__count">{portraitPhotos.length} photos</span>
+          </div>
+        </a>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .galeries-index {
+    padding-block: var(--space-3xl) var(--space-2xl);
+    padding-inline: var(--container-padding);
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .galeries-index__title {
+    text-align: center;
+    font-size: clamp(2rem, 6vw, var(--font-size-2xl));
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xl);
+  }
+
+  .galeries-index__grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-rows: auto;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+
+  @media (max-width: 768px) {
+    .galeries-index__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .gallery-block {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    display: block;
+  }
+
+  .gallery-block:first-child {
+    aspect-ratio: 4 / 3;
+  }
+
+  .gallery-block:last-child {
+    aspect-ratio: 3 / 4;
+  }
+
+  @media (max-width: 768px) {
+    .gallery-block:first-child,
+    .gallery-block:last-child {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  .gallery-block__image {
+    position: absolute;
+    inset: 0;
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .gallery-block:hover .gallery-block__image {
+    transform: scale(1.05);
+  }
+
+  .gallery-block__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 5, 0.35);
+    transition: background var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .gallery-block:hover .gallery-block__overlay {
+    background: rgba(5, 5, 5, 0.15);
+  }
+
+  .gallery-block__name {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .gallery-block:hover .gallery-block__name {
+    transform: translateY(-4px);
+  }
+
+  .gallery-block__count {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    margin-top: var(--space-xs);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--duration-hover) var(--ease-out-expo),
+                transform var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .gallery-block:hover .gallery-block__count {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (hover: none) {
+    .gallery-block__count {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-block:hover .gallery-block__image {
+      transform: none;
+    }
+    .gallery-block:hover .gallery-block__name {
+      transform: none;
+    }
+    .gallery-block__count {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import { animateText } from '../../lib/animations/text';
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ANIMATION_EASING } from '../../lib/constants';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initGaleriesIndex(): void {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const title = document.getElementById('galeries-title');
+    if (title) animateText(title, { mode: 'letters', staggerDelay: 0.05 });
+
+    const blocks = document.querySelectorAll('.gallery-block');
+    gsap.set(blocks, { opacity: 0, y: 30 });
+    blocks.forEach((block, i) => {
+      gsap.to(block, {
+        opacity: 1, y: 0, duration: 0.6, delay: 0.3 + i * 0.15,
+        ease: ANIMATION_EASING,
+      });
+    });
+  }
+
+  initGaleriesIndex();
+  document.addEventListener('astro:after-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    initGaleriesIndex();
+  });
+</script>

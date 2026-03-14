@@ -1,0 +1,170 @@
+---
+import { getImageUrl } from '../lib/cloudinary';
+
+interface Props {
+  cloudinaryId: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  sizes?: string;
+  watermark?: boolean;
+  class?: string;
+  dominantColor?: string;
+}
+
+const {
+  cloudinaryId,
+  alt,
+  width = 2000,
+  height,
+  sizes = '100vw',
+  watermark = false,
+  class: className = '',
+  dominantColor = '#111111',
+} = Astro.props;
+
+const mainUrl = getImageUrl(cloudinaryId, {
+  width,
+  height,
+  crop: height ? 'fill' : 'limit',
+  watermark,
+});
+
+const lqipUrl = getImageUrl(cloudinaryId, {
+  width: 30,
+  crop: 'limit',
+  quality: '30',
+});
+---
+
+<div
+  class:list={['protected-image', className]}
+  role="img"
+  aria-label={alt}
+  data-cloudinary-id={cloudinaryId}
+  style={`--dominant-color: ${dominantColor};`}
+>
+  <div
+    class="protected-image__lqip"
+    style={`background-image: url(${lqipUrl});`}
+  ></div>
+  <div
+    class="protected-image__main"
+    data-src={mainUrl}
+    data-sizes={sizes}
+    oncontextmenu="return false"
+    ondragstart="return false"
+  ></div>
+  <div class="protected-image__overlay"></div>
+</div>
+
+<style>
+  .protected-image {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--dominant-color, var(--color-bg-secondary));
+    width: 100%;
+    height: 100%;
+  }
+
+  .protected-image__lqip {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px);
+    transform: scale(1.1);
+    transition: opacity var(--duration-slow) var(--ease-out-expo);
+    z-index: 1;
+  }
+
+  .protected-image__main {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-out-expo);
+    z-index: 2;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .protected-image__main.is-loaded {
+    opacity: 1;
+  }
+
+  .protected-image__main.is-loaded + .protected-image__overlay ~ .protected-image__lqip,
+  .protected-image.is-loaded .protected-image__lqip {
+    opacity: 0;
+  }
+
+  .protected-image__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .protected-image__lqip {
+      filter: none;
+      transform: none;
+    }
+    .protected-image__main {
+      transition: none;
+    }
+    .protected-image__lqip {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initProtectedImages(): void {
+    const images = document.querySelectorAll<HTMLElement>('.protected-image');
+
+    if (!('IntersectionObserver' in window)) {
+      images.forEach((container) => loadImage(container));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadImage(entry.target as HTMLElement);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '200px 0px' }
+    );
+
+    images.forEach((container) => {
+      if (!container.classList.contains('is-loaded')) {
+        observer.observe(container);
+      }
+    });
+  }
+
+  function loadImage(container: HTMLElement): void {
+    const mainEl = container.querySelector<HTMLElement>('.protected-image__main');
+    if (!mainEl) return;
+
+    const src = mainEl.dataset.src;
+    if (!src) return;
+
+    const img = new Image();
+    img.onload = () => {
+      mainEl.style.backgroundImage = `url(${src})`;
+      mainEl.classList.add('is-loaded');
+      container.classList.add('is-loaded');
+    };
+    img.src = src;
+  }
+
+  initProtectedImages();
+  document.addEventListener('astro:after-swap', initProtectedImages);
+</script>

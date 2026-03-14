@@ -1,0 +1,532 @@
+---
+/**
+ * Lightbox — composant interactif plein écran pour afficher les photos.
+ * Ce composant fonctionne comme un island : tout le comportement est côté client.
+ * Il reçoit les données des photos via un data-attribute JSON sur l'élément racine.
+ */
+
+interface PhotoMeta {
+  cloudinary_id: string;
+  title: string;
+  alt: string;
+  location?: string;
+  date?: string;
+}
+
+interface Props {
+  photos: PhotoMeta[];
+}
+
+const { photos } = Astro.props;
+---
+
+<div
+  class="lightbox"
+  id="lightbox"
+  data-photos={JSON.stringify(photos)}
+  role="dialog"
+  aria-modal="true"
+  aria-label="Visionneuse de photos"
+  aria-hidden="true"
+>
+  <div class="lightbox__backdrop" data-lightbox-close></div>
+
+  <button class="lightbox__close" data-lightbox-close aria-label="Fermer" type="button">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="4" y1="4" x2="20" y2="20" />
+      <line x1="20" y1="4" x2="4" y2="20" />
+    </svg>
+  </button>
+
+  <button class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Photo précédente" type="button">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <polyline points="15,4 7,12 15,20" />
+    </svg>
+  </button>
+
+  <button class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Photo suivante" type="button">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <polyline points="9,4 17,12 9,20" />
+    </svg>
+  </button>
+
+  <div class="lightbox__content">
+    <div
+      class="lightbox__image-container"
+      oncontextmenu="return false"
+      ondragstart="return false"
+    >
+      <div class="lightbox__image" id="lightbox-image"></div>
+      <div class="lightbox__image-overlay"></div>
+    </div>
+
+    <div class="lightbox__meta" id="lightbox-meta">
+      <span class="lightbox__title" id="lightbox-title"></span>
+      <span class="lightbox__info" id="lightbox-info"></span>
+      <span class="lightbox__counter" id="lightbox-counter"></span>
+    </div>
+
+    <div class="lightbox__actions">
+      <button class="lightbox__print-btn" type="button" disabled>
+        Obtenir un tirage d'art
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s var(--ease-out-expo), visibility 0s 0.3s;
+  }
+
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s var(--ease-out-expo), visibility 0s;
+  }
+
+  .lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    cursor: pointer;
+  }
+
+  .lightbox__backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .lightbox__close:hover {
+    color: var(--color-text-primary);
+  }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--duration-hover) var(--ease-out-expo),
+                color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .lightbox:hover .lightbox__nav,
+  .lightbox__nav:focus-visible {
+    opacity: 1;
+  }
+
+  .lightbox__nav:hover {
+    color: var(--color-text-primary);
+  }
+
+  .lightbox__nav--prev {
+    left: var(--space-sm);
+  }
+
+  .lightbox__nav--next {
+    right: var(--space-sm);
+  }
+
+  .lightbox__content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: calc(100vw - 6rem);
+    max-height: calc(100vh - 8rem);
+    pointer-events: none;
+    transform: scale(0.92);
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  .lightbox.is-open .lightbox__content {
+    transform: scale(1);
+  }
+
+  .lightbox__image-container {
+    position: relative;
+    max-width: 100%;
+    max-height: calc(100vh - 12rem);
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .lightbox__image {
+    width: auto;
+    height: auto;
+    max-width: calc(100vw - 6rem);
+    max-height: calc(100vh - 12rem);
+    min-width: 300px;
+    min-height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: opacity 0.2s var(--ease-out-expo);
+  }
+
+  .lightbox__image-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .lightbox__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-top: var(--space-sm);
+    text-align: center;
+    pointer-events: auto;
+  }
+
+  .lightbox__title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+  }
+
+  .lightbox__info {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .lightbox__counter {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    opacity: 0.5;
+    letter-spacing: var(--letter-spacing-wide);
+    margin-top: 2px;
+  }
+
+  .lightbox__actions {
+    margin-top: var(--space-sm);
+    pointer-events: auto;
+  }
+
+  .lightbox__print-btn {
+    padding: 12px 28px;
+    border: 1px solid rgba(240, 237, 232, 0.15);
+    background: none;
+    color: var(--color-text-secondary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    cursor: not-allowed;
+    opacity: 0.4;
+    transition: opacity var(--duration-hover) var(--ease-out-expo),
+                border-color var(--duration-hover) var(--ease-out-expo),
+                color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .lightbox__content {
+      max-width: calc(100vw - 2rem);
+    }
+
+    .lightbox__image {
+      max-width: calc(100vw - 2rem);
+      max-height: calc(100vh - 10rem);
+      min-width: 200px;
+      min-height: 150px;
+    }
+
+    .lightbox__nav {
+      opacity: 0.6;
+    }
+
+    .lightbox__nav--prev {
+      left: 4px;
+    }
+
+    .lightbox__nav--next {
+      right: 4px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox {
+      transition: none;
+    }
+    .lightbox__content {
+      transition: none;
+      transform: none;
+    }
+    .lightbox__image {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { getWebUrl } from '../lib/cloudinary';
+
+  interface LightboxPhoto {
+    cloudinary_id: string;
+    title: string;
+    alt: string;
+    location?: string;
+    date?: string;
+  }
+
+  let photos: LightboxPhoto[] = [];
+  let currentIndex = 0;
+  let isOpen = false;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let previouslyFocused: HTMLElement | null = null;
+
+  function getLightboxEl(): HTMLElement | null {
+    return document.getElementById('lightbox');
+  }
+
+  function openLightbox(index: number): void {
+    const lightbox = getLightboxEl();
+    if (!lightbox) return;
+
+    previouslyFocused = document.activeElement as HTMLElement;
+    currentIndex = index;
+    isOpen = true;
+
+    document.body.style.overflow = 'hidden';
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+
+    updatePhoto();
+    trapFocus(lightbox);
+  }
+
+  function closeLightbox(): void {
+    const lightbox = getLightboxEl();
+    if (!lightbox) return;
+
+    isOpen = false;
+    document.body.style.overflow = '';
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+
+    if (previouslyFocused) {
+      previouslyFocused.focus();
+      previouslyFocused = null;
+    }
+  }
+
+  function updatePhoto(): void {
+    if (!photos.length) return;
+
+    const photo = photos[currentIndex];
+    const imageEl = document.getElementById('lightbox-image');
+    const titleEl = document.getElementById('lightbox-title');
+    const infoEl = document.getElementById('lightbox-info');
+    const counterEl = document.getElementById('lightbox-counter');
+
+    if (!imageEl) return;
+
+    imageEl.style.opacity = '0';
+
+    const url = getWebUrl(photo.cloudinary_id, { watermark: true });
+    const img = new Image();
+
+    img.onload = () => {
+      const ratio = img.naturalWidth / img.naturalHeight;
+      const maxW = window.innerWidth - (window.innerWidth <= 768 ? 32 : 96);
+      const maxH = window.innerHeight - (window.innerWidth <= 768 ? 160 : 192);
+
+      let w = img.naturalWidth;
+      let h = img.naturalHeight;
+
+      if (w > maxW) { w = maxW; h = w / ratio; }
+      if (h > maxH) { h = maxH; w = h * ratio; }
+
+      imageEl.style.width = `${Math.round(w)}px`;
+      imageEl.style.height = `${Math.round(h)}px`;
+      imageEl.style.backgroundImage = `url(${url})`;
+      imageEl.style.opacity = '1';
+    };
+    img.src = url;
+
+    if (titleEl) titleEl.textContent = photo.title;
+    if (infoEl) {
+      const parts: string[] = [];
+      if (photo.location) parts.push(photo.location);
+      if (photo.date) {
+        const d = new Date(photo.date);
+        if (!isNaN(d.getTime())) {
+          parts.push(d.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' }));
+        }
+      }
+      infoEl.textContent = parts.join(' — ');
+    }
+
+    if (counterEl) {
+      counterEl.textContent = `${currentIndex + 1} / ${photos.length}`;
+    }
+
+    const lightbox = getLightboxEl();
+    if (lightbox) {
+      lightbox.setAttribute('aria-label', `Photo ${currentIndex + 1} sur ${photos.length} : ${photo.title}`);
+    }
+  }
+
+  function goNext(): void {
+    if (!photos.length) return;
+    currentIndex = (currentIndex + 1) % photos.length;
+    updatePhoto();
+  }
+
+  function goPrev(): void {
+    if (!photos.length) return;
+    currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+    updatePhoto();
+  }
+
+  function trapFocus(container: HTMLElement): void {
+    const focusables = container.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusables.length) focusables[0].focus();
+  }
+
+  function handleKeydown(e: KeyboardEvent): void {
+    if (!isOpen) return;
+
+    switch (e.key) {
+      case 'Escape':
+        closeLightbox();
+        break;
+      case 'ArrowRight':
+        goNext();
+        break;
+      case 'ArrowLeft':
+        goPrev();
+        break;
+      case 'Tab': {
+        const lightbox = getLightboxEl();
+        if (!lightbox) return;
+        const focusables = lightbox.querySelectorAll<HTMLElement>(
+          'button:not([disabled])'
+        );
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+        break;
+      }
+    }
+  }
+
+  function handleTouchStart(e: TouchEvent): void {
+    touchStartX = e.changedTouches[0].screenX;
+  }
+
+  function handleTouchEnd(e: TouchEvent): void {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    const threshold = 50;
+
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) goNext();
+      else goPrev();
+    }
+  }
+
+  function initLightbox(): void {
+    const lightbox = getLightboxEl();
+    if (!lightbox) return;
+
+    const photosData = lightbox.dataset.photos;
+    if (photosData) {
+      try {
+        photos = JSON.parse(photosData);
+      } catch {
+        photos = [];
+      }
+    }
+
+    // Clic sur les PhotoCards pour ouvrir la lightbox
+    document.querySelectorAll<HTMLElement>('.photo-card__trigger').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const card = trigger.closest<HTMLElement>('.photo-card');
+        if (!card) return;
+        const index = parseInt(card.dataset.photoIndex ?? '0', 10);
+        openLightbox(index);
+      });
+    });
+
+    // Fermer
+    lightbox.querySelectorAll('[data-lightbox-close]').forEach((el) => {
+      el.addEventListener('click', closeLightbox);
+    });
+
+    // Navigation
+    lightbox.querySelector('[data-lightbox-prev]')?.addEventListener('click', goPrev);
+    lightbox.querySelector('[data-lightbox-next]')?.addEventListener('click', goNext);
+
+    // Clavier
+    document.addEventListener('keydown', handleKeydown);
+
+    // Swipe mobile
+    const content = lightbox.querySelector('.lightbox__content');
+    if (content) {
+      content.addEventListener('touchstart', handleTouchStart as EventListener, { passive: true });
+      content.addEventListener('touchend', handleTouchEnd as EventListener, { passive: true });
+    }
+  }
+
+  initLightbox();
+  document.addEventListener('astro:after-swap', initLightbox);
+</script>

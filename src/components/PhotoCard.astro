@@ -1,0 +1,162 @@
+---
+import ProtectedImage from './ProtectedImage.astro';
+import { getThumbUrl } from '../lib/cloudinary';
+
+interface Props {
+  title: string;
+  cloudinaryId: string;
+  alt: string;
+  orientation: 'landscape' | 'portrait' | 'square';
+  gridSize?: 'normal' | 'wide';
+  dominantColor?: string;
+  index?: number;
+}
+
+const {
+  title,
+  cloudinaryId,
+  alt,
+  orientation,
+  gridSize = 'normal',
+  dominantColor,
+  index = 0,
+} = Astro.props;
+
+const aspectRatioMap: Record<string, string> = {
+  landscape: '3 / 2',
+  portrait: '2 / 3',
+  square: '1 / 1',
+};
+
+const aspectRatio = aspectRatioMap[orientation] ?? '3 / 2';
+---
+
+<article
+  class:list={[
+    'photo-card',
+    `photo-card--${orientation}`,
+    { 'photo-card--wide': gridSize === 'wide' },
+  ]}
+  data-cloudinary-id={cloudinaryId}
+  data-photo-index={index}
+  style={`--aspect-ratio: ${aspectRatio};`}
+>
+  <button class="photo-card__trigger" type="button" aria-label={`Ouvrir ${title} en plein écran`}>
+    <div class="photo-card__image-wrapper">
+      <ProtectedImage
+        cloudinaryId={cloudinaryId}
+        alt={alt}
+        width={gridSize === 'wide' ? 800 : 400}
+        height={gridSize === 'wide' ? 500 : undefined}
+        dominantColor={dominantColor}
+      />
+    </div>
+    <div class="photo-card__overlay">
+      <span class="photo-card__title">{title}</span>
+    </div>
+  </button>
+</article>
+
+<style>
+  .photo-card {
+    position: relative;
+    break-inside: avoid;
+    margin-bottom: var(--gallery-gap, 14px);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .photo-card--wide {
+    column-span: all;
+  }
+
+  .photo-card__trigger {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+  }
+
+  .photo-card__image-wrapper {
+    aspect-ratio: var(--aspect-ratio);
+    overflow: hidden;
+    transition: transform var(--duration-hover) var(--ease-out-expo),
+                box-shadow var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .photo-card:hover .photo-card__image-wrapper,
+  .photo-card:focus-within .photo-card__image-wrapper {
+    transform: scale(1.03);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .photo-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--space-sm);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.6) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .photo-card:hover .photo-card__overlay,
+  .photo-card:focus-within .photo-card__overlay {
+    opacity: 1;
+  }
+
+  .photo-card__title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    transform: translateY(8px);
+    transition: transform var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .photo-card:hover .photo-card__title,
+  .photo-card:focus-within .photo-card__title {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-card:hover .photo-card__image-wrapper {
+      transform: none;
+    }
+    .photo-card__title {
+      transform: none;
+    }
+    .photo-card__overlay {
+      opacity: 1;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.4) 0%,
+        transparent 40%
+      );
+    }
+  }
+
+  @media (hover: none) {
+    .photo-card__overlay {
+      opacity: 1;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.4) 0%,
+        transparent 40%
+      );
+    }
+    .photo-card__title {
+      transform: none;
+    }
+  }
+</style>
