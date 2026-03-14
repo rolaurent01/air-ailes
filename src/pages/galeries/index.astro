@@ -27,7 +27,7 @@ const lightboxPhotos = photos.map((p) => ({
       <p class="gallery-page__count">{photos.length} photographies</p>
     </div>
 
-    <div class="gallery-page__grid">
+    <div class="gallery-page__masonry">
       {photos.map((photo, index) => (
         <PhotoCard
           title={photo.data.title}
@@ -35,6 +35,7 @@ const lightboxPhotos = photos.map((p) => ({
           alt={photo.data.alt}
           focalPoint={photo.data.focal_point}
           dominantColor={photo.data.dominant_color}
+          orientation={photo.data.orientation || 'landscape'}
           index={index}
         />
       ))}
@@ -49,7 +50,7 @@ const lightboxPhotos = photos.map((p) => ({
     padding-block: var(--space-3xl) var(--space-2xl);
     max-width: var(--container-max);
     margin-inline: auto;
-    padding-inline: var(--container-padding);
+    padding-inline: var(--space-lg);
   }
 
   .gallery-page__header {
@@ -73,22 +74,36 @@ const lightboxPhotos = photos.map((p) => ({
     opacity: 0.6;
   }
 
-  .gallery-page__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md, 1.5rem);
+  /* --- Masonry layout with CSS columns --- */
+  .gallery-page__masonry {
+    --masonry-gap: 1.25rem;
+    column-count: 3;
+    column-gap: var(--masonry-gap);
   }
 
-  @media (max-width: 768px) {
-    .gallery-page__grid {
-      grid-template-columns: 1fr;
-      gap: var(--space-sm, 1rem);
+  /* Tablet: 2 columns */
+  @media (max-width: 1024px) {
+    .gallery-page__masonry {
+      column-count: 2;
     }
   }
 
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .gallery-page__grid {
-      grid-template-columns: repeat(2, 1fr);
+  /* Mobile: single column, wider spacing */
+  @media (max-width: 768px) {
+    .gallery-page {
+      padding-inline: var(--space-md);
+    }
+
+    .gallery-page__masonry {
+      column-count: 1;
+      --masonry-gap: 1.5rem;
+    }
+  }
+
+  /* Large screens: more breathing room */
+  @media (min-width: 1440px) {
+    .gallery-page {
+      padding-inline: var(--space-xl);
     }
   }
 </style>
@@ -111,13 +126,14 @@ const lightboxPhotos = photos.map((p) => ({
     animateText(title, { mode: 'letters', staggerDelay: 0.05 });
 
     const cards = document.querySelectorAll<HTMLElement>('.photo-card');
-    gsap.set(cards, { opacity: 0, y: 30, clipPath: 'inset(8% 0% 8% 0%)' });
-    cards.forEach((card) => {
+    gsap.set(cards, { opacity: 0, y: 40 });
+    cards.forEach((card, i) => {
       gsap.to(card, {
-        opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)',
-        duration: 0.8,
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
         ease: ANIMATION_EASING,
-        scrollTrigger: { trigger: card, start: 'top bottom-=5%', once: true },
+        scrollTrigger: { trigger: card, start: 'top bottom-=8%', once: true },
       });
     });
   }

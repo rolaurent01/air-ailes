@@ -24,7 +24,7 @@ export const HOVER_DURATION = 0.25;
 export const NAV_LINKS = [
   { label: 'Galeries', href: '/galeries' },
   { label: 'Vidéos', href: '/videos' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Formation', href: '/blog' },
   { label: 'À propos', href: '/a-propos' },
 ] as const;
 
@@ -35,5 +35,5 @@ export const SOCIAL_LINKS = {
 
 // --- Site ---
 export const SITE_NAME = 'Air-Ailes';
-export const SITE_DESCRIPTION = 'Photographie — Paysage & Portrait';
+export const SITE_DESCRIPTION = 'Photographie — Paysage & Macro';
 export const SITE_AUTHOR = 'Air-Ailes';

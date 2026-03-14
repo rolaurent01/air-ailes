@@ -14,13 +14,21 @@ const platformLabel = platform === 'instagram' ? 'Instagram' : 'TikTok';
 <article class="video-embed">
   <div class="video-embed__container" data-embed-url={embedUrl} data-platform={platform}>
     <div class="video-embed__placeholder">
+      <div class="video-embed__placeholder-bg"></div>
       <a href={embedUrl} target="_blank" rel="noopener noreferrer" class="video-embed__play" aria-label={`Lire ${title} sur ${platformLabel}`}>
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1" opacity="0.6" />
-          <polygon points="20,16 34,24 20,32" fill="currentColor" opacity="0.8" />
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <circle cx="28" cy="28" r="27" stroke="currentColor" stroke-width="1" opacity="0.4" />
+          <polygon points="23,18 39,28 23,38" fill="currentColor" opacity="0.7" />
         </svg>
       </a>
-      <span class="video-embed__platform-badge">{platformLabel}</span>
+      <span class="video-embed__platform-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="17.5" cy="6.5" r="1"/>
+        </svg>
+        {platformLabel}
+      </span>
     </div>
   </div>
   <div class="video-embed__info">
@@ -40,6 +48,13 @@ const platformLabel = platform === 'instagram' ? 'Instagram' : 'TikTok';
     background-color: var(--color-bg-secondary);
     border-radius: 4px;
     overflow: hidden;
+    transition: transform var(--duration-hover) var(--ease-out-expo),
+                box-shadow var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .video-embed:hover .video-embed__container {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   }
 
   .video-embed__placeholder {
@@ -49,15 +64,19 @@ const platformLabel = platform === 'instagram' ? 'Instagram' : 'TikTok';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-sm);
-    background: linear-gradient(
-      135deg,
-      rgba(17, 17, 17, 1) 0%,
-      rgba(30, 30, 30, 1) 100%
-    );
+    gap: var(--space-md);
+  }
+
+  .video-embed__placeholder-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(30, 30, 30, 1) 0%, rgba(12, 12, 12, 1) 100%);
   }
 
   .video-embed__play {
+    position: relative;
+    z-index: 1;
     color: var(--color-text-secondary);
     transition: color var(--duration-hover) var(--ease-out-expo),
                 transform var(--duration-hover) var(--ease-out-expo);
@@ -70,11 +89,16 @@ const platformLabel = platform === 'instagram' ? 'Instagram' : 'TikTok';
   }
 
   .video-embed__platform-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
     letter-spacing: var(--letter-spacing-uppercase);
     text-transform: uppercase;
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
   .video-embed__container :global(iframe) {
@@ -91,6 +115,7 @@ const platformLabel = platform === 'instagram' ? 'Instagram' : 'TikTok';
 
   .video-embed__title {
     font-size: var(--font-size-sm);
+    font-family: var(--font-family);
     font-weight: var(--font-weight-light);
     letter-spacing: var(--letter-spacing-wide);
     color: var(--color-text-primary);
@@ -101,6 +126,12 @@ const platformLabel = platform === 'instagram' ? 'Instagram' : 'TikTok';
     color: var(--color-text-secondary);
     margin-top: 4px;
     line-height: var(--line-height-base);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-embed:hover .video-embed__container {
+      transform: none;
+    }
   }
 </style>
 

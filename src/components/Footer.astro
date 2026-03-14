@@ -4,6 +4,16 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
 
 <footer class="footer">
   <div class="footer__inner container">
+    <div class="footer__logo" id="footer-logo">
+      <svg class="footer__logo-icon" width="40" height="40" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="14" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="16" cy="14" r="3" fill="currentColor"/>
+        <rect x="8" y="9" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="13" y="7" width="6" height="3" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      <span class="footer__logo-name">{SITE_NAME}</span>
+    </div>
+
     <p class="footer__copy">© {new Date().getFullYear()} {SITE_NAME}</p>
 
     <a href="/mentions-legales" class="footer__legal">Mentions légales</a>
@@ -29,7 +39,7 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
   .footer {
     background-color: var(--color-bg-footer);
     border-top: 1px solid var(--color-border-subtle);
-    padding-block: var(--space-lg);
+    padding-block: var(--space-xl);
   }
 
   .footer__inner {
@@ -37,6 +47,42 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     flex-direction: column;
     align-items: center;
     gap: var(--space-sm);
+  }
+
+  /* --- Logo --- */
+  .footer__logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.8s var(--ease-out-expo),
+                transform 0.8s var(--ease-out-expo);
+  }
+
+  .footer__logo.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .footer__logo-icon {
+    color: var(--color-text-secondary);
+    opacity: 0.6;
+    transition: opacity var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .footer__logo:hover .footer__logo-icon {
+    opacity: 1;
+  }
+
+  .footer__logo-name {
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-md);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-secondary);
+    opacity: 0.5;
   }
 
   .footer__copy {
@@ -72,4 +118,41 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     color: var(--color-text-primary);
     opacity: 1;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__logo {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 </style>
+
+<script>
+  function initFooterLogo(): void {
+    const logo = document.getElementById('footer-logo');
+    if (!logo) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      logo.classList.add('is-visible');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            logo.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(logo);
+  }
+
+  initFooterLogo();
+  document.addEventListener('astro:page-load', initFooterLogo);
+</script>

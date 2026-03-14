@@ -14,8 +14,9 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
 >
   <section class="videos-page">
     <div class="videos-page__header">
+      <p class="videos-page__eyebrow">Coulisses</p>
       <h1 class="videos-page__title" id="videos-title">Vidéos</h1>
-      <p class="videos-page__subtitle">Retrouvez mes coulisses et créations sur Instagram</p>
+      <p class="videos-page__subtitle">Les coulisses de mes shootings et créations en mouvement</p>
     </div>
 
     <div class="videos-page__grid">
@@ -52,12 +53,19 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
 
   .videos-page__header {
     text-align: center;
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .videos-page__eyebrow {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
   }
 
   .videos-page__title {
     font-size: clamp(2rem, 6vw, var(--font-size-2xl));
-    font-weight: var(--font-weight-light);
     letter-spacing: var(--letter-spacing-wider);
     color: var(--color-text-primary);
     margin-bottom: var(--space-sm);
@@ -67,25 +75,23 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
     letter-spacing: var(--letter-spacing-wide);
+    max-width: 40ch;
+    margin-inline: auto;
+    line-height: var(--line-height-relaxed);
   }
 
   .videos-page__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  @media (max-width: 1024px) {
-    .videos-page__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    max-width: 900px;
+    margin-inline: auto;
   }
 
   @media (max-width: 768px) {
     .videos-page__grid {
       grid-template-columns: 1fr;
-      max-width: 400px;
-      margin-inline: auto;
+      max-width: 360px;
     }
   }
 

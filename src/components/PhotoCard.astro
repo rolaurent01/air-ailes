@@ -1,6 +1,6 @@
 ---
 import ProtectedImage from './ProtectedImage.astro';
-import { getGridImageUrl, getGridSrcSet, GRID_SIZES } from '../lib/cloudinary';
+import { getOrientedGridImageUrl, getOrientedGridSrcSet, GRID_SIZES } from '../lib/cloudinary';
 
 interface Props {
   title: string;
@@ -8,6 +8,7 @@ interface Props {
   alt: string;
   focalPoint?: string;
   dominantColor?: string;
+  orientation?: 'landscape' | 'portrait';
   index?: number;
 }
 
@@ -17,12 +18,15 @@ const {
   alt,
   focalPoint = 'auto',
   dominantColor,
+  orientation = 'landscape',
   index = 0,
 } = Astro.props;
+
+const aspectRatio = orientation === 'portrait' ? '2 / 3' : '3 / 2';
 ---
 
 <article
-  class="photo-card"
+  class:list={['photo-card', `photo-card--${orientation}`]}
   data-cloudinary-id={cloudinaryId}
   data-photo-index={index}
 >
@@ -31,12 +35,12 @@ const {
       cloudinaryId={cloudinaryId}
       alt={alt}
       width={600}
-      height={400}
-      srcset={getGridSrcSet(cloudinaryId, focalPoint)}
+      height={orientation === 'portrait' ? 900 : 400}
+      srcset={getOrientedGridSrcSet(cloudinaryId, orientation, focalPoint)}
       sizes={GRID_SIZES}
       focalPoint={focalPoint}
       dominantColor={dominantColor}
-      aspectRatio="3 / 2"
+      aspectRatio={aspectRatio}
     />
   </button>
 </article>
@@ -44,9 +48,11 @@ const {
 <style>
   .photo-card {
     position: relative;
-    border-radius: 2px;
+    border-radius: 3px;
     overflow: hidden;
     cursor: pointer;
+    break-inside: avoid;
+    margin-bottom: var(--masonry-gap, 1.25rem);
   }
 
   .photo-card__trigger {
@@ -62,13 +68,14 @@ const {
 
   .photo-card :global(.protected-image) {
     transition: transform var(--duration-hover, 0.25s) var(--ease-out-expo, ease-out),
-                box-shadow var(--duration-hover, 0.25s) var(--ease-out-expo, ease-out);
+                box-shadow var(--duration-hover, 0.25s) var(--ease-out-expo, ease-out),
+                filter var(--duration-hover, 0.25s) var(--ease-out-expo, ease-out);
   }
 
   .photo-card:hover :global(.protected-image),
   .photo-card:focus-within :global(.protected-image) {
-    transform: scale(1.03);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    transform: scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
   }
 
   @media (prefers-reduced-motion: reduce) {

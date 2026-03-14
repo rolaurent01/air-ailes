@@ -16,7 +16,7 @@ const categoryMap: Record<string, string[]> = {
   'Technique': ['technique', 'exposition', 'débutant', 'basse lumière', 'nuit', 'flash', 'macro'],
   'Composition': ['composition', 'créativité', 'portrait', 'paysage', 'nature'],
   'Post-production': ['post-production', 'lightroom', 'workflow', 'couleur', 'impression', 'avancé'],
-  'Professionnel': ['professionnel', 'portfolio', 'juridique', 'publication', 'SEO', 'web', 'rédaction'],
+  'Métier': ['professionnel', 'portfolio', 'juridique', 'publication'],
   'Récits': ['montagne', 'behind the scenes', 'lumière'],
 };
 
@@ -26,15 +26,15 @@ const categories = Object.entries(categoryMap).filter(([_, tags]) =>
 ---
 
 <BaseLayout
-  title="Blog — Journal & Apprentissage Photo"
-  description="Articles techniques, récits de terrain et guides pratiques pour progresser en photographie. Triangle d'exposition, composition, post-production et plus."
+  title="Formation Photo — Apprendre la Photographie"
+  description="Guides pratiques et techniques pour progresser en photographie : exposition, composition, post-production, lumière et terrain."
 >
   <section class="blog-index">
     <div class="blog-index__header">
-      <p class="blog-index__eyebrow">Journal</p>
-      <h1 class="blog-index__title" id="blog-index-title">Apprendre & Créer</h1>
+      <p class="blog-index__eyebrow">Formation</p>
+      <h1 class="blog-index__title" id="blog-index-title">Apprendre la Photo</h1>
       <p class="blog-index__subtitle">
-        Techniques, récits de terrain et guides pratiques pour progresser en photographie
+        Guides pratiques, techniques de prise de vue et post-production pour progresser
       </p>
     </div>
 
@@ -191,24 +191,43 @@ const categories = Object.entries(categoryMap).filter(([_, tags]) =>
 
   gsap.registerPlugin(ScrollTrigger);
 
-  function initBlogIndex(): void {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const title = document.getElementById('blog-index-title');
-    if (!title) return;
+  function animateVisibleCards(): void {
+    if (reducedMotion) return;
 
-    ScrollTrigger.getAll().forEach((t) => t.kill());
-    animateText(title, { mode: 'letters', staggerDelay: 0.05 });
+    // Kill existing card triggers to avoid duplicates
+    ScrollTrigger.getAll()
+      .filter((t) => (t.vars as any)?.trigger?.closest?.('.blog-index__item'))
+      .forEach((t) => t.kill());
 
-    const cards = document.querySelectorAll('.blog-post-card');
-    gsap.set(cards, { opacity: 0, y: 30 });
-    cards.forEach((card) => {
+    const visibleItems = document.querySelectorAll<HTMLElement>('.blog-index__item:not(.hidden)');
+
+    visibleItems.forEach((item) => {
+      const card = item.querySelector('.blog-post-card');
+      if (!card) return;
+
+      // Reset and re-animate
+      gsap.set(card, { opacity: 0, y: 30 });
       gsap.to(card, {
         opacity: 1, y: 0, duration: 0.6,
         ease: ANIMATION_EASING,
         scrollTrigger: { trigger: card, start: 'top bottom-=10%', once: true },
       });
     });
+  }
+
+  function initBlogIndex(): void {
+    const title = document.getElementById('blog-index-title');
+    if (!title) return;
+
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+
+    if (!reducedMotion) {
+      animateText(title, { mode: 'letters', staggerDelay: 0.05 });
+    }
+
+    animateVisibleCards();
   }
 
   function initFilters(): void {
@@ -233,6 +252,10 @@ const categories = Object.entries(categoryMap).filter(([_, tags]) =>
         });
 
         if (countEl) countEl.textContent = String(visible);
+
+        // Re-animate cards after filter change
+        animateVisibleCards();
+        ScrollTrigger.refresh();
       });
     });
   }

@@ -49,17 +49,16 @@ export function getImageUrl(cloudinaryId: string, options: TransformOptions = {}
   if (gravity && crop !== 'limit') transforms.push(`g_${gravity}`);
   if (dpr) transforms.push(`dpr_${dpr}`);
 
+  const transformString = transforms.join(',');
+
+  // Watermark must be a separate chained transformation (separated by /)
+  // to avoid conflicting with base image params (e.g. two w_ values)
+  let watermarkChain = '';
   if (watermark) {
-    transforms.push(
-      `l_assets:logo`,
-      `o_${IMAGE_WATERMARK_OPACITY}`,
-      `g_${IMAGE_WATERMARK_GRAVITY}`,
-      `w_${IMAGE_WATERMARK_WIDTH}`
-    );
+    watermarkChain = `/l_assets:logo,o_${IMAGE_WATERMARK_OPACITY},g_${IMAGE_WATERMARK_GRAVITY},w_${IMAGE_WATERMARK_WIDTH}`;
   }
 
-  const transformString = transforms.join(',');
-  return `${CLOUDINARY_BASE_URL}/${transformString}/${cloudinaryId}`;
+  return `${CLOUDINARY_BASE_URL}/${transformString}${watermarkChain}/${cloudinaryId}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -133,10 +132,49 @@ export function getGridSrcSet(cloudinaryId: string, focalPoint = 'auto'): string
 }
 
 /**
- * Sizes attribute for grid images.
- * 1 col mobile / 2 col tablet / 3 col desktop (with gaps and padding).
+ * Sizes attribute for grid images (masonry columns layout).
+ * 1 col mobile / 2 col tablet / 3 col desktop.
  */
-export const GRID_SIZES = '(max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) calc(50vw - 3rem), calc(33.33vw - 3rem)';
+export const GRID_SIZES = '(max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) calc(50vw - 2.5rem), calc(33.33vw - 2.5rem)';
+
+// ---------------------------------------------------------------------------
+// GRID — orientation-aware helpers for masonry layout
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns a grid image URL respecting the photo's natural orientation.
+ */
+export function getOrientedGridImageUrl(
+  cloudinaryId: string,
+  orientation: 'landscape' | 'portrait' = 'landscape',
+  width = 600,
+  focalPoint = 'auto',
+): string {
+  const ratio = orientation === 'portrait' ? 3 / 2 : 2 / 3;
+  return getImageUrl(cloudinaryId, {
+    width,
+    height: Math.round(width * ratio),
+    crop: 'fill',
+    gravity: focalPoint,
+  });
+}
+
+/**
+ * Generates a srcset respecting photo orientation.
+ */
+export function getOrientedGridSrcSet(
+  cloudinaryId: string,
+  orientation: 'landscape' | 'portrait' = 'landscape',
+  focalPoint = 'auto',
+): string {
+  const ratio = orientation === 'portrait' ? 3 / 2 : 2 / 3;
+  return GRID_WIDTHS
+    .map((w) => {
+      const h = Math.round(w * ratio);
+      return `${getImageUrl(cloudinaryId, { width: w, height: h, crop: 'fill', gravity: focalPoint })} ${w}w`;
+    })
+    .join(', ');
+}
 
 // ---------------------------------------------------------------------------
 // LIGHTBOX — full-screen viewing, no destructive crop, original ratio
