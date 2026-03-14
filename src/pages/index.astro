@@ -488,17 +488,19 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
         });
       }
 
-      // Showcase title reveal — only when scrolled into view
+      // Showcase title reveal — only after user scrolls past hero
       const showcaseTitle = document.getElementById('showcase-title');
       if (showcaseTitle) {
+        // Use the showcase section as trigger, not the title itself
+        // This ensures it only fires after scrolling past the hero
         gsap.to(showcaseTitle, {
           opacity: 1,
           y: 0,
           duration: 0.8,
           ease: ANIMATION_EASING,
           scrollTrigger: {
-            trigger: showcaseTitle,
-            start: 'top 75%',
+            trigger: '.showcase',
+            start: 'top 40%',
             once: true,
           },
         });
