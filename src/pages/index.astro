@@ -390,6 +390,8 @@ const lightboxPhotos = selectionPhotos.map((p) => ({
 
     if (!title) return;
 
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+
     // Titre lettre par lettre
     animateText(title, { mode: 'letters', staggerDelay: 0.05 });
 
@@ -472,7 +474,6 @@ const lightboxPhotos = selectionPhotos.map((p) => ({
 
   initHome();
   document.addEventListener('astro:page-load', () => {
-    ScrollTrigger.getAll().forEach((t) => t.kill());
     initHome();
   });
 </script>

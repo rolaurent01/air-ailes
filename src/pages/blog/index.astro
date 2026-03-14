@@ -195,7 +195,10 @@ const categories = Object.entries(categoryMap).filter(([_, tags]) =>
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const title = document.getElementById('blog-index-title');
-    if (title) animateText(title, { mode: 'letters', staggerDelay: 0.05 });
+    if (!title) return;
+
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    animateText(title, { mode: 'letters', staggerDelay: 0.05 });
 
     const cards = document.querySelectorAll('.blog-post-card');
     gsap.set(cards, { opacity: 0, y: 30 });
@@ -236,8 +239,7 @@ const categories = Object.entries(categoryMap).filter(([_, tags]) =>
 
   initBlogIndex();
   initFilters();
-  document.addEventListener('astro:after-swap', () => {
-    ScrollTrigger.getAll().forEach((t) => t.kill());
+  document.addEventListener('astro:page-load', () => {
     initBlogIndex();
     initFilters();
   });

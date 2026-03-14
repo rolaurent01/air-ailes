@@ -72,6 +72,9 @@ const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const cards = document.querySelectorAll<HTMLElement>('.photo-card');
+    if (!cards.length) return;
+
+    ScrollTrigger.getAll().forEach((t) => t.kill());
 
     gsap.set(cards, {
       opacity: 0,
@@ -97,7 +100,6 @@ const sorted = [...photos].sort((a, b) => a.display_order - b.display_order);
 
   initGalleryReveal();
   document.addEventListener('astro:page-load', () => {
-    ScrollTrigger.getAll().forEach((t) => t.kill());
     initGalleryReveal();
   });
 </script>

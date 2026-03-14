@@ -131,7 +131,10 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const title = document.getElementById('videos-title');
-    if (title) animateText(title, { mode: 'letters', staggerDelay: 0.05 });
+    if (!title) return;
+
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    animateText(title, { mode: 'letters', staggerDelay: 0.05 });
 
     const embeds = document.querySelectorAll('.video-embed');
     gsap.set(embeds, { opacity: 0, y: 30, clipPath: 'inset(8% 0% 8% 0%)' });
@@ -147,7 +150,6 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
 
   initVideosPage();
   document.addEventListener('astro:page-load', () => {
-    ScrollTrigger.getAll().forEach((t) => t.kill());
     initVideosPage();
   });
 </script>

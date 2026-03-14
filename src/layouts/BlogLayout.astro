@@ -348,6 +348,8 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
   function initBlogArticle(): void {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const titleEl = document.getElementById('blog-title');
+    if (!titleEl) return;
+    ScrollTrigger.getAll().forEach((t) => t.kill());
     const coverEl = document.getElementById('blog-cover');
     const progressEl = document.getElementById('blog-progress');
 
@@ -389,7 +391,6 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 
   initBlogArticle();
   document.addEventListener('astro:page-load', () => {
-    ScrollTrigger.getAll().forEach((t) => t.kill());
     initBlogArticle();
   });
 </script>

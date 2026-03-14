@@ -259,7 +259,10 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     if (reducedMotion) return;
 
     const title = document.getElementById('about-title');
-    if (title) animateText(title, { mode: 'words', staggerDelay: 0.08 });
+    if (!title) return;
+
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    animateText(title, { mode: 'words', staggerDelay: 0.08 });
 
     const heroImage = document.getElementById('about-hero-image');
     if (heroImage) {
@@ -298,7 +301,6 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
 
   initAbout();
   document.addEventListener('astro:page-load', () => {
-    ScrollTrigger.getAll().forEach((t) => t.kill());
     initAbout();
   });
 </script>

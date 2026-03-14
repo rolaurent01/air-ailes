@@ -110,7 +110,10 @@ const lightboxPhotos = photos.map((p) => ({
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const title = document.getElementById('gallery-title');
-    if (title) animateText(title, { mode: 'letters', staggerDelay: 0.05 });
+    if (!title) return;
+
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    animateText(title, { mode: 'letters', staggerDelay: 0.05 });
 
     const cards = document.querySelectorAll<HTMLElement>('.photo-card');
     gsap.set(cards, { opacity: 0, y: 30, clipPath: 'inset(8% 0% 8% 0%)' });
@@ -126,7 +129,6 @@ const lightboxPhotos = photos.map((p) => ({
 
   initGalleryPage();
   document.addEventListener('astro:page-load', () => {
-    ScrollTrigger.getAll().forEach((t) => t.kill());
     initGalleryPage();
   });
 </script>
