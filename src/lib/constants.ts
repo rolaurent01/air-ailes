@@ -33,8 +33,7 @@ export const NAV_LINKS = [
 
 // --- Réseaux sociaux ---
 export const SOCIAL_LINKS = {
-  instagram: 'https://instagram.com/air_ailes',
-  tiktok: 'https://tiktok.com/@air_ailes',
+  instagram: 'https://instagram.com/rolaurent',
 } as const;
 
 // --- Site ---

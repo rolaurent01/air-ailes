@@ -43,7 +43,7 @@ const videos = defineCollection({
   schema: z.object({
     title: z.string(),
     slug: z.string(),
-    platform: z.enum(['instagram', 'tiktok']),
+    platform: z.enum(['instagram']),
     embed_url: z.string(),
     description: z.string().optional(),
     date: z.coerce.date(),

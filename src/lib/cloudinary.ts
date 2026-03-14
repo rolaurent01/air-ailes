@@ -40,7 +40,7 @@ export function getImageUrl(cloudinaryId: string, options: ImageOptions = {}): s
   if (crop) transforms.push(`c_${crop}`);
   if (format) transforms.push(`f_${format}`);
   if (quality) transforms.push(`q_${quality}`);
-  if (gravity) transforms.push(`g_${gravity}`);
+  if (gravity && crop !== 'limit') transforms.push(`g_${gravity}`);
 
   if (watermark) {
     transforms.push(

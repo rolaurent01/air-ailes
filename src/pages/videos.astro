@@ -10,12 +10,12 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
 
 <BaseLayout
   title="Vidéos"
-  description="Coulisses, créations et moments capturés en vidéo — retrouvez Air-Ailes sur Instagram et TikTok."
+  description="Coulisses, créations et moments capturés en vidéo — retrouvez Air-Ailes sur Instagram."
 >
   <section class="videos-page">
     <div class="videos-page__header">
       <h1 class="videos-page__title" id="videos-title">Vidéos</h1>
-      <p class="videos-page__subtitle">Retrouvez mes coulisses et créations sur Instagram et TikTok</p>
+      <p class="videos-page__subtitle">Retrouvez mes coulisses et créations sur Instagram</p>
     </div>
 
     <div class="videos-page__grid">
@@ -37,12 +37,6 @@ const videos = allVideos.sort((a, b) => b.data.date.getTime() - a.data.date.getT
           <circle cx="17.5" cy="6.5" r="1" />
         </svg>
         Instagram
-      </a>
-      <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" class="videos-page__social-link">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-        </svg>
-        TikTok
       </a>
     </div>
   </section>

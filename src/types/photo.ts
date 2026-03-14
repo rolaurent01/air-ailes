@@ -33,7 +33,7 @@ export interface Gallery {
 export interface VideoEmbed {
   title: string;
   slug: string;
-  platform: 'instagram' | 'tiktok';
+  platform: 'instagram';
   embedUrl: string;
   description?: string;
   date: Date;
