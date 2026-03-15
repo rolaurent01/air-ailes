@@ -54,6 +54,11 @@ const {
 
       initSmoothScroll();
 
+      document.addEventListener('astro:after-swap', () => {
+        // Force scroll to top on every page navigation
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      });
+
       document.addEventListener('astro:page-load', () => {
         destroySmoothScroll();
         initSmoothScroll();
