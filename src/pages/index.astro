@@ -513,13 +513,15 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
         const imageWrap = slide.querySelector('.showcase__image-wrap');
         if (!imageWrap) return;
 
+        // Pin the slide, but use toggleActions instead of scrub
+        // so the reveal plays once and stays visible when scrolling back up
         gsap.timeline({
           scrollTrigger: {
             trigger: slide,
             start: 'top top',
             end: '+=100%',
             pin: true,
-            scrub: 0.8,
+            toggleActions: 'play none none none',
           },
         }).fromTo(imageWrap,
           { clipPath: 'inset(15% 15% 15% 15%)', scale: 1.15 },
