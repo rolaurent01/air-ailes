@@ -258,7 +258,8 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
   }
 
   .showcase__slide {
-    position: relative;
+    position: sticky;
+    top: 0;
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -513,15 +514,19 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
         const imageWrap = slide.querySelector('.showcase__image-wrap');
         if (!imageWrap) return;
 
-        // Pin the slide, but use toggleActions instead of scrub
-        // so the reveal plays once and stays visible when scrolling back up
+        // Sticky stacking: no pin, slides stack via CSS sticky.
+        // Scrub reveals on scroll down; resets instantly on scroll up
+        // so the effect replays next time.
         gsap.timeline({
           scrollTrigger: {
             trigger: slide,
-            start: 'top top',
-            end: '+=100%',
-            pin: true,
-            toggleActions: 'play none none none',
+            start: 'top 80%',
+            end: 'top 10%',
+            scrub: 0.6,
+            onLeaveBack: () => {
+              // Reset when scrolled past going up — effect will replay on next scroll down
+              gsap.set(imageWrap, { clipPath: 'inset(15% 15% 15% 15%)', scale: 1.15 });
+            },
           },
         }).fromTo(imageWrap,
           { clipPath: 'inset(15% 15% 15% 15%)', scale: 1.15 },
