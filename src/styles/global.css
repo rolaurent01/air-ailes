@@ -69,6 +69,19 @@
 }
 
 /* --- Base --- */
+/* Empêche le navigateur d'assombrir le site d'office (Chrome Android, appli Google).
+   Ne change pas l'apparence : le site garde ses propres couleurs. */
+:root {
+  color-scheme: only light;
+}
+
+input,
+textarea,
+select {
+  color-scheme: only light;
+  color: var(--color-text-primary);
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
@@ -83,6 +96,16 @@ body {
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
   overflow-x: hidden;
+}
+
+/* Mêmes couleurs en mode sombre : rien ne change à l'écran, mais Samsung Internet
+   y voit un site qui gère lui-même le mode sombre et ne le repeint plus
+   (Dev/mode-sombre-navigateurs.md, pièce 4). */
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+  }
 }
 
 /* --- Typographie --- */

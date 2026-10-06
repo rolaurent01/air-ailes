@@ -30,6 +30,9 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {/* Le site a ses propres couleurs : interdit aux navigateurs et à Dark Reader de les recolorer. */}
+    <meta name="color-scheme" content="only light" />
+    <meta name="darkreader-lock" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <SEO

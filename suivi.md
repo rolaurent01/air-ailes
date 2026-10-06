@@ -2,6 +2,24 @@
 
 ---
 
+## [2026-10-06 20:05] — Empêcher l'assombrissement forcé par le navigateur
+
+**Type :** `fix`
+**Phase :** `1-design`
+**Fichiers concernés :** `src/layouts/BaseLayout.astro`, `src/styles/global.css`
+
+### Description
+Le site déclare désormais aux navigateurs qu'il ne doit pas être recoloré. Pourquoi : Chrome Android et l'appli Google assombrissent d'office, élément par élément, un site qui n'a pas de mode sombre, ce qui peut abîmer ses couleurs ; l'extension Dark Reader fait de même. Le site est déjà sombre par choix : rien ne change à son apparence, on interdit seulement au navigateur d'y toucher.
+
+### Détails techniques
+- `BaseLayout.astro` (utilisé par toutes les pages, y compris les articles via `BlogLayout.astro`) : balises `<meta name="color-scheme" content="only light">` et `<meta name="darkreader-lock">`
+- `global.css` : `color-scheme: only light` sur `:root` et sur les champs de formulaire, avec la couleur de texte du site sur les champs ; le `body` avait déjà un fond et une couleur de texte explicites
+- Aucun changement visible : sans déclaration, le navigateur traitait déjà le site en « clair » pour ses barres de défilement et ses éléments natifs ; le site n'a aucun champ de formulaire aujourd'hui
+- Limite : Samsung Internet passe outre et peut encore assombrir le site
+- Build vérifié : `npm run build` passe sans erreur, balises présentes sur les 22 pages générées
+
+---
+
 ## [2026-10-06 20:03] — Crédit Donkey Corp dans le pied de page
 
 **Type :** `feature`
