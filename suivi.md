@@ -2,6 +2,26 @@
 
 ---
 
+## [2026-10-06 20:03] — Crédit Donkey Corp dans le pied de page
+
+**Type :** `feature`
+**Phase :** `1-pages`
+**Fichiers concernés :** `src/components/CreditDonkey.astro`, `src/components/Footer.astro`
+
+### Description
+Ajout de la mention « Conçu par Donkey Corp » dans le pied de page, sur toutes les pages du site. Pourquoi : Donkey Corp est mentionnée sur tous les sites de ses clients, et le lien (https://donkey-corp.fr/?utm_source=air-ailes&utm_medium=credit) permet de mesurer les visites venues de ce site.
+
+### Détails techniques
+- Brique « Crédit Donkey » version 1.1.0, variante monogramme blanc (la charte Donkey Corp impose le blanc sur un fond foncé, et le pied de page est quasi noir)
+- `CreditDonkey.astro` copié tel quel depuis la brique, sans modification (il est fabriqué par la brique et ne se retouche pas à la main)
+- Placé sous le lien « Mentions légales », dans la même colonne centrée que le copyright : même alignement sur téléphone et sur ordinateur
+- Le crédit reprend la couleur et la police du pied de page, taille 13 px par défaut (entre le copyright à 14 px et les mentions légales à 12 px), aucun réglage ajouté
+- Le pied de page est commun à toutes les pages (via `BaseLayout.astro`, y compris les articles du blog via `BlogLayout.astro`)
+- Lien ouvert dans un nouvel onglet, annoncé aux lecteurs d'écran ; aucune dépendance, aucun script
+- Build vérifié : `npm run build` passe sans erreur, crédit présent sur les 22 pages générées
+
+---
+
 ## [2026-03-14 14:52] — Blog, Vidéos, Pages statiques et SEO (étapes 1.11 à 1.13)
 
 **Type :** `feature`

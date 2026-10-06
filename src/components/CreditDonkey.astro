@@ -1,0 +1,173 @@
+---
+// Crédit Donkey v1.1.0. Fichier fabriqué par source/fabriquer.mjs : ne pas le modifier à la main.
+// Usage : <CreditDonkey slug="slug-du-projet" />
+// Réglages : lang "fr" (défaut) ou "en" ; variante "monogramme" (défaut, footer clair),
+// "monogramme-blanc" (footer foncé), "auto" (site avec un mode sombre) ou "texte"
+// (footer sur une photo) ; avec "auto", modeSombre "systeme" (défaut, le site suit
+// le réglage de l'appareil) ou "bouton" (le site a son propre bouton clair/sombre).
+
+type Variante = 'monogramme' | 'monogramme-blanc' | 'auto' | 'texte';
+type ModeSombre = 'systeme' | 'bouton';
+
+const SLUG_VALIDE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+const TEXTES = {
+  "fr": {
+    "intro": "Conçu par",
+    "nouvelOnglet": "(nouvel onglet)"
+  },
+  "en": {
+    "intro": "Designed by",
+    "nouvelOnglet": "(opens in a new tab)"
+  }
+} as const;
+
+const COULEUR = 'data:image/webp;base64,UklGRmAQAABXRUJQVlA4WAoAAAAQAAAASgAARwAAQUxQSA8HAAABsIb/nyFJ0u8fUT1cjNG9tm3btm3bGBt7trG2jdnW2vbOTff02lsR/3/8XlRmVNU8z72PiAlArsdm73z57cePTtmyBc6h0V6wxP6/7er99quHhkDQcIdVvmciE188tj98Y8Rj1MT5TKTyGTS5nZo0psTntoCXBjiH43uYLGoKnAzfDI9rGUkmVYZL4aQujyE30KKRTInbN8dh48jEWlX+xYvU4bD0c4zGWuMbAyDNAPAktYAp8N9eJMth6dcYWRw5Hh5N9TihjCnyt3A5gqHPMbI48bvV4JojWPxtWhEZeR581s2MLFX+FQ5N9jiLWpb44xZwJR4XMrI08cd1mycY8BythMruAZACh/W+YyqL/AUcmu6xWw4jL4EvENxNZanxw7GQ5sHhl4xliT1LQwB47EtjaTIeDI9FULBYF7WEkZPhAYE8QS2LnAuPRdJhlfnUEuP80RB47EFjaeD9/SAlIg2REnhs9gVjEZWnw8PhRmpRCuwYBsGi6rHpAgYrmQc4rPANU4FFPjYcDouux0rPUDWRTPx5XfTDGVSStGj8y0A4NNg1UsRj4LSfaVEtBZ6LFtzJaKaauOAoOIdF23use/0PTKTyfmBkH41M7Jk2Gi0VX+ykrpFLtS3VVtza2trW1jp27Jjh/VG72sUPvPv5N98+PhgbfvTVt72vXX/sKAiynZe8e7/t7Vu4sHfhwoULe3t6e3t7e3oWfPz6vL+dtflgCBZfZqWlBwEyZPkV2wYAwOitj53wx1vuuvUvk47bfBgA53I6aWxweGvuJqjTrXfp4z3Gcv30rhNHA86VPc1odatqjMHIcO8OkIoAqDgscdK8n5losTQYE/t+uybElXRQU4NNgzHdvDK8QDD4vA+YUohqqdw0xsQff9cKL81KKVmI/OZUOGk5+FWmGC3Vb0HZewScq+lsSkopKv88ECNf5U+aGmwh8Q8D4BplWUkDHxiOZV9nbFRKGvjgMDigo2nJqnx0CNacT21YSlU+NQyCzkbUX+Vt/bBXNGtcqvKefiJdWRYKo1odKXAaMJWxxMysnhQ4F749xxJLU9A8i2kPLPkSNSWLIRqTVtXyTHkgOjKMC2bNmD5j1h8f/FCZouWkyNdH4GCqRSWZgpK0aDlJ+fbwnMgOgQDAwE0mfcxoOSnwavTvYJX24vQjtl5vkwMmdEdGy4k/c2ZnVneLb6lUPCAYOrOaNMfYswxOpD26q0exbH5nSloSlal93zocBICI8w57fEXLSIGXofWNswD4ineu4kVwcB9jTVTaU3t7dGQ9UwZIC3b8gZahfKW/tEI8yp3HGu8wWlCmJ3Z1ENeZ1V0gAoigBecwZphxR3iH/ArWmM9Ie2gXD/FAR1aX1EAAiEAqTzKWpciZqKDeCvZIdu+ODs4DQHtWp0AEhSLw2J+aoexGAx3O2BNwHoUddaFQBBAMeotaZvxsGbi64ADnUdqe1eXKCj1+zZhh3AoegOTBexQL8HRWd31H5qTIo4okr1wEaG/OZpos56KCZuZ1Sh0OK3zNrMlN68zqqkcwpi9v9iLVWd/oPur/qY6sblffZ3lzm9ae9UwD+vLmLFLdDbGcXzWtM+uZ+pb4HzXn+qZ1ZHVJHYB/J68TzW6KODzOWGb8fBm45nRmdbsaESkQ5/FrhrKkPAy+LhHvGtQlBSh0aFsdRzNaWeT9cPWIVATelXRkKLtcTbF43DIHK3/NjGTcC5U8j5HzftsG8a6uyO4c7zCVjwP3MGYoXxsOn1PBYg+Sn89cBuIdgK6sLikQ7x0W/wtjdQMcmZUC7+iHihSI9xjzKEMwfjl5LMQLOrO6K77ivUDQ/8A3GANnYvBL1Ayr8q6REF8rwO7vM6SkwfjZxLEQ15HVCQjgRm12+ctMMRl7l8EJjGWmWuVHpwyBAGjZ8mZNMdVqMPaNH4X2DOPn119/w60PPDPfSNWUUuRE9H+CschUVavGT2648rSL//xSpGoq1WD8/KyOjJQSiy3EVGv8ah1s+bNZjRVYrCYWWrSUqz/xuPYsizGEGDWVR97tcBWrKSUzVVVTtVithhCjpfzAmejIamTkRfC3MpRYjapZqteqvK0izTL7aWcM62A1mapZjUa1VK8F3jEQ0tWkFFLf8mh9llVVVTNVDQ2IkX/rJ4LO5lhgnNwiGPkwq9WSqJbyNTBcDOeAjmbEaHxnNwgc+s9WhlCglrI1GF/eGl6QY3WYxaCJn40bAg9AHHZ4gUmrMWaZBk3suWgQPGrn8ecQQrUasqMamfj21W0Qh1rxGHj8S0y0UA1RNcYQYmLi25eMhPMofIbGhn7VMXenQYAXlHqH/rv8/m1lbnznj3sMhnhB8UlTx9dOGD9u/Lhx48aNHzd+wlXnHbnFaA/AO+SKF2DgusdO+vt985556t5/TDl2rYEAvKAcAFZQOCAqCQAAkCkAnQEqSwBIAD4pEIZCIaELhF9IDAFCWwAs7LoRI+Y/jx7B1Q/qH4E5q88fWd+k/Mb+0+/r/GexPzAP06/VL1jv1A9x/7R+oD+L/zv/c/3P3XP7N/mfYB+wHsAfyL/Aek77A/9F/0XsAfwv+f+kr+z/wI/sJ/5f838BH8k/rH/W/OPuAPUg/gGt5rzf9Bwz7UG9bcl/kf+54z+44/znjAeR1QA/hX81/un5kf5z5Lf8T7nfb79Q/873BP4x/L/85/eP3t/yXf3/cD2IP0aT0QZGWfTkhV9aVKHUlMgUpy7vmudL388v4jvqKZdXWnYbJ20OW8YOKWB0EI54O8sc7VtNDddJWtrEp33Zph9+HLEZiJQu5O03WMIcl64/E5qsV/t5z6RlXH2Xd2M3LL3KZjTTl6A00iVCt1rcfsPZj2MReEOGFMe4gUWLgC7w2e8pY8cy+AAA/v/+r/Dh6q8/E573IpocqqRtnitKONvFzrjJCc10tUGQHWAQsIw1HFfJ3EclpqWcFlVfLgb2xuxVNULNjeWLc/+9ZAfZ3PRMBGpHvSqjNptXFSlopkVIt5LroyG6C5p/v5FhfUNSRWXYjlFVW4XdD7v+pEkE8ODu24kud3fCW8FGJO7A2FT6xP9QQE/8K2rVaHWGmVt7PS7XozEm0aSnktg1v/8+Q396nuR+1+62sTY32yPf8nJ9EPmRFGE5P7YGd3yVy9jVc0foyzEcuy00HOtpADKw4Pt+ZvNldXbwA/R9bx7f8T5o6egoVJB+4gEsC+H0H1cxkbAzPMM/rCf9IuTPyD00px/t+nvBdotVEyg9sWh0cpC6dK6+0sI4hq7bavS6juth3Cn0SRS21MKmyJ5fnyGKymNwFNt/yc/bYO5oIALgPMJkrdEjeFMB1ybtqRmxD6kfD3i9r5QPzzaKIapq3bCpvBd3gx+qS1N17HEKhI8xgITphxGp2kU9iqizLT9V9xcOf9hivWYmuG1qp6l2M9ZLN39T21QbA5qdIC/4+bFQyKcmg/+qJhdpsZBP86NxI7lM+BqhA1MYF33M8yNZ+OKy3kv/xxWW8vS/czN7fgQYWKgx+tFADpf/08H0rWnqiRPBOsnMWXbPUpgSIsiu7T8UhU9fvqW/vBFRo23aGrbSNjJ/5OTLs2PmqzygQyDAe6Lgq4cvQw5sCqkHopsagMjlX7DPotp+N1FK3Vp3d5U56l775ecyHj4EAxk2Cg9AYkIWSc+lHQ9/qJISEQRwwY26z3sQwpvanyViWbHqBtE6acaplJFzdAe7skvQGTXB0MRmD9UOu9b9jxeuN13FWzDOUIHh7RVcHzYTOimto6taa4HC/Sa0Ozn8ujb/JmDctTiZdf12+hVKSqd4q6tx+QaASe+8T+yZ6t7MYP5MGGl6lj47kRlFVOucDH4gPEBnprqh8FQGq9Tahcn9VTefaoDtejQ+0nQOQuDwRqRntsXIXP1crciX/Dr+mxt+Y81AgeuC9N+DLQsCM/v9sRh7wJPUBZfOLfP/AE6LFJs6x0/i3pYSeTbel5E9XLwF492lywCDPibPfO6IrksVC+2QxnNkbUD0MbObAckUcNAdr6zoPDECRWnf3n+sx11MX8DTSfje5Vp8C//9po+5q5EuTJdJZtnmMemKqjQurFRHfcDYfAD9i+5o6rsFyWSVITA+LY1Z71dvhzYe2AbQyNvGChKSDrlcdW1UZVWAdGyGFoyFk4TQOrksijSZPEUa7jVaAUN/+VjnWValXhAuR3FegrpciOhlcreY+0CYFui/DXeiXH0+ScLwRQkkVloyseQpbEBfeSBRhmIwVg/T/gX4Pyg5mJwWdKCMV/1SUwGmG/M4+mydoSHr+USfZ3OCf5v4N92hjqjNe0O714Q5O8B8A27kVNAJi4GFfIAeUKI3LYYN8pTAxJC2LhRvJNoZZwvf444EX85NnsBAE3v/yPegzNe8CuozdvxC+MwxP45fVv/WAuf7wBDj80nlIlow6Ymq7YhWgfDNmnYHJRUdhRVjjc50dAkRikHVsgIyUvAW+il9qyvHy6hpaklpSUp1Gz8Y8RgLIolqLDlx99nGXVk/xkRH3dVnasL/4OZU3H/yYWmSp7j+uusfE7v/farUU0wjpV40euHxOwOMq0GzfmAak9wI62b8HS4VjtntP6p57EoKSjtE2cmfajs5PFbb6s7Z+F6v2iVu+rSMesk//zcJbUXeTY6l8itWH3CFLt62fcju428GBsLGI0xpb4b1/7/GaUiAHqlYwP0f/IkndRWkX9BphImKsrxwqhVBCsr+w3uZIyUb3hA0X+i1/HFnfWxM4AIAEkncGD2HEuAJSX6vPRBPmQSHfJBzFOK5TP3zqYjXSTFuOHAS0eq/x2NOug8tO/kx8eaCMj3Jq9Wx/OU6wm02jFuhhSAHOAY8uPVcDffKbaNfSKNYwNPs7dlHnjvoAR5sD39zGOEiig5kNu5q8k0mmXUlV5rC0+r+Z5fvpSMIng/9uEOZ8v8hDVhbFuME12LcMv1T9XmfxWn8bnb85LvYcdCbe4hxm/zP/5HnoTHkqyWiJAIeBbIR0vaapBrFNvm8X74Uzx88I6GVRq49Lsj45rgB49lG4L6E8pIvaPUwg5c0O8KjcI3gvPZcXjBGS2JyJTlxsXTCHQBuxoiplxZQrHrcNvLO2nh334V+3+xQoF7T+ZEsWBnjnOY0OCPItQtRvtc9cfQu7//lbTbGOwmKVOqnIGoWaGHRaQQXf+lrb4schBCbYwFKvIKDMoh4Cknro+0+r8hNNXUxb5JHS6SPMrLvvy+i1jw08ZqD/iLadKq+4IT/mKSP9dgMoC2TaMcll6q4n7UH+kueepcNKkWGKFgGWopLlZTctIaD5bXapv7C9N0fY0k7K9FYKafAl2exc3oQSjrYHRcSLFwv8dgQkA6oYOI3TXSb825cQ/5TgJZteccW06FnHvTnmPrJyxAmd1BayL8Xaw1op1lfU5XZ65y68p1bZ9B2Fgew6sQTwueJ55slwRllzrnyFlrp6M7v49BEUays6IStWYU5QSQc2aoWUFZ9mgspPtHRTiEVKt9Sh2U00KfJ/HEehRx+9oOrz8aYTXyT/jJAdwQX74Px1SRSf/sWcS3UwFotGNAA';
+const BLANC = 'data:image/webp;base64,UklGRiYMAABXRUJQVlA4WAoAAAAQAAAASgAARwAAQUxQSA8HAAABsIb/nyFJ0u8fUT1cjNG9tm3btm3bGBt7trG2jdnW2vbOTff02lsR/3/8XlRmVNU8z72PiAlArsdm73z57cePTtmyBc6h0V6wxP6/7er99quHhkDQcIdVvmciE188tj98Y8Rj1MT5TKTyGTS5nZo0psTntoCXBjiH43uYLGoKnAzfDI9rGUkmVYZL4aQujyE30KKRTInbN8dh48jEWlX+xYvU4bD0c4zGWuMbAyDNAPAktYAp8N9eJMth6dcYWRw5Hh5N9TihjCnyt3A5gqHPMbI48bvV4JojWPxtWhEZeR581s2MLFX+FQ5N9jiLWpb44xZwJR4XMrI08cd1mycY8BythMruAZACh/W+YyqL/AUcmu6xWw4jL4EvENxNZanxw7GQ5sHhl4xliT1LQwB47EtjaTIeDI9FULBYF7WEkZPhAYE8QS2LnAuPRdJhlfnUEuP80RB47EFjaeD9/SAlIg2REnhs9gVjEZWnw8PhRmpRCuwYBsGi6rHpAgYrmQc4rPANU4FFPjYcDouux0rPUDWRTPx5XfTDGVSStGj8y0A4NNg1UsRj4LSfaVEtBZ6LFtzJaKaauOAoOIdF23use/0PTKTyfmBkH41M7Jk2Gi0VX+ykrpFLtS3VVtza2trW1jp27Jjh/VG72sUPvPv5N98+PhgbfvTVt72vXX/sKAiynZe8e7/t7Vu4sHfhwoULe3t6e3t7e3oWfPz6vL+dtflgCBZfZqWlBwEyZPkV2wYAwOitj53wx1vuuvUvk47bfBgA53I6aWxweGvuJqjTrXfp4z3Gcv30rhNHA86VPc1odatqjMHIcO8OkIoAqDgscdK8n5losTQYE/t+uybElXRQU4NNgzHdvDK8QDD4vA+YUohqqdw0xsQff9cKL81KKVmI/OZUOGk5+FWmGC3Vb0HZewScq+lsSkopKv88ECNf5U+aGmwh8Q8D4BplWUkDHxiOZV9nbFRKGvjgMDigo2nJqnx0CNacT21YSlU+NQyCzkbUX+Vt/bBXNGtcqvKefiJdWRYKo1odKXAaMJWxxMysnhQ4F749xxJLU9A8i2kPLPkSNSWLIRqTVtXyTHkgOjKMC2bNmD5j1h8f/FCZouWkyNdH4GCqRSWZgpK0aDlJ+fbwnMgOgQDAwE0mfcxoOSnwavTvYJX24vQjtl5vkwMmdEdGy4k/c2ZnVneLb6lUPCAYOrOaNMfYswxOpD26q0exbH5nSloSlal93zocBICI8w57fEXLSIGXofWNswD4ineu4kVwcB9jTVTaU3t7dGQ9UwZIC3b8gZahfKW/tEI8yp3HGu8wWlCmJ3Z1ENeZ1V0gAoigBecwZphxR3iH/ArWmM9Ie2gXD/FAR1aX1EAAiEAqTzKWpciZqKDeCvZIdu+ODs4DQHtWp0AEhSLw2J+aoexGAx3O2BNwHoUddaFQBBAMeotaZvxsGbi64ADnUdqe1eXKCj1+zZhh3AoegOTBexQL8HRWd31H5qTIo4okr1wEaG/OZpos56KCZuZ1Sh0OK3zNrMlN68zqqkcwpi9v9iLVWd/oPur/qY6sblffZ3lzm9ae9UwD+vLmLFLdDbGcXzWtM+uZ+pb4HzXn+qZ1ZHVJHYB/J68TzW6KODzOWGb8fBm45nRmdbsaESkQ5/FrhrKkPAy+LhHvGtQlBSh0aFsdRzNaWeT9cPWIVATelXRkKLtcTbF43DIHK3/NjGTcC5U8j5HzftsG8a6uyO4c7zCVjwP3MGYoXxsOn1PBYg+Sn89cBuIdgK6sLikQ7x0W/wtjdQMcmZUC7+iHihSI9xjzKEMwfjl5LMQLOrO6K77ivUDQ/8A3GANnYvBL1Ayr8q6REF8rwO7vM6SkwfjZxLEQ15HVCQjgRm12+ctMMRl7l8EJjGWmWuVHpwyBAGjZ8mZNMdVqMPaNH4X2DOPn119/w60PPDPfSNWUUuRE9H+CschUVavGT2648rSL//xSpGoq1WD8/KyOjJQSiy3EVGv8ah1s+bNZjRVYrCYWWrSUqz/xuPYsizGEGDWVR97tcBWrKSUzVVVTtVithhCjpfzAmejIamTkRfC3MpRYjapZqteqvK0izTL7aWcM62A1mapZjUa1VK8F3jEQ0tWkFFLf8mh9llVVVTNVDQ2IkX/rJ4LO5lhgnNwiGPkwq9WSqJbyNTBcDOeAjmbEaHxnNwgc+s9WhlCglrI1GF/eGl6QY3WYxaCJn40bAg9AHHZ4gUmrMWaZBk3suWgQPGrn8ecQQrUasqMamfj21W0Qh1rxGHj8S0y0UA1RNcYQYmLi25eMhPMofIbGhn7VMXenQYAXlHqH/rv8/m1lbnznj3sMhnhB8UlTx9dOGD9u/Lhx48aNHzd+wlXnHbnFaA/AO+SKF2DgusdO+vt985556t5/TDl2rYEAvKAcAFZQOCDwBAAA0BoAnQEqSwBIAD4pEIZCIaELhopuDAFCWcAxF9EV1ePUKu/v0h7b7xGvWQ/yXqA8mbrDvQT/TvrGv3R/bf4B/4d/df/zkAHUZ5sE4n2gytocrIsVwo1fWW71WoV/Hf5z/rexP6IH65FpYwqgc/yjY1WVRjHtMoYw3oPfbQNbTfWa65PLaHNDOPevwbzUfANH1Rjw4/Q2ozlhWHEYEexB8AdTXf0MAl/tZW5MUxCsHbcA6w0iMRcFk3bwjhJf8jukbSt0lFM+s6CK1WP41zVw//2sFBO4Q+KJKxzLcLjgMAD+/+g7T//e6x7xoqTvQ9rP30hSOlCdQFpsBBfoFSGhlPZL7LxT/9/rMQiUsBY4qGLVMS0frvOW9Vmf0gCyYrFRDRa5PFJfctp27chXHa33lBB/AdDlhdUCUprk5SHqJk//thTeTCyOQKxFKYokl+euRJz4qAOv/4oaLfvXb79Cof2YzvKgj2D8fNYLddJxwhi0NuaHwt7/fphzddvTf2uFixXYoqCfl0FreivFYH6/Epa0FWvgV4xYes9NHMuRf22cNUAzf1M1wnrFD2aMOgwZDX/sZ85m0xeeNKYVMZy8MRyoIhjqPxQEz8+/yd2lvD16xvp3/xNnagJ6p8HxHZdznvE/4VenT/j1/pyf/ibzTodr7vQgIgwMXWyvYMbGjHvLqVmUYioBj7PCsa8/T1YyO4xfzcTecM7VAIqRzvZ77pUHiALGTy3pzbj/AGD2wyr/+9K6o6oyDn66dUUw7OdCJmhH6AIvZi0+luQ+V1M2K3qP/J0nKfZT5EoQS5TjM27ybuFMbD4HWWtWKtEs0HTAGYw/iLJhsUfNIzfS9uxJ3kzkNXN6Hic02qCKkqfZdVm0yr3FFx6euOiWWvTA9SnSfPqVPzhS/j74NXHNh8Hv3k/3ri4yfofjtcvgOY///1EedXbDJ2IrrbmLIWHfNBZo62Rl6MXNQ12QVuXSMtT+pQImHG9+1wzk+j9/NTfF7H0fpnrfl3RK/g0fI7lY7bLlc4565i+y6SY1mmLOLgx0lp2KXsX9fhdSe1RsH73hfSorzLf/1JPbfDz4jnP/r+c30hMbRSW8hcTQr03MA7eLLbbN1DypPSt3MsnbHHFz8O25Lo6osnBcUQp/3af6Yxzzz5qlvXbRED/FfKF580f91iR+zSx4EvntoDzrxAJawY5rnQiRcZIAHBaV3I6KS3N9TEU7py64cTHqB4Z94MQW9scRw2ASGkz/JzaK5l6VK/SAwNKTSAAYPk6m7pfOLXHNsP2gKhgDXr+0U3iuqwx5N/uk713v+/4ReDWT8NfgNW0sLiQyGcBzPm7CY4URNK38zQ1mlV7S2x8xR4PAcHy/RcqQ/OtQ3KTZMwLWtJnC1+pVpJC1U+3OG6EfX0TZiXv1It0roysw/iODm7CVhDXBjsqJdWn1LIQiWp//qoxbWk/A3mNrW5jjbc2wLQRRyYFZV0e37tJ47Bu6Ux9KWNHqIxoG2rJa6kMUsRTxaRI80pIs4m6znwMiUj6ljO7Idy3jTBB3N4MnliPGdDmk4WxLs/eL9VYGE1+XGRrgOSrEw0njgcisV8LXvPWS6uCtDowbGTbLKzo5zNZpQMWeyimwCX8uJj6x2aDWg9kFFY3i5/uf/fHm80YxcQgmVMBvIiOTqd5eWOfX3MJfEIO/awAAAA==';
+
+// La variante auto porte les deux monogrammes : le CSS montre la couleur en mode
+// clair et le blanc en mode sombre.
+const IMAGES: Record<Variante, { src: string; classe?: string }[]> = {
+  monogramme: [{ src: COULEUR }],
+  'monogramme-blanc': [{ src: BLANC }],
+  auto: [
+    { src: COULEUR, classe: 'dc-credit__monogramme--clair' },
+    { src: BLANC, classe: 'dc-credit__monogramme--sombre' },
+  ],
+  texte: [],
+};
+
+interface Props {
+  slug: string;
+  lang?: 'fr' | 'en';
+  variante?: Variante;
+  modeSombre?: ModeSombre;
+}
+
+const { slug, lang = 'fr', variante = 'monogramme', modeSombre = 'systeme' } = Astro.props;
+
+if (!SLUG_VALIDE.test(slug)) {
+  throw new Error(`CreditDonkey : slug « ${slug} » invalide. Minuscules, chiffres et tirets seulement.`);
+}
+
+const texte = TEXTES[lang];
+const images = IMAGES[variante];
+const href = `https://donkey-corp.fr/?utm_source=${slug}&utm_medium=credit`;
+---
+
+<p
+  class:list={['dc-credit', images.length > 0 && 'dc-credit--monogramme']}
+  lang={lang}
+  data-sombre={variante === 'auto' ? modeSombre : undefined}
+>
+  <span>{texte.intro}</span>
+  <a class="dc-credit__lien" href={href} target="_blank" rel="noopener">
+    {images.map(({ src, classe }) => (
+      <img class:list={['dc-credit__monogramme', classe]} src={src} alt="" width="25" height="24" decoding="async" />
+    ))}
+    <span class="dc-credit__nom">Donkey Corp</span>
+    <span class="dc-credit__masque"> {texte.nouvelOnglet}</span>
+  </a>
+</p>
+
+<style is:global>
+/* Le crédit hérite de la couleur et de la police du footer : rien n'est imposé.
+   « Discret » veut dire petit, jamais transparent : une opacité réduite casserait
+   le contraste choisi pour le footer. */
+.dc-credit {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.4em;
+  margin: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--dc-credit-taille, 0.8125rem);
+  line-height: 1.5;
+}
+
+/* Zone de protection de la charte : la moitié de la hauteur du monogramme (12 px)
+   tout autour de lui. */
+.dc-credit--monogramme {
+  column-gap: 12px;
+  padding-block: 12px;
+}
+
+/* Zone cliquable d'au moins 24 px de haut (WCAG 2.2, critère 2.5.8). */
+.dc-credit__lien {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px; /* écart monogramme-texte de la charte : 0,3 × 24 px */
+  min-height: 24px;
+  border-radius: 2px;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Souligné : la couleur étant celle du footer, c'est lui qui signale le lien. */
+.dc-credit__nom {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.dc-credit__lien:hover .dc-credit__nom {
+  text-decoration-thickness: 2px;
+}
+
+.dc-credit__lien:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* 24 px de haut : taille minimale du monogramme dans la charte. */
+.dc-credit__monogramme {
+  display: block;
+  flex: none;
+  width: 25px;
+  height: 24px;
+  max-width: none;
+}
+
+/* Variante auto : le monogramme couleur en mode clair, le blanc en mode sombre. */
+.dc-credit__monogramme--sombre {
+  display: none;
+}
+
+/* Le site suit le réglage de l'appareil (modeSombre="systeme"). */
+@media (prefers-color-scheme: dark) {
+  [data-sombre="systeme"] .dc-credit__monogramme--clair {
+    display: none;
+  }
+
+  [data-sombre="systeme"] .dc-credit__monogramme--sombre {
+    display: block;
+  }
+}
+
+/* Le site a son propre bouton (modeSombre="bouton") : il pose la classe « dark »
+   ou l'attribut data-theme="dark" sur la page, comme Tailwind ou next-themes.
+   Sans l'un des deux, le site est en mode clair, quel que soit l'appareil. */
+.dark [data-sombre="bouton"] .dc-credit__monogramme--clair,
+[data-theme="dark"] [data-sombre="bouton"] .dc-credit__monogramme--clair {
+  display: none;
+}
+
+.dark [data-sombre="bouton"] .dc-credit__monogramme--sombre,
+[data-theme="dark"] [data-sombre="bouton"] .dc-credit__monogramme--sombre {
+  display: block;
+}
+
+/* Lu par les lecteurs d'écran, invisible à l'écran. */
+.dc-credit__masque {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
