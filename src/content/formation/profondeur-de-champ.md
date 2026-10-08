@@ -14,7 +14,7 @@ published: true
 
 Quand vous regardez un portrait où le sujet se détache d'un arrière-plan fondu, ou un paysage d'une netteté cristalline du premier plan à l'horizon, vous voyez la **profondeur de champ** à l'œuvre. C'est l'un des outils créatifs les plus puissants en photo — et contrairement à ce qu'on croit, il ne dépend pas que de l'ouverture.
 
-<div class="svg-illustration" style="max-width: 600px; margin: 2rem auto; display: block;">
+<div class="svg-illustration" data-croquis="profondeur-de-champ" style="max-width: 600px; margin: 2rem auto; display: block;">
 <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagramme de profondeur de champ comparant f/1.8 avec une zone nette étroite et f/11 avec une zone nette large, montrant la caméra, le sujet et les zones floues">
 <style>
   .pdc-label { fill: #F0EDE8; font-family: system-ui, sans-serif; font-size: 13px; text-anchor: middle; font-weight: 600; }

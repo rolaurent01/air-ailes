@@ -1,0 +1,74 @@
+---
+// Cadre commun aux croquis interactifs : dessin, invitation, curseurs,
+// résultat en clair et zone aria-live pour les lecteurs d'écran.
+// Rendu dans un <template> par CroquisDeLecon.astro, puis activé par
+// src/lib/croquis/activation.ts à la place du croquis statique.
+
+interface Props {
+  nom: string;
+  /** Description du dessin pour les lecteurs d'écran */
+  description: string;
+}
+
+const { nom, description } = Astro.props;
+---
+
+<figure class="croquis" data-croquis-racine={nom}>
+  <div class="croquis__dessin" role="img" aria-label={description}>
+    <slot name="dessin" />
+  </div>
+  <p class="croquis__resultat" data-croquis-resultat></p>
+  <p class="croquis__invitation" aria-hidden="true">Bougez le curseur</p>
+  <div class="croquis__controles">
+    <slot name="controles" />
+  </div>
+  <p class="visually-hidden" aria-live="polite" data-croquis-annonce></p>
+  <slot name="legende" />
+</figure>
+
+<style>
+  .croquis {
+    max-width: 600px;
+    margin: var(--space-xl) auto;
+  }
+
+  .croquis__dessin :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .croquis .croquis__resultat {
+    min-height: 3.4em;
+    margin: var(--space-sm) 0 0;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-primary);
+    text-align: center;
+  }
+
+  .croquis .croquis__invitation {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .croquis__controles {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-xs);
+    padding: var(--space-md) var(--space-lg);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 2px;
+    background: rgba(240, 237, 232, 0.02);
+  }
+
+  @media (max-width: 768px) {
+    .croquis__controles {
+      padding: var(--space-sm) var(--space-md);
+    }
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+// Rend, pour une leçon donnée, les versions interactives de ses croquis dans
+// des <template> invisibles. src/lib/croquis/activation.ts les met à la place
+// des croquis statiques marqués data-croquis="<nom>" (amélioration progressive).
+import ProfondeurDeChamp from './ProfondeurDeChamp.astro';
+import ScriptsCroquis from './ScriptsCroquis.astro';
+
+interface Props {
+  slug: string;
+}
+
+const CROQUIS_PAR_LECON: Record<string, { nom: string; Composant: typeof ProfondeurDeChamp }[]> = {
+  'profondeur-de-champ': [{ nom: 'profondeur-de-champ', Composant: ProfondeurDeChamp }],
+};
+
+const croquis = CROQUIS_PAR_LECON[Astro.props.slug] ?? [];
+---
+
+{croquis.map(({ nom, Composant }) => (
+  <template data-croquis-modele={nom}>
+    <Composant />
+  </template>
+))}
+
+{croquis.length > 0 && <ScriptsCroquis />}

@@ -1,0 +1,138 @@
+---
+// Croquis interactif : profondeur de champ (leçon profondeur-de-champ).
+// Curseurs : ouverture (f/1.8 → f/16 par tiers) et distance au sujet (1 → 10 m).
+// Calculs optiques réels : 50 mm, plein format, cercle de confusion 0,03 mm.
+import CroquisInteractif from './CroquisInteractif.astro';
+import Curseur from './Curseur.astro';
+
+const OUVERTURES = [1.8, 2, 2.2, 2.5, 2.8, 3.2, 3.5, 4, 4.5, 5, 5.6, 6.3, 7.1, 8, 9, 10, 11, 13, 14, 16];
+const DISTANCES = [1, 1.5, 2, 3, 5, 10];
+const fr = (n: number) => n.toLocaleString('fr-FR');
+---
+
+<CroquisInteractif
+  nom="profondeur-de-champ"
+  description="Une scène avec des herbes au premier plan, une personne au milieu et des arbres au fond, puis un schéma vu de côté montrant la zone nette autour du sujet. Les curseurs changent l'ouverture et la distance au sujet ; le résultat est décrit sous le dessin."
+>
+  <svg slot="dessin" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <clipPath id="pdci-cadre"><rect x="20" y="10" width="560" height="200" /></clipPath>
+      <filter id="pdci-flou-arriere" x="-10%" y="-20%" width="120%" height="140%">
+        <feGaussianBlur stdDeviation="0" />
+      </filter>
+      <filter id="pdci-flou-avant" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="0" />
+      </filter>
+    </defs>
+    <style>
+      .pdci-frame { stroke: #F0EDE8; stroke-width: 1.5; fill: none; }
+      .pdci-fond { stroke: #7A7A72; stroke-width: 1.2; fill: none; stroke-linejoin: round; }
+      .pdci-arbre { stroke: #F0EDE8; stroke-width: 1.2; fill: none; opacity: 0.6; }
+      .pdci-sujet { stroke: #F0EDE8; stroke-width: 1.5; fill: #111111; stroke-linecap: round; }
+      .pdci-avant { stroke: #F0EDE8; stroke-width: 1.5; fill: none; stroke-linecap: round; }
+      .pdci-axe { stroke: #7A7A72; stroke-width: 1; stroke-dasharray: 4,4; }
+      .pdci-cam { stroke: #F0EDE8; stroke-width: 1.5; fill: none; }
+      .pdci-zone { fill: #F0EDE8; opacity: 0.08; }
+      .pdci-zone-ligne { stroke: #F0EDE8; stroke-width: 1; opacity: 0.5; }
+      .pdci-marque { stroke: #F0EDE8; stroke-width: 1.2; fill: #111111; }
+      .pdci-marque-fond { stroke: #7A7A72; stroke-width: 1; fill: none; }
+      .pdci-label { fill: #F0EDE8; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .pdci-tiny { fill: #7A7A72; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+    </style>
+
+    <!-- Scène -->
+    <rect x="20" y="10" width="560" height="200" fill="#111111" />
+    <g clip-path="url(#pdci-cadre)">
+      <g id="pdci-arriere">
+        <path d="M20,118 L90,78 L140,104 L210,62 L270,98 L330,70 L400,108 L470,74 L530,100 L580,86" class="pdci-fond" />
+        <line x1="20" y1="150" x2="580" y2="150" class="pdci-fond" opacity="0.5" />
+        <g class="pdci-arbre">
+          <line x1="70" y1="150" x2="70" y2="122" /><ellipse cx="70" cy="110" rx="13" ry="16" />
+          <line x1="130" y1="150" x2="130" y2="128" /><ellipse cx="130" cy="118" rx="10" ry="13" />
+          <line x1="190" y1="150" x2="190" y2="120" /><ellipse cx="190" cy="106" rx="15" ry="18" />
+          <line x1="410" y1="150" x2="410" y2="124" /><ellipse cx="410" cy="112" rx="12" ry="15" />
+          <line x1="470" y1="150" x2="470" y2="118" /><ellipse cx="470" cy="104" rx="16" ry="19" />
+          <line x1="535" y1="150" x2="535" y2="126" /><ellipse cx="535" cy="115" rx="11" ry="14" />
+        </g>
+      </g>
+      <!-- Sujet : toujours net, c'est lui qui reçoit la mise au point -->
+      <g>
+        <path d="M244,212 Q248,146 300,136 Q352,146 356,212" class="pdci-sujet" />
+        <circle cx="300" cy="102" r="24" class="pdci-sujet" />
+        <path d="M290,98 L295,98 M305,98 L310,98" class="pdci-sujet" />
+      </g>
+      <g id="pdci-avant">
+        <path d="M30,212 Q34,180 26,150 M44,212 Q46,176 58,140 M58,212 Q62,184 52,160 M72,212 Q70,178 84,152" class="pdci-avant" />
+        <line x1="104" y1="212" x2="100" y2="146" class="pdci-avant" />
+        <circle cx="100" cy="138" r="5" class="pdci-avant" />
+        <path d="M100,128 Q106,132 100,133 Q94,132 100,128 M110,138 Q106,144 105,138 Q106,132 110,138 M100,148 Q94,144 100,143 Q106,144 100,148 M90,138 Q94,132 95,138 Q94,144 90,138" class="pdci-avant" />
+        <path d="M520,212 Q524,182 514,158 M534,212 Q536,178 550,148 M548,212 Q552,186 544,166 M564,212 Q562,180 574,156" class="pdci-avant" />
+      </g>
+    </g>
+    <rect x="20" y="10" width="560" height="200" class="pdci-frame" />
+
+    <!-- Schéma vu de côté -->
+    <rect x="20" y="281" width="24" height="18" rx="3" class="pdci-cam" />
+    <rect x="44" y="285" width="8" height="10" rx="1.5" class="pdci-cam" />
+    <line x1="56" y1="290" x2="580" y2="290" class="pdci-axe" />
+    <rect id="pdci-zone" x="200" y="272" width="60" height="36" rx="3" class="pdci-zone" />
+    <line id="pdci-zone-g" x1="200" y1="272" x2="200" y2="308" class="pdci-zone-ligne" />
+    <line id="pdci-zone-d" x1="260" y1="272" x2="260" y2="308" class="pdci-zone-ligne" />
+    <text id="pdci-zone-texte" x="230" y="264" class="pdci-label">Zone nette</text>
+    <!-- Premier plan -->
+    <g id="pdci-m-avant">
+      <line x1="0" y1="296" x2="0" y2="284" class="pdci-marque" />
+      <circle cx="0" cy="282" r="3" class="pdci-marque" />
+    </g>
+    <!-- Sujet -->
+    <circle id="pdci-m-sujet" cx="230" cy="290" r="6" class="pdci-marque" />
+    <!-- Arrière-plan (30 m) -->
+    <g transform="translate(528,0)">
+      <line x1="0" y1="298" x2="0" y2="287" class="pdci-marque-fond" />
+      <ellipse cx="0" cy="282" rx="5" ry="6" class="pdci-marque-fond" />
+    </g>
+    <!-- Graduations : x = 60 + 515 × d / (d + 3) -->
+    <text x="189" y="326" class="pdci-tiny">1 m</text>
+    <text x="266" y="326" class="pdci-tiny">2 m</text>
+    <text x="382" y="326" class="pdci-tiny">5 m</text>
+    <text x="456" y="326" class="pdci-tiny">10 m</text>
+    <text x="528" y="326" class="pdci-tiny">30 m</text>
+    <text x="572" y="327" class="pdci-tiny">∞</text>
+  </svg>
+
+  <Fragment slot="controles">
+    <Curseur
+      nom="ouverture"
+      id="pdci-ouverture"
+      libelle="Ouverture"
+      valeurs={OUVERTURES}
+      affichages={OUVERTURES.map((n) => `f/${fr(n)}`)}
+      index={4}
+    />
+    <Curseur
+      nom="distance"
+      id="pdci-distance"
+      libelle="Distance au sujet"
+      valeurs={DISTANCES}
+      affichages={DISTANCES.map((d) => `${fr(d)} m`)}
+      index={2}
+    />
+  </Fragment>
+
+  <p slot="legende" class="croquis-legende">Objectif de 50 mm sur un capteur plein format. Le sujet reste net : c'est lui qui reçoit la mise au point.</p>
+</CroquisInteractif>
+
+<style>
+  .croquis-legende {
+    margin: var(--space-xs) 0 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-align: center;
+    font-style: italic;
+  }
+
+  :global(.croquis) .croquis-legende {
+    margin-bottom: 0;
+  }
+</style>

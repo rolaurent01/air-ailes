@@ -4,6 +4,7 @@ import FilAriane from '../components/FilAriane.astro';
 import NavParcours from '../components/NavParcours.astro';
 import OuJenSuis from '../components/OuJenSuis.astro';
 import Progression from '../components/Progression.astro';
+import CroquisDeLecon from '../components/croquis/CroquisDeLecon.astro';
 import type { Lecon } from '../lib/parcours';
 import { SOCIAL_LINKS } from '../lib/constants';
 
@@ -100,6 +101,7 @@ const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', mo
     </aside>
   </article>
   <Progression />
+  <CroquisDeLecon slug={slug} />
 </BaseLayout>
 
 <style>

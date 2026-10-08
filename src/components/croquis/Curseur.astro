@@ -1,0 +1,154 @@
+---
+// Curseur commun aux croquis interactifs : un vrai <input type="range">,
+// son libellé, et la valeur affichée en unité photo (f/2.8, 1/250 s…).
+// Le curseur parcourt les crans de `valeurs` ; `affichages` donne le texte de chaque cran.
+
+interface Props {
+  /** Nom utilisé par le script du croquis (data-curseur) */
+  nom: string;
+  id: string;
+  libelle: string;
+  valeurs: number[];
+  affichages: string[];
+  /** Cran sélectionné au départ */
+  index: number;
+}
+
+const { nom, id, libelle, valeurs, affichages, index } = Astro.props;
+---
+
+<div class="curseur">
+  <div class="curseur__entete">
+    <label for={id} class="curseur__libelle">{libelle}</label>
+    <output for={id} class="curseur__valeur" data-curseur-valeur>{affichages[index]}</output>
+  </div>
+  <input
+    type="range"
+    id={id}
+    class="curseur__piste"
+    min="0"
+    max={valeurs.length - 1}
+    step="1"
+    value={index}
+    aria-valuetext={affichages[index]}
+    data-curseur={nom}
+    data-valeurs={JSON.stringify(valeurs)}
+    data-affichages={JSON.stringify(affichages)}
+  />
+  <div class="curseur__bornes" aria-hidden="true">
+    <span>{affichages[0]}</span>
+    <span>{affichages[affichages.length - 1]}</span>
+  </div>
+</div>
+
+<style>
+  .curseur {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .curseur__entete {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-sm);
+  }
+
+  .curseur__libelle {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .curseur__valeur {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Piste fine comme les traits des croquis, zone tactile de 44 px de haut */
+  .curseur__piste {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+
+  .curseur__piste::-webkit-slider-runnable-track {
+    height: 1px;
+    background: rgba(240, 237, 232, 0.35);
+  }
+
+  .curseur__piste::-moz-range-track {
+    height: 1px;
+    background: rgba(240, 237, 232, 0.35);
+  }
+
+  .curseur__piste::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-text-primary);
+    background: var(--color-bg-secondary);
+    transition: background var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .curseur__piste::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-text-primary);
+    background: var(--color-bg-secondary);
+    transition: background var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .curseur__piste:hover::-webkit-slider-thumb,
+  .curseur__piste:active::-webkit-slider-thumb {
+    background: var(--color-text-primary);
+  }
+
+  .curseur__piste:hover::-moz-range-thumb,
+  .curseur__piste:active::-moz-range-thumb {
+    background: var(--color-text-primary);
+  }
+
+  .curseur__piste:focus {
+    outline: none;
+  }
+
+  .curseur__piste:focus-visible::-webkit-slider-thumb {
+    outline: 1px solid var(--color-text-primary);
+    outline-offset: 3px;
+  }
+
+  .curseur__piste:focus-visible::-moz-range-thumb {
+    outline: 1px solid var(--color-text-primary);
+    outline-offset: 3px;
+  }
+
+  .curseur__bornes {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -6px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .curseur__piste::-webkit-slider-thumb,
+    .curseur__piste::-moz-range-thumb {
+      transition: none;
+    }
+  }
+</style>
