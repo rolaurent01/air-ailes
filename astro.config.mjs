@@ -20,6 +20,9 @@ const ANCIENNES_LECONS = {
   'profondeur-de-champ': 'profondeur-de-champ',
   'raw-vs-jpeg': 'raw-vs-jpeg',
   'triangle-exposition': 'triangle-exposition',
+  // Les deux récits ont été supprimés : leur fond est repris dans ces leçons
+  'lumiere-et-portraits': 'lumiere-naturelle',
+  'dans-la-brume-des-alpes': 'paysage-photo',
 };
 
 export default defineConfig({

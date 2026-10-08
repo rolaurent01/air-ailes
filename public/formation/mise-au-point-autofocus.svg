@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- Anneaux flous -->
+  <circle cx="300" cy="200" r="130" fill="none" stroke="#7A7A72" stroke-width="6" stroke-opacity="0.12"/>
+  <circle cx="300" cy="200" r="100" fill="none" stroke="#7A7A72" stroke-width="4" stroke-opacity="0.2"/>
+  <circle cx="300" cy="200" r="72" fill="none" stroke="#7A7A72" stroke-width="2" stroke-opacity="0.35"/>
+  <!-- Sujet net -->
+  <circle cx="300" cy="200" r="28" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <circle cx="300" cy="200" r="3" fill="#F0EDE8" stroke="none"/>
+  <!-- Collimateur -->
+  <path d="M256,170 L256,156 L270,156" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <path d="M330,156 L344,156 L344,170" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <path d="M344,230 L344,244 L330,244" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <path d="M270,244 L256,244 L256,230" fill="none" stroke="#F0EDE8" stroke-width="1.2"/>
+  <!-- Grille de collimateurs inactifs -->
+  <rect x="150" y="110" width="10" height="10" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+  <rect x="440" y="110" width="10" height="10" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+  <rect x="150" y="280" width="10" height="10" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+  <rect x="440" y="280" width="10" height="10" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+  <rect x="295" y="90" width="10" height="10" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+  <rect x="295" y="300" width="10" height="10" fill="none" stroke="#7A7A72" stroke-width="0.6"/>
+</svg>

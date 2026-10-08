@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#111111"/>
+  <!-- Soleil levant -->
+  <circle cx="420" cy="118" r="18" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <circle cx="420" cy="118" r="30" fill="none" stroke="#F0EDE8" stroke-width="0.3" stroke-opacity="0.3"/>
+  <!-- Crêtes -->
+  <path d="M40,220 L120,150 L170,190 L250,110 L320,180 L380,140 L450,200 L500,170 L560,210" fill="none" stroke="#F0EDE8" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M40,236 L110,196 L160,220 L230,186 L300,222 L370,196 L440,228 L560,218" fill="none" stroke="#7A7A72" stroke-width="0.8" stroke-linejoin="round"/>
+  <!-- Mer de nuages -->
+  <path d="M40,250 Q100,238 160,250 T280,248 T400,250 T560,246" fill="none" stroke="#F0EDE8" stroke-width="0.6" stroke-opacity="0.5"/>
+  <path d="M40,266 Q110,256 180,266 T320,264 T460,266 T560,262" fill="none" stroke="#F0EDE8" stroke-width="0.5" stroke-opacity="0.3"/>
+  <path d="M40,282 Q120,274 200,282 T360,280 T560,280" fill="none" stroke="#F0EDE8" stroke-width="0.4" stroke-opacity="0.2"/>
+  <!-- Trépied au premier plan -->
+  <rect x="96" y="300" width="22" height="9" rx="1.5" fill="none" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="107" y1="309" x2="107" y2="320" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="107" y1="320" x2="90" y2="350" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="107" y1="320" x2="107" y2="352" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="107" y1="320" x2="124" y2="350" stroke="#F0EDE8" stroke-width="1"/>
+  <line x1="60" y1="352" x2="200" y2="352" stroke="#7A7A72" stroke-width="0.6"/>
+</svg>
