@@ -16,7 +16,7 @@ Vous avez déjà remarqué qu'une photo en intérieur tire sur le jaune, ou qu'u
 
 Bonne nouvelle : c'est l'un des réglages les plus simples à comprendre et à corriger. Surtout si vous shootez en RAW.
 
-<div class="svg-illustration" style="max-width: 600px; margin: 2rem auto; display: block;">
+<div class="svg-illustration" data-croquis="balance-des-blancs" style="max-width: 600px; margin: 2rem auto; display: block;">
 <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Échelle de température de couleur en Kelvin, de 2000K chaud ambré à 10000K froid bleuté, avec les préréglages bougie, tungstène, soleil, nuageux, ombre et ciel bleu">
 <style>
   .wb-label { fill: #F0EDE8; font-family: system-ui, sans-serif; font-size: 12px; text-anchor: middle; font-weight: 600; }

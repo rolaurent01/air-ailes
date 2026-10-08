@@ -1,0 +1,147 @@
+---
+// Croquis interactif : balance des blancs (leçon balance-des-blancs).
+// Source de lumière (bougie, tungstène, soleil, ombre) et réglage de l'appareil
+// (2 500 → 10 000 K). Calculs : src/lib/croquis/balance-des-blancs.ts
+import CroquisInteractif from './CroquisInteractif.astro';
+import Curseur from './Curseur.astro';
+import Choix from './Choix.astro';
+
+const KELVINS = Array.from({ length: 76 }, (_, i) => 2500 + i * 100);
+const kelvin = (k: number) => `${k.toLocaleString('fr-FR')} K`;
+// Barre des températures : x = 50 + 500 × (K − 1 500) / 8 500
+const xK = (k: number) => 50 + (500 * (k - 1500)) / 8500;
+---
+
+<CroquisInteractif
+  nom="balance-des-blancs"
+  description="Une nature morte avec une feuille blanche, un mug blanc, une carte grise et un vase, puis une échelle des températures de couleur avec la lumière de la scène et le réglage de l'appareil. La dominante de couleur du dessin change selon l'écart entre les deux ; le résultat est expliqué sous le dessin."
+>
+  <svg slot="dessin" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <clipPath id="bdbi-cadre"><rect x="20" y="10" width="560" height="200" /></clipPath>
+      <!-- Dominante de couleur : gains rouge / vert / bleu calculés à partir de l'écart en mireds -->
+      <filter id="bdbi-dominante" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+      </filter>
+      <linearGradient id="bdbi-degrade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#FF8C1A" />
+        <stop offset="15%" stop-color="#FFB347" />
+        <stop offset="30%" stop-color="#FFD699" />
+        <stop offset="45%" stop-color="#FFF2CC" />
+        <stop offset="55%" stop-color="#F5F5F5" />
+        <stop offset="70%" stop-color="#CCE0F5" />
+        <stop offset="85%" stop-color="#99C2EB" />
+        <stop offset="100%" stop-color="#5B8DB8" />
+      </linearGradient>
+    </defs>
+    <style>
+      .bdbi-frame { stroke: #F0EDE8; stroke-width: 1.5; fill: none; }
+      .bdbi-trait { stroke: #F0EDE8; stroke-width: 1.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .bdbi-trait-doux { stroke: #7A7A72; stroke-width: 1; fill: none; }
+      .bdbi-source { stroke: #F0EDE8; stroke-width: 1.2; fill: none; stroke-linecap: round; }
+      .bdbi-marque { stroke: #F0EDE8; stroke-width: 1.5; fill: #111111; }
+      .bdbi-label { fill: #F0EDE8; font-family: system-ui, sans-serif; font-size: 12px; font-weight: 600; text-anchor: middle; }
+      .bdbi-tiny { fill: #7A7A72; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+    </style>
+
+    <!-- Scène -->
+    <g clip-path="url(#bdbi-cadre)">
+      <g id="bdbi-scene" filter="url(#bdbi-dominante)">
+        <rect x="20" y="10" width="560" height="200" fill="#111111" />
+        <!-- Mur clair et table -->
+        <rect x="20" y="10" width="560" height="150" fill="#F0EDE8" opacity="0.1" />
+        <rect x="20" y="160" width="560" height="50" fill="#7A7A72" opacity="0.28" />
+        <line x1="20" y1="160" x2="580" y2="160" class="bdbi-trait-doux" />
+        <!-- Feuille blanche -->
+        <polygon points="80,176 196,168 214,196 92,204" fill="#F0EDE8" opacity="0.9" />
+        <!-- Mug blanc -->
+        <rect x="250" y="100" width="54" height="64" rx="4" fill="#F0EDE8" opacity="0.88" />
+        <path d="M304,114 Q326,116 324,132 Q322,148 304,148" class="bdbi-trait" />
+        <ellipse cx="277" cy="100" rx="27" ry="5" fill="#111111" opacity="0.35" />
+        <!-- Carte grise neutre -->
+        <rect x="350" y="70" width="58" height="92" fill="#7A7A72" />
+        <rect x="350" y="70" width="58" height="92" class="bdbi-trait-doux" />
+        <!-- Vase et branches -->
+        <path d="M462,162 Q448,140 458,118 L476,118 Q486,140 472,162 Z" class="bdbi-trait" />
+        <path d="M466,118 Q458,84 438,62 M468,118 Q474,80 496,58 M467,118 Q466,90 470,56" class="bdbi-trait" />
+        <!-- Sources de lumière (une seule visible) -->
+        <g class="bdbi-source" data-source="1900" style="display: none">
+          <rect x="534" y="54" width="10" height="34" rx="1" />
+          <line x1="539" y1="54" x2="539" y2="48" />
+          <path d="M539,30 Q546,40 539,47 Q532,40 539,30 Z" />
+        </g>
+        <g class="bdbi-source" data-source="3000">
+          <circle cx="539" cy="44" r="13" />
+          <path d="M533,57 L533,66 L545,66 L545,57 M534,70 L544,70" />
+          <path d="M534,48 Q539,38 544,48" />
+        </g>
+        <g class="bdbi-source" data-source="5500" style="display: none">
+          <circle cx="539" cy="46" r="11" />
+          <path d="M539,26 L539,31 M539,61 L539,66 M519,46 L524,46 M554,46 L559,46 M525,32 L528,35 M550,57 L553,60 M553,32 L550,35 M528,57 L525,60" />
+        </g>
+        <g class="bdbi-source" data-source="7500" style="display: none">
+          <path d="M518,52 Q520,40 532,42 Q538,30 552,36 Q564,36 562,48 Q568,56 558,60 L524,60 Q514,60 518,52 Z" />
+        </g>
+      </g>
+    </g>
+    <rect x="20" y="10" width="560" height="200" class="bdbi-frame" />
+
+    <!-- Échelle des températures -->
+    <rect x="50" y="248" width="500" height="10" rx="5" fill="url(#bdbi-degrade)" />
+    <text x={xK(2000)} y="282" class="bdbi-tiny">2 000 K</text>
+    <text x={xK(4000)} y="282" class="bdbi-tiny">4 000 K</text>
+    <text x={xK(6000)} y="282" class="bdbi-tiny">6 000 K</text>
+    <text x={xK(8000)} y="282" class="bdbi-tiny">8 000 K</text>
+    <text x={xK(10000)} y="282" class="bdbi-tiny">10 000 K</text>
+    <!-- Lumière de la scène : cercle au-dessus -->
+    <g id="bdbi-m-source" transform={`translate(${xK(3000)},0)`}>
+      <circle cx="0" cy="238" r="5" class="bdbi-marque" />
+      <line x1="0" y1="243" x2="0" y2="248" class="bdbi-trait-doux" />
+    </g>
+    <text id="bdbi-t-source" x={xK(3000)} y="228" class="bdbi-label">Lumière</text>
+    <!-- Réglage de l'appareil : triangle en dessous -->
+    <polygon id="bdbi-m-appareil" points="0,268 -6,276 6,276" transform={`translate(${xK(5500)},-6)`} class="bdbi-marque" />
+    <text id="bdbi-juste" x="300" y="298" class="bdbi-label" style="display: none">✓ Couleurs justes</text>
+  </svg>
+
+  <Fragment slot="controles">
+    <Choix
+      nom="source"
+      libelle="Lumière de la scène"
+      options={[
+        { valeur: '1900', libelle: 'Bougie · 1 900 K' },
+        { valeur: '3000', libelle: 'Tungstène · 3 000 K' },
+        { valeur: '5500', libelle: 'Soleil · 5 500 K' },
+        { valeur: '7500', libelle: 'Ombre · 7 500 K' },
+      ]}
+      index={1}
+    />
+    <Curseur
+      nom="appareil"
+      id="bdbi-appareil"
+      libelle="Balance des blancs de l'appareil"
+      valeurs={KELVINS}
+      affichages={KELVINS.map(kelvin)}
+      index={30}
+    />
+  </Fragment>
+
+  <p slot="legende" class="croquis-legende">
+    Cercle : la lumière réelle. Triangle : le réglage de l'appareil. Rapprochez le triangle du cercle.
+  </p>
+</CroquisInteractif>
+
+<style>
+  .croquis-legende {
+    margin: var(--space-xs) 0 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-align: center;
+    font-style: italic;
+  }
+
+  :global(.croquis) .croquis-legende {
+    margin-bottom: 0;
+  }
+</style>

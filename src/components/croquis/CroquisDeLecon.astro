@@ -4,6 +4,7 @@
 // des croquis statiques marqués data-croquis="<nom>" (amélioration progressive).
 import ProfondeurDeChamp from './ProfondeurDeChamp.astro';
 import TriangleExposition from './TriangleExposition.astro';
+import BalanceDesBlancs from './BalanceDesBlancs.astro';
 import ScriptsCroquis from './ScriptsCroquis.astro';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 const CROQUIS_PAR_LECON: Record<string, { nom: string; Composant: (props: Record<string, never>) => unknown }[]> = {
   'profondeur-de-champ': [{ nom: 'profondeur-de-champ', Composant: ProfondeurDeChamp }],
   'triangle-exposition': [{ nom: 'triangle-exposition', Composant: TriangleExposition }],
+  'balance-des-blancs': [{ nom: 'balance-des-blancs', Composant: BalanceDesBlancs }],
 };
 
 const croquis = CROQUIS_PAR_LECON[Astro.props.slug] ?? [];
