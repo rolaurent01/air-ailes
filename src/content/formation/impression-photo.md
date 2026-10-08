@@ -175,11 +175,39 @@ Vérifiez que le ratio de votre image correspond au ratio du tirage. Un capteur 
 **8. Tirage test ?**
 Pour un tirage important (grande taille, exposition, vente), commandez d'abord un tirage test en petit format. C'est un investissement minime qui évite les mauvaises surprises sur un tirage à 80 euros.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Un écran émet la lumière, un papier la réfléchit : un tirage est toujours moins contrasté et moins saturé.
+- Avant tout envoi, épreuvage écran (soft proof) avec le profil ICC du papier.
+- 300 dpi pour un tirage vu de près, 150 à 200 dpi pour un grand tirage vu de loin.
+- Netteté de sortie adaptée au papier : plus forte sur un papier mat.
+- Pour un tirage important, commandez d'abord un petit tirage test.
+
+</div>
+
+## Exercice
+
+<div class="encadre encadre--exercice">
+
+### Exercice du week-end : votre premier tirage test
+
+1. Choisissez une image que vous aimez, avec des ombres et des couleurs franches.
+2. Téléchargez le profil ICC du papier proposé par un labo en ligne, et faites l'épreuvage écran.
+3. Créez une copie virtuelle et ajustez-la pour le papier (ombres, saturation, luminosité).
+4. Exportez en suivant la checklist ci-dessus, et commandez un tirage en petit format (13 × 18 ou 15 × 20 cm).
+5. À réception, comparez-le à l'écran, à la lumière du jour près d'une fenêtre.
+
+Notez ce qui a changé. La prochaine fois, vous saurez de combien déboucher les ombres pour ce papier.
+
+</div>
+
 ---
 
 L'impression est l'aboutissement du travail photographique. C'est le moment où l'image quitte l'écran pour exister physiquement, dans un format qu'on peut toucher, encadrer, offrir. Préparer correctement ses fichiers n'est pas une corvée technique — c'est le dernier geste créatif avant que l'image rencontre le papier. Faites-le bien, et vos tirages vous donneront cette satisfaction unique que le numérique seul ne procure pas.
 
 ## Pour aller plus loin
 
-- [Colorimétrie photo : sRGB, Adobe RGB et profils ICC](/formation/colorimetrie-photo)
+- [Colorimétrie photo : sRGB, Adobe RGB et profils ICC](/formation/colorimetrie-photo) — la leçon précédente.
 - [Développer ses photos dans Lightroom : workflow en 7 étapes](/formation/lightroom-developpement)
+- [Construire un portfolio photo qui montre votre maîtrise](/formation/portfolio-photo) — la leçon suivante.

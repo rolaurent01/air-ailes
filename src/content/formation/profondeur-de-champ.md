@@ -141,6 +141,17 @@ Exemple concret : avec un 24 mm à f/11 sur plein format, l'hyperfocale est à e
 
 Des applications comme PhotoPills ou HyperFocal Pro calculent l'hyperfocale pour votre combinaison objectif/ouverture/capteur. C'est un outil précieux pour le paysagiste.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- La profondeur de champ dépend de trois facteurs : l'ouverture, la distance au sujet et la focale.
+- Pour isoler un sujet : grande ouverture, téléobjectif, proximité.
+- Pour tout avoir net : f/8 à f/11, grand-angle, mise au point à l'hyperfocale.
+- Au-delà de f/16 sur plein format (f/11 sur APS-C), la diffraction adoucit toute l'image.
+- Ne cherchez pas le « bon » réglage : demandez-vous ce qui doit être net.
+
+</div>
+
 ## Exercices portrait et paysage
 
 <div class="encadre encadre--exercice">
@@ -183,16 +194,13 @@ Prenez 5 photos de la même scène en déplaçant le point de mise au point du p
 
 </div>
 
-## L'essentiel à retenir
-
-La profondeur de champ est le résultat de trois facteurs : ouverture, distance au sujet et focale. En pratique :
-
-- **Portrait, macro, isoler un sujet** → grande ouverture + téléobjectif + proximité = flou maximal
-- **Paysage, architecture, tout net** → petite ouverture (f/8 – f/11) + grand-angle + hyperfocale = netteté maximale
+## Penser en intention
 
 Ne pensez pas en termes de « bon » ou « mauvais » réglage. Pensez en termes d'intention. Qu'est-ce que vous voulez raconter avec la netteté et le flou dans votre image ? La réponse à cette question dicte vos réglages.
 
 ## Pour aller plus loin
 
 - [Comprendre le triangle d'exposition](/formation/triangle-exposition)
-- [Composition photo : voir, organiser, raconter](/formation/composition-photo)
+- [Mise au point et autofocus](/formation/mise-au-point-autofocus) — la leçon suivante : placer la netteté exactement là où vous la voulez.
+- [Photo de paysage](/formation/paysage-photo) — l'hyperfocale appliquée sur le terrain.
+- [Bien débuter en macrophotographie](/formation/macro-photo) — quand la profondeur de champ se compte en millimètres.

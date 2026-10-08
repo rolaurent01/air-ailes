@@ -158,6 +158,17 @@ N'oubliez pas : la balance des blancs « juste » n'est pas toujours la meilleur
 
 Parfois, la « mauvaise » balance est la bonne. L'essentiel, c'est que le choix soit conscient — pas un accident.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- La balance des blancs compense la couleur de la lumière pour que le blanc reste blanc.
+- La balance automatique est juste dans la plupart des cas, mais elle varie d'une image à l'autre et « corrige » parfois une ambiance voulue.
+- Repères : environ 3 000 K sous une lampe à incandescence, 5 500 K au soleil, 7 000 K à l'ombre.
+- En RAW, elle se corrige sans aucune perte ; en JPEG, réglez-la juste à la prise de vue.
+- La balance « juste » n'est pas toujours la meilleure : choisissez-la consciemment.
+
+</div>
+
 ## Exercices : mêmes couleurs, lumières différentes
 
 <div class="encadre encadre--exercice">
@@ -197,11 +208,8 @@ Regardez comment l'ambiance change radicalement. Certaines scènes gagnent en é
 
 </div>
 
-## L'essentiel en trois phrases
-
-La balance des blancs compense la couleur de la lumière ambiante pour que le blanc apparaisse blanc. En RAW, c'est un réglage 100 % réversible — shootez en AWB et corrigez en post si besoin. En JPEG, réglez correctement dès la prise de vue, car la marge de correction est limitée.
-
 ## Pour aller plus loin
 
-- [Comprendre le format RAW vs JPEG](/formation/raw-vs-jpeg)
+- [La lumière naturelle : lire sa qualité, sa direction et sa couleur](/formation/lumiere-naturelle) — d'où viennent les couleurs de la lumière.
+- [RAW vs JPEG : quel format choisir et quand](/formation/raw-vs-jpeg) — la leçon suivante.
 - [Développer ses photos dans Lightroom](/formation/lightroom-developpement)

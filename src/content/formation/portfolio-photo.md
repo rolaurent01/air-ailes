@@ -134,9 +134,38 @@ Avant de mettre votre portfolio en ligne ou de le mettre à jour, passez en revu
 - Le site est responsive et les images s'adaptent à toutes les tailles d'écran
 - Les balises Open Graph sont en place pour un partage correct sur les réseaux sociaux
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Un portfolio montre le meilleur de ce que vous savez faire, pas tout ce que vous avez fait.
+- Trois passages de sélection : technique, cohérence, coup de cœur. Si vous hésitez, c'est non.
+- Organisez par projets de 5 à 12 images, avec une courte introduction.
+- L'image la plus forte en premier, la deuxième plus forte en dernier.
+- Mettez-le à jour régulièrement, par exemple chaque trimestre.
+
+</div>
+
+## Exercice
+
+<div class="encadre encadre--exercice">
+
+### Exercice du week-end : douze images, pas une de plus (1 heure)
+
+Prenez les photos de votre dernier voyage, ou vos 200 dernières images.
+
+1. **Premier passage** : éliminez tout défaut technique. Ne gardez que ce qui est net et correctement exposé.
+2. **Deuxième passage** : ne gardez que les images qui racontent la même chose ou partagent la même intention.
+3. **Troisième passage** : arrêtez-vous à **douze** images, celles que vous feriez encadrer.
+4. **Ordonnez-les** : la plus forte en premier, la deuxième plus forte en dernier.
+
+Montrez la série à quelqu'un et demandez-lui laquelle il retirerait. Retirez-la.
+
+</div>
+
 Un portfolio n'est jamais terminé. C'est un document vivant qui grandit avec vous. Mais à chaque instant, il doit refléter le meilleur de ce que vous savez faire — ni plus, ni moins.
 
 ## Pour aller plus loin
 
-- [Les fondamentaux de la composition photo](/formation/composition-photo) — pour renforcer la qualité de chaque image de votre portfolio.
-- [Développement Lightroom : tirer le meilleur de vos RAW](/formation/lightroom-developpement) — maîtriser le post-traitement, étape clé avant la publication.
+- [Réussir ses impressions photo sans mauvaises surprises](/formation/impression-photo) — la leçon précédente.
+- [Composition photo : voir, organiser, raconter](/formation/composition-photo) — pour renforcer la qualité de chaque image de votre portfolio.
+- [Droit à l'image : ce qu'un photographe doit savoir](/formation/droit-a-limage-photographie) — la leçon suivante : avant de publier des personnes.

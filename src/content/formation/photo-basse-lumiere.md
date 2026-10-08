@@ -143,6 +143,17 @@ Cette séquence — vitesse d'abord, ouverture ensuite, ISO en dernier recours �
 
 L'autofocus souffre dans l'obscurité. Quelques parades simples : visez une zone contrastée (un bord de fenêtre, une enseigne, une ligne de contraste), utilisez le collimateur central (souvent le plus sensible), ou passez en mise au point manuelle avec le focus peaking activé sur votre écran. Sur les boîtiers récents, l'AF fonctionne jusqu'à -6 EV environ, ce qui couvre la plupart des situations urbaines nocturnes.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Choisissez d'abord votre priorité : figer le mouvement, maximiser la netteté ou jouer l'ambiance.
+- La méthode : vitesse minimale d'abord, ouverture maximale ensuite, ISO en dernier recours.
+- À main levée, la vitesse doit rester au moins égale à 1/(focale) ; la stabilisation fait gagner quelques IL.
+- Testez chez vous votre ISO limite : c'est elle qui compte, pas la fiche technique.
+- En basse lumière, photographiez en RAW.
+
+</div>
+
 ## 7 exercices pratiques (intérieur, rue, crépuscule)
 
 La théorie ne vaut rien sans la pratique. Voici sept exercices progressifs pour ancrer ces principes dans vos réflexes.
@@ -209,5 +220,7 @@ Sur un pont ou un point de vue surplombant une route, installez votre trépied. 
 
 ## Pour aller plus loin
 
+- [La lumière naturelle : lire sa qualité, sa direction et sa couleur](/formation/lumiere-naturelle) — la leçon précédente.
 - [Comprendre le triangle d'exposition](/formation/triangle-exposition) — les bases indispensables pour maîtriser l'exposition dans toutes les situations.
-- [Lire et exploiter l'histogramme](/formation/histogramme-photo) — un outil essentiel pour vérifier votre exposition sur le terrain, surtout quand l'écran du boîtier vous trompe dans l'obscurité.
+- [Apprendre le flash](/formation/flash) — la leçon suivante : quand la lumière manque vraiment, en ajouter.
+- [Photo de paysage](/formation/paysage-photo) — la pose longue avec un filtre ND.

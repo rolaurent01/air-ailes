@@ -187,6 +187,17 @@ La force d'une image vient souvent de ce que vous **excluez** du cadre. Avant de
 
 Les meilleures photos ont souvent un seul sujet, un seul message. Pas deux, pas trois. Un.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Placez le sujet sur un point fort de la grille des tiers, ou centrez-le, mais par choix.
+- Les lignes guident le regard : diagonales pour le mouvement, courbes pour la douceur, convergentes pour la profondeur.
+- Un cadre dans le cadre et l'espace négatif renforcent le sujet.
+- Laissez de l'espace devant le regard ou le mouvement.
+- Simplifiez : un sujet, un message. Avant de déclencher, demandez-vous ce que vous pouvez enlever.
+
+</div>
+
 ## Exercices « 15 cadres » et grille d'auto-critique
 
 <div class="encadre encadre--exercice">
@@ -235,5 +246,6 @@ Commencez par la règle des tiers et les lignes directrices. Quand elles devienn
 
 ## Pour aller plus loin
 
-- [Comprendre le triangle d'exposition](/formation/triangle-exposition)
-- [Profondeur de champ : maîtriser le flou et la netteté](/formation/profondeur-de-champ)
+- [Profondeur de champ : maîtriser le flou et la netteté](/formation/profondeur-de-champ) — le flou est aussi un outil de composition.
+- [La lumière naturelle : lire sa qualité, sa direction et sa couleur](/formation/lumiere-naturelle) — la leçon suivante, et le module 3.
+- [Construire un portfolio photo qui montre votre maîtrise](/formation/portfolio-photo) — quand vient le moment de choisir vos meilleurs cadres.

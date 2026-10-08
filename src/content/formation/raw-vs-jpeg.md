@@ -148,7 +148,34 @@ Plutôt que des règles absolues, voici des recommandations fondées sur des cas
 
 **Un dernier mot sur le stockage.** Le coût du disque dur baisse chaque année. Un disque de 4 To coûte moins cher qu'un objectif d'entrée de gamme. Ne laissez pas l'argument du stockage vous priver de la flexibilité du RAW. En revanche, mettez en place une vraie stratégie de sauvegarde — perdre des RAW est bien plus douloureux que perdre des JPEG, précisément parce qu'ils contiennent davantage de valeur.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Le JPEG est une image déjà développée par l'appareil, en 8 bits : légère, rapide, mais figée.
+- Le RAW garde toutes les données du capteur, en 12 ou 14 bits : exposition et balance des blancs se rattrapent sans perte.
+- Le RAW a un coût : des fichiers plus lourds, du temps de développement, un logiciel.
+- Pendant l'apprentissage et en paysage : RAW. Dans le doute : RAW + JPEG.
+
+</div>
+
+## Exercice
+
+<div class="encadre encadre--exercice">
+
+### Exercice de ce soir : rattraper la même erreur en RAW et en JPEG (20 minutes)
+
+Réglez votre appareil en **RAW + JPEG**.
+
+1. Photographiez une scène d'intérieur avec une correction d'exposition de **−2 IL** : l'image sera nettement trop sombre.
+2. Photographiez la même scène, éclairée par une lampe, avec la balance des blancs réglée sur **« Lumière du jour »** : l'image sera très orange.
+3. Ouvrez les fichiers dans votre logiciel de développement. Sur chaque paire, appliquez la même correction au RAW et au JPEG : +2 IL d'exposition, puis une balance des blancs ramenée sur la lampe.
+
+Agrandissez les ombres à 100 %. Regardez le bruit, les dégradés, la couleur des zones sombres. Vous saurez ce que valent vraiment les « données en plus » du RAW.
+
+</div>
+
 ## Pour aller plus loin
 
-- [Développer ses RAW dans Lightroom](/formation/lightroom-developpement) — un guide pas à pas pour tirer le meilleur de vos fichiers bruts.
-- [Maîtriser la balance des blancs](/formation/balance-des-blancs) — comprendre et corriger la température de couleur, en prise de vue comme en post-production.
+- [Balance des blancs : obtenir des couleurs justes en toute lumière](/formation/balance-des-blancs) — la leçon précédente.
+- [Comment lire un histogramme en photo](/formation/histogramme-photo) — pour savoir quand vous êtes à la limite de ce que le fichier peut encaisser.
+- [Développer ses photos dans Lightroom](/formation/lightroom-developpement) — le module 4, là où vos RAW prennent vie.

@@ -152,9 +152,33 @@ Avant chaque publication d'une photo montrant une personne identifiable, vérifi
 - Consultez un avocat spécialisé en droit de la propriété intellectuelle et droit à l'image.
 - Les syndicats et associations de photographes professionnels proposent souvent des permanences juridiques gratuites.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Toute personne identifiable doit consentir à la diffusion de son image, pour un usage précis.
+- Photographier quelqu'un dans un lieu privé sans son consentement est interdit, même sans publier.
+- Pour un mineur, il faut l'accord des deux parents.
+- Seule une autorisation écrite vous protège : usage, durée, gratuité, droit de retrait, signatures.
+- Dans le doute, ne publiez pas.
+
+</div>
+
+## Exercice
+
+<div class="encadre encadre--exercice">
+
+### Exercice de ce soir : votre modèle d'autorisation (30 minutes)
+
+1. Rédigez votre propre modèle d'autorisation en reprenant les sept éléments de la section « Autorisations écrites » : parties, description des images, usages, durée, contrepartie, droit de retrait, signatures.
+2. Passez en revue les vingt dernières photos que vous avez publiées où apparaît une personne identifiable. Pour chacune, posez-vous la question : ai-je une autorisation qui couvre cet usage ?
+
+Si la réponse est non pour certaines, retirez-les ou demandez l'autorisation. Puis gardez votre modèle prêt pour votre prochaine séance.
+
+</div>
+
 Le droit à l'image n'est pas un obstacle à la créativité. C'est un cadre qui protège les personnes que nous photographions, et le respecter est une marque de professionnalisme. Un [portfolio bien construit](/formation/portfolio-photo) intègre naturellement ces précautions, et vos images n'en seront que plus sereines à publier.
 
 ## Pour aller plus loin
 
-- [Construire un portfolio photo qui montre votre maîtrise](/formation/portfolio-photo) — pour mettre en valeur vos images dans le respect du droit.
-- [SEO des images : rendre vos photos trouvables sur Google](/formation/seo-images-photo) — bonnes pratiques de publication web, y compris les métadonnées à vérifier.
+- [Construire un portfolio photo qui montre votre maîtrise](/formation/portfolio-photo) — la leçon précédente, pour mettre en valeur vos images dans le respect du droit.
+- [Photo au drone : composer vu du ciel](/formation/drone-photo) — la vie privée s'applique aussi vu d'en haut.

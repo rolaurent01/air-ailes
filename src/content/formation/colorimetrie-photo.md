@@ -164,11 +164,36 @@ Tout ce qui précède ne sert à rien si votre écran affiche n'importe quoi. Un
 
 Avant d'envoyer un fichier au labo, activez le Soft Proof dans Lightroom (touche S dans le module Développement). Chargez le profil ICC du papier que vous allez utiliser — la plupart des labos fournissent ces profils en téléchargement. Le soft proof simule à l'écran ce que l'impression donnera. Si les couleurs bougent, créez une copie virtuelle et ajustez spécifiquement pour l'impression. J'en parle en détail dans [mon article sur l'impression photo](/formation/impression-photo).
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Un espace couleur est une « boîte » théorique de couleurs ; un profil ICC décrit un appareil réel.
+- Exportez toujours dans l'espace de la destination : pour le web, sRGB.
+- Adobe RGB seulement pour un tirage fine art ou si le labo le demande.
+- En RAW, l'espace couleur du boîtier ne change que l'aperçu ; dans Lightroom, ne touchez à rien.
+- Calibrez votre écran régulièrement, environ une fois par mois.
+
+</div>
+
+## Exercice
+
+<div class="encadre encadre--exercice">
+
+### Exercice de ce soir : vérifier votre chaîne couleur (20 minutes)
+
+1. **Dans le boîtier**, vérifiez l'espace couleur réglé (souvent dans le menu « Prise de vue »).
+2. **Dans votre logiciel**, ouvrez votre réglage d'export habituel : quel espace couleur, quelle qualité ? Corrigez-le si besoin et enregistrez-le comme préréglage « Web ».
+3. **Téléchargez le profil ICC** d'un papier chez un labo en ligne, installez-le, puis ouvrez une photo très colorée (feuillage, ciel profond) en épreuvage écran avec ce profil. Activez l'avertissement de couleurs hors gamme.
+
+Notez quelles couleurs sortent de la gamme du papier. Ce sont elles qui vous réserveront des surprises au tirage.
+
+</div>
+
 ---
 
 La gestion des couleurs n'est pas un sujet sexy, mais c'est le lien invisible entre votre vision et ce que les autres voient. Maîtrisez ces bases — espace couleur, profil ICC, export adapté — et vos images arriveront à destination exactement comme vous les avez voulues. Ni plus ternes, ni plus saturées, ni décalées. Juste fidèles.
 
 ## Pour aller plus loin
 
-- [Réussir ses impressions photo sans mauvaises surprises](/formation/impression-photo)
-- [Développer ses photos dans Lightroom : workflow en 7 étapes](/formation/lightroom-developpement)
+- [Développer ses photos dans Lightroom : workflow en 7 étapes](/formation/lightroom-developpement) — la leçon précédente.
+- [Réussir ses impressions photo sans mauvaises surprises](/formation/impression-photo) — la leçon suivante, et le module 5.

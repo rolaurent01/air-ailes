@@ -156,7 +156,35 @@ L'histogramme de Lightroom, Capture One ou Camera Raw est votre meilleur allié 
 
 Règle d'or : si vous devez pousser les ombres de +80 ou plus pour récupérer du détail, c'est que l'exposition terrain n'était pas bonne. Le logiciel peut corriger beaucoup, mais il ne peut pas inventer de l'information qui n'existe pas. Mieux vaut un histogramme bien placé dès la prise de vue.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- L'écran arrière flatte vos images ; l'histogramme, lui, ne ment pas.
+- À gauche les ombres, à droite les hautes lumières : une courbe collée à un bord signale des détails perdus.
+- Il n'y a pas d'histogramme parfait : une scène de nuit doit pencher à gauche, une scène de neige à droite.
+- Activez les alertes de surexposition : elles montrent directement les zones brûlées.
+- La routine : déclencher, vérifier, corriger de 0,3 à 1 IL, recommencer.
+
+</div>
+
+## Exercice
+
+<div class="encadre encadre--exercice">
+
+### Exercice de ce soir : trois scènes, trois histogrammes (20 minutes)
+
+Activez l'affichage de l'histogramme et les alertes de surexposition sur votre appareil.
+
+1. **Une scène claire** : une feuille blanche sur un drap blanc, près d'une fenêtre.
+2. **Une scène sombre** : un objet noir sur un tissu sombre, dans un coin de la pièce.
+3. **Une scène contrastée** : la fenêtre elle-même, photographiée depuis l'intérieur avec un meuble au premier plan.
+
+Pour chacune, photographiez d'abord sans correction et regardez l'histogramme : où est la courbe, touche-t-elle un bord ? Puis appliquez la routine en corrigeant l'exposition jusqu'à ce que la scène claire paraisse claire, la sombre sombre, et que la fenêtre ne clignote plus. Notez les corrections utilisées : ce sont celles que votre appareil vous demandera le plus souvent.
+
+</div>
+
 ## Pour aller plus loin
 
-- [Comprendre le triangle d'exposition](/formation/triangle-exposition)
-- [Balance des blancs : obtenir des couleurs justes](/formation/balance-des-blancs)
+- [Comprendre le triangle d'exposition](/formation/triangle-exposition) — la leçon précédente.
+- [RAW vs JPEG : quel format choisir et quand](/formation/raw-vs-jpeg) — pour comprendre la marge de récupération dont parle cette leçon.
+- [Développer ses photos dans Lightroom](/formation/lightroom-developpement) — l'histogramme au développement.

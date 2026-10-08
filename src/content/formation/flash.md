@@ -281,6 +281,17 @@ La clé d'un éclairage au flash naturel est l'équilibre entre la lumière du f
 
 Cette séparation entre « exposition ambiance » et « exposition flash » est la compétence fondamentale du photographe au flash. Maîtrisez-la et vous ne craindrez plus aucune situation d'éclairage.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- TTL quand la situation change vite, avec la correction d'exposition flash ; manuel quand elle est stable.
+- Nombre-guide = distance × ouverture, à ISO 100 et en éclairage direct.
+- Distance doublée, lumière divisée par quatre : soit 2 IL de moins.
+- Rebondi sur un plafond ou un mur clair, le flash devient une grande source douce (au prix de 1 à 2 IL).
+- Au-delà de la vitesse de synchronisation (souvent 1/200 ou 1/250 s), passez en HSS.
+
+</div>
+
 ---
 
 <div class="encadre encadre--exercice">
@@ -293,5 +304,6 @@ Prenez votre flash, un mur blanc et un sujet patient (un ami, un membre de la fa
 
 ## Pour aller plus loin
 
+- [Réussir ses photos en basse lumière](/formation/photo-basse-lumiere) — la leçon précédente : les techniques sans lumière artificielle.
+- [La lumière naturelle : lire sa qualité, sa direction et sa couleur](/formation/lumiere-naturelle) — dure ou douce, les mêmes règles s'appliquent au flash.
 - [Maîtriser le triangle d'exposition](/formation/triangle-exposition) — les fondamentaux qui sous-tendent le réglage du flash comme de la lumière ambiante.
-- [Réussir ses photos en basse lumière](/formation/photo-basse-lumiere) — quand le flash n'est pas une option, les techniques pour photographier sans lumière artificielle.

@@ -188,6 +188,17 @@ L'export est l'étape où beaucoup de photographes perdent en qualité sans s'en
 
 Pour aller plus loin sur la gestion des espaces couleur, consultez [mon guide sur la colorimétrie](/formation/colorimetrie-photo). Et si vous préparez un tirage, mon article sur [l'impression photo](/formation/impression-photo) détaille le soft proofing et le choix du profil ICC.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- L'ordre : recadrer, balance des blancs, exposition, hautes lumières et ombres, blancs et noirs, couleur, détails, export.
+- Balance des blancs, exposition et hautes lumières/ombres font l'essentiel du travail.
+- Maintenez Alt (Option sur Mac) en réglant Blancs et Noirs pour voir l'écrêtage.
+- Vibrance plutôt que Saturation ; HSL pour travailler couleur par couleur.
+- Export web : JPEG, sRGB, qualité 80 à 85 %. Impression : TIFF 16 bits ou JPEG 100 %, 300 dpi.
+
+</div>
+
 ## Exercices et presets
 
 <div class="encadre encadre--exercice">

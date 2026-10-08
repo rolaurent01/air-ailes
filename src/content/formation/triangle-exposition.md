@@ -161,6 +161,17 @@ C'est exactement ce que font les modes **priorité ouverture (A/Av)** et **prior
 
 Le mode manuel devient utile quand les conditions de lumière sont stables et que vous voulez une exposition constante d'une image à l'autre — typiquement en studio, en panoramique, ou en vidéo. En extérieur avec une lumière changeante, les modes semi-auto restent souvent le choix le plus efficace, même chez les pros.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- Ouverture, vitesse et ISO font ensemble l'exposition : changer l'un oblige à compenser avec un autre.
+- Chacun a un second effet : l'ouverture règle la zone nette, la vitesse le mouvement, l'ISO le bruit.
+- À main levée, visez une vitesse au moins égale à 1/(focale) : 1/100 s avec un 100 mm.
+- L'ISO vient en dernier recours, le plus bas possible.
+- Partez de l'intention, réglez le paramètre prioritaire, puis équilibrez les deux autres.
+
+</div>
+
 ## Exercices pour progresser vite
 
 La théorie sans pratique, ça ne sert à rien. Voici deux exercices qui vont ancrer ces concepts dans vos doigts et votre regard.
@@ -211,5 +222,6 @@ Commencez dès aujourd'hui. Prenez votre appareil, passez en priorité ouverture
 
 ## Pour aller plus loin
 
-- [Lire l'histogramme pour vérifier](/formation/histogramme-photo)
+- [Les modes de l'appareil photo : Auto, P, A, S et M](/formation/modes-appareil-photo) — la leçon précédente, pour savoir quel mode laisse quel réglage à l'appareil.
+- [Lire l'histogramme pour vérifier](/formation/histogramme-photo) — la leçon suivante.
 - [Maîtriser la profondeur de champ](/formation/profondeur-de-champ)

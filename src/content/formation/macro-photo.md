@@ -163,6 +163,17 @@ La lumière est la matière première de toute photographie, mais en macro, elle
 
 En macro nature, la lumière traverse souvent des feuilles vertes avant d'atteindre le sujet. Cela crée une dominante verte visible surtout sur les insectes et les champignons. Photographiez en RAW pour corriger facilement la balance des blancs en post-traitement.
 
+<div class="encadre encadre--retenir">
+<p class="encadre__label">À retenir</p>
+
+- À 1:1 et f/8, la profondeur de champ ne fait qu'environ 2 mm.
+- Passez en mise au point manuelle et ajustez la netteté en avançant ou reculant le corps.
+- Trépied pour les sujets immobiles ; à main levée, 1/250 s minimum et des rafales courtes.
+- Fermer au-delà de f/16 coûte plus en diffraction que ça ne rapporte en profondeur ; pour plus de netteté, empilez plusieurs mises au point.
+- Photographiez en RAW pour corriger la dominante verte sous les feuillages.
+
+</div>
+
 ## Exercices : 3 cm, 10 cm, 30 cm
 
 Ces trois exercices vous font progresser en réduisant graduellement la distance au sujet.
@@ -203,5 +214,6 @@ C'est le territoire du 1:1. Trouvez un insecte coopératif — une coccinelle, u
 
 ## Pour aller plus loin
 
-- [Comprendre la profondeur de champ](/formation/profondeur-de-champ) — la théorie complète de la PDC appliquée à toutes les situations, pas seulement la macro.
-- [Maîtriser le triangle d'exposition](/formation/triangle-exposition) — les fondamentaux d'exposition qui sous-tendent chaque réglage macro.
+- [Profondeur de champ : maîtriser le flou et la netteté](/formation/profondeur-de-champ)
+- [Mise au point et autofocus](/formation/mise-au-point-autofocus) — la mise au point manuelle, la loupe et le focus peaking.
+- [Photo de paysage : netteté, filtres et sortie à l'aube](/formation/paysage-photo) — la leçon suivante.

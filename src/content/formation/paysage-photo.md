@@ -205,7 +205,7 @@ Si la réduction du bruit en pose longue est activée, l'appareil prend une seco
 La lumière du matin est souvent la plus belle de la journée : air plus pur, brumes de vallée, ciel qui change de minute en minute. Mais elle ne pardonne pas l'improvisation. On ne trouve pas un point de vue dans le noir, et la meilleure lumière dure parfois moins d'un quart d'heure.
 
 <div class="svg-illustration" style="max-width: 600px; margin: 2rem auto; display: block;">
-<svg viewBox="0 0 600 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Frise de l'aube : nuit, aube nautique, aube civile (heure bleue, environ 30 à 40 minutes), lever du soleil, heure dorée, puis lumière dure. Le repère conseille d'être installé au début de l'aube civile, environ 45 minutes avant le lever.">
+<svg viewBox="0 0 600 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Frise de l'aube : nuit, aube nautique, aube civile (l'heure bleue), lever du soleil, heure dorée, puis lumière dure. Le repère conseille d'être installé au début de l'aube civile, environ 45 minutes avant le lever.">
 <style>
   .aub-title { fill: #F0EDE8; font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
   .aub-bar { stroke: #7A7A72; stroke-width: 1; fill: none; }
@@ -236,7 +236,7 @@ La lumière du matin est souvent la plus belle de la journée : air plus pur, br
 <text x="180" y="138" class="aub-label">Aube nautique</text>
 <text x="180" y="152" class="aub-sub">le ciel bleuit à l'est</text>
 <text x="295" y="138" class="aub-label">Aube civile</text>
-<text x="295" y="152" class="aub-sub">heure bleue, 30 à 40 min</text>
+<text x="295" y="152" class="aub-sub">l'heure bleue</text>
 <text x="420" y="138" class="aub-label">Heure dorée</text>
 <text x="420" y="152" class="aub-sub">rasante, chaude</text>
 <text x="530" y="138" class="aub-label">Lumière dure</text>
