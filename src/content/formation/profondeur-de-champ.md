@@ -2,9 +2,13 @@
 title: "Profondeur de champ : maîtriser le flou et la netteté"
 slug: profondeur-de-champ
 date: 2026-02-01
+misAJour: 2026-10-08
 excerpt: "Comprenez la profondeur de champ et obtenez soit un arrière-plan flou en portrait, soit une netteté maximale en paysage. Réglages et exercices simples."
-cover_svg: /blog/profondeur-de-champ.svg
-tags: ["technique", "portrait", "paysage"]
+module: 1
+ordre: 4
+niveau: débutant
+objectif: "choisir entre un arrière-plan flou et une netteté de bout en bout, en jouant sur l'ouverture, la distance et la focale."
+cover_svg: /formation/profondeur-de-champ.svg
 published: true
 ---
 
@@ -178,5 +182,5 @@ Ne pensez pas en termes de « bon » ou « mauvais » réglage. Pensez en termes
 
 ## Pour aller plus loin
 
-- [Comprendre le triangle d'exposition](/blog/triangle-exposition)
-- [Composition photo : voir, organiser, raconter](/blog/composition-photo)
+- [Comprendre le triangle d'exposition](/formation/triangle-exposition)
+- [Composition photo : voir, organiser, raconter](/formation/composition-photo)

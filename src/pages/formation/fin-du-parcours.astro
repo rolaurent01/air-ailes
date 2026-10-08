@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EnTeteFormation from '../../components/EnTeteFormation.astro';
+import NavParcours from '../../components/NavParcours.astro';
+import { getParcours, urlLecon, URL_SOMMAIRE } from '../../lib/parcours';
+
+const parcours = await getParcours();
+const derniere = parcours[parcours.length - 1];
+---
+
+<BaseLayout
+  title="Fin du parcours — Formation photo"
+  description="Vous avez suivi toute la formation photo. Quelques pistes pour continuer à progresser."
+>
+  <section class="formation">
+    <EnTeteFormation
+      surtitre="Fin du parcours"
+      titre="Et maintenant ?"
+      sousTitre={`Vous avez traversé les ${parcours.length} leçons. La suite ne se lit plus : elle se photographie.`}
+      filAriane={[
+        { libelle: 'Accueil', href: '/' },
+        { libelle: 'Formation', href: URL_SOMMAIRE },
+        { libelle: 'Fin du parcours' },
+      ]}
+    />
+
+    <div class="formation-fin">
+      <ol class="formation-fin__pistes">
+        <li>
+          <strong>Refaites un exercice d'il y a un mois.</strong> Le même lieu, les mêmes consignes. La comparaison
+          avec vos premières images vous montrera le chemin parcouru mieux que n'importe quelle leçon.
+        </li>
+        <li>
+          <strong>Choisissez un sujet et tenez-le.</strong> Une série de douze images sur un seul thème vous apprendra
+          plus que cent photos dispersées.
+        </li>
+        <li>
+          <strong>Revenez aux leçons quand une photo vous résiste.</strong> Le <a href={URL_SOMMAIRE}>sommaire</a> reste
+          là, et chaque leçon tient sur une lecture.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <NavParcours
+    precedent={{ href: urlLecon(derniere.data.slug), etiquette: 'Dernière leçon', titre: derniere.data.title }}
+    suivant={{ href: '/galeries', etiquette: 'Voir où ça mène', titre: 'Les galeries' }}
+  />
+</BaseLayout>
+
+<style>
+  .formation {
+    padding-block: var(--space-3xl) var(--space-xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .formation-fin {
+    max-width: 65ch;
+    margin-inline: auto;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-primary);
+  }
+
+  .formation-fin__pistes {
+    padding-left: 1.5em;
+  }
+
+  .formation-fin__pistes li {
+    margin-bottom: 1em;
+  }
+
+  .formation-fin__pistes strong {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .formation-fin a {
+    color: var(--color-text-primary);
+    border-bottom: 1px solid rgba(240, 237, 232, 0.3);
+    transition: border-color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .formation-fin a:hover {
+    border-color: var(--color-text-primary);
+    opacity: 1;
+  }
+</style>

@@ -2,13 +2,17 @@
 title: "Développer ses photos dans Lightroom : workflow en 7 étapes"
 slug: lightroom-developpement
 date: 2026-01-29
+misAJour: 2026-10-08
 excerpt: "Une méthode simple et non destructive pour développer vos photos dans Lightroom : balance des blancs, exposition, tonalité, couleur, détails et export."
-cover_svg: /blog/lightroom-developpement.svg
-tags: ["post-production", "lightroom", "workflow"]
+module: 4
+ordre: 1
+niveau: intermédiaire
+objectif: "développer une photo dans Lightroom en sept étapes, de la balance des blancs à l'export, sans jamais abîmer l'original."
+cover_svg: /formation/lightroom-developpement.svg
 published: true
 ---
 
-Développer une photo, ce n'est pas la « retoucher ». C'est la révéler. Quand vous shootez en RAW — et si vous ne le faites pas encore, allez lire [mon article sur le RAW vs JPEG](/blog/raw-vs-jpeg) — votre boîtier capture une quantité énorme d'information. Mais cette information brute est plate, terne, sans contraste. C'est normal : c'est un négatif numérique. Le développement, c'est le passage de ce négatif à l'image finale que vous aviez en tête au moment du déclenchement.
+Développer une photo, ce n'est pas la « retoucher ». C'est la révéler. Quand vous shootez en RAW — et si vous ne le faites pas encore, allez lire [mon article sur le RAW vs JPEG](/formation/raw-vs-jpeg) — votre boîtier capture une quantité énorme d'information. Mais cette information brute est plate, terne, sans contraste. C'est normal : c'est un négatif numérique. Le développement, c'est le passage de ce négatif à l'image finale que vous aviez en tête au moment du déclenchement.
 
 Lightroom est l'outil idéal pour ça. Non destructif, rapide, pensé pour traiter des volumes. Voici ma méthode en 7 étapes, celle que j'applique à chaque image depuis des années. Elle n'a rien de dogmatique — c'est un cadre, pas une prison. Mais elle vous évitera de tourner en rond dans les curseurs.
 
@@ -120,11 +124,11 @@ Deux approches :
 - **La pipette** : cliquez sur un élément neutre de l'image (gris moyen, blanc non cramé). Lightroom calcule la température et la teinte automatiquement. Efficace pour les photos de studio ou les scènes avec un élément neutre identifiable.
 - **Les curseurs** : Température (bleu ↔ jaune) et Teinte (vert ↔ magenta). C'est la méthode que je préfère pour les paysages, parce qu'on ne cherche pas forcément une WB « juste » — on cherche une WB qui sert l'image. Un coucher de soleil un peu plus chaud que la réalité, c'est souvent mieux.
 
-Pour approfondir la théorie de la couleur, jetez un oeil à [mon article sur la colorimétrie photo](/blog/colorimetrie-photo).
+Pour approfondir la théorie de la couleur, jetez un oeil à [mon article sur la colorimétrie photo](/formation/colorimetrie-photo).
 
 ### Étape 3 : Exposition et contraste
 
-Le curseur Exposition agit comme un correcteur global. +1 IL revient à ouvrir d'un diaphragme. Ajustez-le pour que les tons moyens de votre image soient là où vous les voulez. Surveillez l'[histogramme](/blog/histogramme-photo) en haut à droite : l'idée n'est pas de centrer la montagne de pixels à tout prix, mais d'éviter les écrêtages sauf choix créatif assumé.
+Le curseur Exposition agit comme un correcteur global. +1 IL revient à ouvrir d'un diaphragme. Ajustez-le pour que les tons moyens de votre image soient là où vous les voulez. Surveillez l'[histogramme](/formation/histogramme-photo) en haut à droite : l'idée n'est pas de centrer la montagne de pixels à tout prix, mais d'éviter les écrêtages sauf choix créatif assumé.
 
 Le Contraste agit sur la courbe de manière symétrique — il pousse les ombres vers le bas et les hautes lumières vers le haut. J'utilise rarement ce curseur au-delà de +15 ou -15 ; je préfère sculpter le contraste avec les curseurs suivants, qui sont bien plus précis.
 
@@ -182,7 +186,7 @@ L'export est l'étape où beaucoup de photographes perdent en qualité sans s'en
 - Résolution : 300 dpi, taille réelle du tirage
 - Netteté de sortie : « Mat » ou « Brillant » selon le papier, « Élevée »
 
-Pour aller plus loin sur la gestion des espaces couleur, consultez [mon guide sur la colorimétrie](/blog/colorimetrie-photo). Et si vous préparez un tirage, mon article sur [l'impression photo](/blog/impression-photo) détaille le soft proofing et le choix du profil ICC.
+Pour aller plus loin sur la gestion des espaces couleur, consultez [mon guide sur la colorimétrie](/formation/colorimetrie-photo). Et si vous préparez un tirage, mon article sur [l'impression photo](/formation/impression-photo) détaille le soft proofing et le choix du profil ICC.
 
 ## Exercices et presets
 
@@ -208,6 +212,6 @@ Le développement dans Lightroom est un geste technique, mais surtout un geste c
 
 ## Pour aller plus loin
 
-- [RAW vs JPEG : pourquoi shooter en RAW](/blog/raw-vs-jpeg)
-- [Lire et comprendre l'histogramme](/blog/histogramme-photo)
-- [Colorimétrie photo : sRGB, Adobe RGB et profils ICC](/blog/colorimetrie-photo)
+- [RAW vs JPEG : pourquoi shooter en RAW](/formation/raw-vs-jpeg)
+- [Lire et comprendre l'histogramme](/formation/histogramme-photo)
+- [Colorimétrie photo : sRGB, Adobe RGB et profils ICC](/formation/colorimetrie-photo)

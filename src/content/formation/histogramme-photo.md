@@ -2,9 +2,13 @@
 title: "Comment lire un histogramme en photo"
 slug: histogramme-photo
 date: 2026-01-22
+misAJour: 2026-10-08
 excerpt: "L'histogramme vous aide à vérifier l'exposition sur le terrain. Apprenez à lire luminance et RVB, repérez le clipping et corrigez avant qu'il ne soit trop tard."
-cover_svg: /blog/histogramme-photo.svg
-tags: ["technique", "exposition", "post-production"]
+module: 1
+ordre: 3
+niveau: intermédiaire
+objectif: "lire l'histogramme de votre boîtier, repérer les zones brûlées ou bouchées et corriger l'exposition avant de quitter les lieux."
+cover_svg: /formation/histogramme-photo.svg
 published: true
 ---
 
@@ -154,5 +158,5 @@ Règle d'or : si vous devez pousser les ombres de +80 ou plus pour récupérer d
 
 ## Pour aller plus loin
 
-- [Comprendre le triangle d'exposition](/blog/triangle-exposition)
-- [Balance des blancs : obtenir des couleurs justes](/blog/balance-des-blancs)
+- [Comprendre le triangle d'exposition](/formation/triangle-exposition)
+- [Balance des blancs : obtenir des couleurs justes](/formation/balance-des-blancs)

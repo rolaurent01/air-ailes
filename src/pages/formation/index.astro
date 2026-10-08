@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EnTeteFormation from '../../components/EnTeteFormation.astro';
+import LeconCarte from '../../components/LeconCarte.astro';
+import { getParcours, leconsDuModule, MODULES, urlModule } from '../../lib/parcours';
+
+const parcours = await getParcours();
+const modules = MODULES.map((module) => ({ module, lecons: leconsDuModule(parcours, module.numero) }))
+  .filter(({ lecons }) => lecons.length > 0);
+---
+
+<BaseLayout
+  title="Formation Photo — Apprendre la Photographie pas à pas"
+  description="Une formation photo gratuite et progressive, du mode automatique au tirage : réglages, composition, lumière, développement, avec un exercice pratique par leçon."
+  ogImage={parcours[0] ? `/og/${parcours[0].data.slug}.png` : undefined}
+>
+  <section class="formation">
+    <EnTeteFormation
+      titre="Formation"
+      sousTitre="Un parcours pas à pas, du mode automatique jusqu'au tirage. Chaque leçon se termine par un exercice à faire appareil en main."
+    />
+
+    <div class="formation__compte">
+      <span id="lecon-compte">{parcours.length}</span> leçons
+    </div>
+
+    <div class="formation__modules">
+      {modules.map(({ module, lecons }) => (
+        <section class="formation-module" aria-labelledby={`module-${module.numero}`}>
+          <header class="formation-module__entete">
+            <p class="formation-module__numero">Module {module.numero}</p>
+            <h2 class="formation-module__titre" id={`module-${module.numero}`}>
+              <a href={urlModule(module)}>{module.titre}</a>
+            </h2>
+            <p class="formation-module__intro">{module.intro}</p>
+          </header>
+          <ol class="formation-module__lecons" role="list">
+            {lecons.map((lecon, i) => (
+              <LeconCarte lecon={lecon} numero={`${module.numero}.${i + 1}`} />
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .formation {
+    padding-block: var(--space-3xl) var(--space-2xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  /* --- Compte --- */
+  .formation__compte {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* --- Modules --- */
+  .formation__modules {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
+  .formation-module.hidden {
+    display: none;
+  }
+
+  .formation-module__entete {
+    padding-inline: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  .formation-module__numero {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    margin-bottom: var(--space-xs);
+  }
+
+  .formation-module__titre {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    margin-bottom: var(--space-xs);
+  }
+
+  .formation-module__titre a {
+    color: var(--color-text-primary);
+  }
+
+  .formation-module__intro {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    max-width: 60ch;
+  }
+
+  .formation-module__lecons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--color-border-subtle);
+    padding-top: var(--space-sm);
+  }
+
+  @media (max-width: 768px) {
+    .formation-module__entete {
+      padding-inline: 0;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ANIMATION_EASING } from '../../lib/constants';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Apparition des modules au défilement (même animation que les anciennes cartes)
+  function animerModules(): void {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll<HTMLElement>('.formation-module').forEach((module) => {
+      gsap.set(module, { opacity: 0, y: 30 });
+      gsap.to(module, {
+        opacity: 1, y: 0, duration: 0.6,
+        ease: ANIMATION_EASING,
+        scrollTrigger: { trigger: module, start: 'top bottom-=10%', once: true },
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    if (!document.querySelector('.formation__modules')) return;
+    ScrollTrigger.getAll().forEach((t) => t.kill());
+    animerModules();
+  });
+</script>

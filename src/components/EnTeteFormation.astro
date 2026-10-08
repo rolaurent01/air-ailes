@@ -1,0 +1,76 @@
+---
+// En-tête des pages de la formation (sommaire, modules, fin de parcours).
+// Styles et animation du titre repris de l'ancienne page /blog.
+import FilAriane from './FilAriane.astro';
+
+interface Props {
+  titre: string;
+  surtitre?: string;
+  sousTitre?: string;
+  filAriane?: { libelle: string; href?: string }[];
+}
+
+const { titre, surtitre, sousTitre, filAriane } = Astro.props;
+---
+
+<div class="formation-entete">
+  {filAriane && (
+    <div class="formation-entete__fil">
+      <FilAriane elements={filAriane} />
+    </div>
+  )}
+  {surtitre && <p class="formation-entete__surtitre">{surtitre}</p>}
+  <h1 class="formation-entete__titre" id="formation-titre">{titre}</h1>
+  {sousTitre && <p class="formation-entete__sous-titre">{sousTitre}</p>}
+  <slot />
+</div>
+
+<style>
+  .formation-entete {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .formation-entete__fil {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .formation-entete__surtitre {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    margin-bottom: var(--space-sm);
+  }
+
+  .formation-entete__titre {
+    font-size: clamp(2rem, 6vw, var(--font-size-2xl));
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wider);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .formation-entete__sous-titre {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    max-width: 50ch;
+    margin-inline: auto;
+    line-height: var(--line-height-relaxed);
+  }
+</style>
+
+<script>
+  import { animateText } from '../lib/animations/text';
+
+  document.addEventListener('astro:page-load', () => {
+    const titre = document.getElementById('formation-titre');
+    if (!titre) return;
+    // Lettre par lettre pour un mot seul ; mot par mot sinon, pour ne pas couper un mot en fin de ligne
+    const plusieursMots = (titre.textContent ?? '').trim().includes(' ');
+    animateText(titre, plusieursMots ? { mode: 'words', staggerDelay: 0.08 } : { mode: 'letters', staggerDelay: 0.05 });
+  });
+</script>

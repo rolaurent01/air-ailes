@@ -2,9 +2,13 @@
 title: "Colorimétrie photo : sRGB, Adobe RGB et profils ICC"
 slug: colorimetrie-photo
 date: 2026-02-05
+misAJour: 2026-10-08
 excerpt: "Comprenez les espaces couleur et les profils ICC sans vous perdre. Choisissez sRGB ou Adobe RGB selon le web ou l'impression, avec une méthode claire."
-cover_svg: /blog/colorimetrie-photo.svg
-tags: ["post-production", "couleur", "avancé"]
+module: 4
+ordre: 2
+niveau: avancé
+objectif: "choisir entre sRGB et Adobe RGB selon la destination de l'image, et comprendre à quoi sert un profil ICC."
+cover_svg: /formation/colorimetrie-photo.svg
 published: true
 ---
 
@@ -158,7 +162,7 @@ Tout ce qui précède ne sert à rien si votre écran affiche n'importe quoi. Un
 
 ### 5. Soft proof avant impression
 
-Avant d'envoyer un fichier au labo, activez le Soft Proof dans Lightroom (touche S dans le module Développement). Chargez le profil ICC du papier que vous allez utiliser — la plupart des labos fournissent ces profils en téléchargement. Le soft proof simule à l'écran ce que l'impression donnera. Si les couleurs bougent, créez une copie virtuelle et ajustez spécifiquement pour l'impression. J'en parle en détail dans [mon article sur l'impression photo](/blog/impression-photo).
+Avant d'envoyer un fichier au labo, activez le Soft Proof dans Lightroom (touche S dans le module Développement). Chargez le profil ICC du papier que vous allez utiliser — la plupart des labos fournissent ces profils en téléchargement. Le soft proof simule à l'écran ce que l'impression donnera. Si les couleurs bougent, créez une copie virtuelle et ajustez spécifiquement pour l'impression. J'en parle en détail dans [mon article sur l'impression photo](/formation/impression-photo).
 
 ---
 
@@ -166,5 +170,5 @@ La gestion des couleurs n'est pas un sujet sexy, mais c'est le lien invisible en
 
 ## Pour aller plus loin
 
-- [Réussir ses impressions photo sans mauvaises surprises](/blog/impression-photo)
-- [Développer ses photos dans Lightroom : workflow en 7 étapes](/blog/lightroom-developpement)
+- [Réussir ses impressions photo sans mauvaises surprises](/formation/impression-photo)
+- [Développer ses photos dans Lightroom : workflow en 7 étapes](/formation/lightroom-developpement)

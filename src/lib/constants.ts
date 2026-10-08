@@ -24,7 +24,7 @@ export const HOVER_DURATION = 0.25;
 export const NAV_LINKS = [
   { label: 'Galeries', href: '/galeries' },
   { label: 'Vidéos', href: '/videos' },
-  { label: 'Formation', href: '/blog' },
+  { label: 'Formation', href: '/formation' },
   { label: 'À propos', href: '/a-propos' },
 ] as const;
 

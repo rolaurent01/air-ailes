@@ -2,9 +2,13 @@
 title: "Droit à l'image : ce qu'un photographe doit savoir"
 slug: droit-a-limage-photographie
 date: 2026-01-01
+misAJour: 2026-10-08
 excerpt: "Avant de publier, connaissez les règles du droit à l'image, le consentement (notamment pour les mineurs), et les bons réflexes pour éviter les litiges."
-cover_svg: /blog/droit-a-limage-photographie.svg
-tags: ["juridique", "professionnel", "publication"]
+module: 5
+ordre: 3
+niveau: débutant
+objectif: "savoir quand une autorisation est nécessaire avant de publier la photo d'une personne, et ce qu'elle doit préciser."
+cover_svg: /formation/droit-a-limage-photographie.svg
 published: true
 ---
 
@@ -148,9 +152,9 @@ Avant chaque publication d'une photo montrant une personne identifiable, vérifi
 - Consultez un avocat spécialisé en droit de la propriété intellectuelle et droit à l'image.
 - Les syndicats et associations de photographes professionnels proposent souvent des permanences juridiques gratuites.
 
-Le droit à l'image n'est pas un obstacle à la créativité. C'est un cadre qui protège les personnes que nous photographions, et le respecter est une marque de professionnalisme. Un [portfolio bien construit](/blog/portfolio-photo) intègre naturellement ces précautions, et vos images n'en seront que plus sereines à publier.
+Le droit à l'image n'est pas un obstacle à la créativité. C'est un cadre qui protège les personnes que nous photographions, et le respecter est une marque de professionnalisme. Un [portfolio bien construit](/formation/portfolio-photo) intègre naturellement ces précautions, et vos images n'en seront que plus sereines à publier.
 
 ## Pour aller plus loin
 
-- [Construire un portfolio photo qui montre votre maîtrise](/blog/portfolio-photo) — pour mettre en valeur vos images dans le respect du droit.
-- [SEO des images : rendre vos photos trouvables sur Google](/blog/seo-images-photo) — bonnes pratiques de publication web, y compris les métadonnées à vérifier.
+- [Construire un portfolio photo qui montre votre maîtrise](/formation/portfolio-photo) — pour mettre en valeur vos images dans le respect du droit.
+- [SEO des images : rendre vos photos trouvables sur Google](/formation/seo-images-photo) — bonnes pratiques de publication web, y compris les métadonnées à vérifier.

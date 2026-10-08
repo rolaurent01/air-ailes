@@ -1,0 +1,80 @@
+---
+// Fil d'Ariane de la formation + données structurées BreadcrumbList (JSON-LD).
+// Le dernier élément est la page courante : il n'a pas de lien.
+
+interface Props {
+  elements: { libelle: string; href?: string }[];
+}
+
+const { elements } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: elements.map((el, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: el.libelle,
+    item: new URL(el.href ?? Astro.url.pathname, Astro.site).href,
+  })),
+};
+---
+
+<nav class="fil-ariane" aria-label="Fil d'Ariane">
+  <ol class="fil-ariane__liste">
+    {elements.map((el, i) => (
+      <li class="fil-ariane__element">
+        {el.href && i < elements.length - 1 ? (
+          <a href={el.href}>{el.libelle}</a>
+        ) : (
+          <span aria-current="page">{el.libelle}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<style>
+  .fil-ariane__liste {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .fil-ariane__element {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .fil-ariane__element + .fil-ariane__element::before {
+    content: '›';
+    margin-inline: 8px;
+    opacity: 0.6;
+  }
+
+  .fil-ariane__element a {
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .fil-ariane__element a:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .fil-ariane__element:last-child span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 40ch;
+  }
+</style>

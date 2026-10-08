@@ -1,24 +1,35 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import FilAriane from '../components/FilAriane.astro';
+import NavParcours from '../components/NavParcours.astro';
+
+interface Lien {
+  href: string;
+  etiquette: string;
+  titre: string;
+}
 
 interface Props {
   title: string;
   slug: string;
   date: Date;
+  misAJour: Date;
   excerpt: string;
   coverSvg: string;
-  tags?: string[];
-  prevPost?: { title: string; slug: string };
-  nextPost?: { title: string; slug: string };
+  /** Ex. « Module 1 · Leçon 3 » */
+  badge: string;
+  niveau: string;
+  tempsLecture: number;
+  filAriane: { libelle: string; href?: string }[];
+  precedent: Lien;
+  suivant: Lien;
 }
 
-const { title, slug, date, excerpt, coverSvg, tags, prevPost, nextPost } = Astro.props;
+const {
+  title, slug, date, misAJour, excerpt, coverSvg, badge, niveau, tempsLecture, filAriane, precedent, suivant,
+} = Astro.props;
 
-const formattedDate = date.toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
+const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
 <BaseLayout
@@ -27,26 +38,26 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
   ogImage={`/og/${slug}.png`}
   type="article"
   publishedDate={date.toISOString()}
+  modifiedDate={misAJour.toISOString()}
 >
   <div class="blog-progress" id="blog-progress"></div>
 
   <article class="blog-article">
     <header class="blog-article__hero">
       <div class="blog-article__cover" id="blog-cover">
-        <img src={coverSvg} alt={title} width="600" height="400" />
+        <img src={coverSvg} alt="" width="600" height="400" />
       </div>
       <div class="blog-article__hero-gradient"></div>
       <div class="blog-article__hero-content">
+        <FilAriane elements={filAriane} />
         <h1 class="blog-article__title" id="blog-title">{title}</h1>
         <div class="blog-article__meta">
-          <time datetime={date.toISOString()}>{formattedDate}</time>
-          {tags && tags.length > 0 && (
-            <span class="blog-article__tags">
-              {tags.map((tag) => (
-                <span class="blog-article__tag">{tag}</span>
-              ))}
-            </span>
-          )}
+          <span class="blog-article__tags">
+            <span class="blog-article__tag">{badge}</span>
+            <span class="blog-article__tag">{niveau}</span>
+          </span>
+          <span>{tempsLecture} min de lecture</span>
+          <span>Mis à jour le <time datetime={misAJour.toISOString()}>{misAJourTexte}</time></span>
         </div>
       </div>
     </header>
@@ -55,21 +66,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
       <slot />
     </div>
 
-    <nav class="blog-article__nav" aria-label="Navigation entre articles">
-      {prevPost ? (
-        <a href={`/blog/${prevPost.slug}`} class="blog-article__nav-link blog-article__nav-link--prev">
-          <span class="blog-article__nav-arrow">&larr;</span>
-          <span class="blog-article__nav-label">{prevPost.title}</span>
-        </a>
-      ) : <span />}
-      <a href="/blog" class="blog-article__nav-back">Tous les articles</a>
-      {nextPost ? (
-        <a href={`/blog/${nextPost.slug}`} class="blog-article__nav-link blog-article__nav-link--next">
-          <span class="blog-article__nav-label">{nextPost.title}</span>
-          <span class="blog-article__nav-arrow">&rarr;</span>
-        </a>
-      ) : <span />}
-    </nav>
+    <NavParcours precedent={precedent} suivant={suivant} ariaLabel="Navigation entre les leçons" />
   </article>
 </BaseLayout>
 
@@ -133,6 +130,10 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
     width: 100%;
   }
 
+  .blog-article__hero-content :global(.fil-ariane) {
+    margin-bottom: var(--space-sm);
+  }
+
   .blog-article__title {
     font-size: clamp(1.8rem, 5vw, var(--font-size-2xl));
     font-weight: var(--font-weight-light);
@@ -152,6 +153,10 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
     color: var(--color-text-secondary);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
+  }
+
+  .blog-article__meta {
+    flex-wrap: wrap;
   }
 
   .blog-article__tags {
@@ -270,74 +275,6 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
     color: var(--color-text-primary);
   }
 
-  /* --- Nav --- */
-  .blog-article__nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 65ch;
-    margin-inline: auto;
-    padding: var(--space-2xl) var(--container-padding);
-    border-top: 1px solid var(--color-border-subtle);
-  }
-
-  .blog-article__nav-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-light);
-    color: var(--color-text-secondary);
-    transition: color var(--duration-hover) var(--ease-out-expo);
-    max-width: 30%;
-  }
-
-  .blog-article__nav-link:hover {
-    color: var(--color-text-primary);
-    opacity: 1;
-  }
-
-  .blog-article__nav-label {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .blog-article__nav-arrow {
-    flex-shrink: 0;
-    transition: transform var(--duration-hover) var(--ease-out-expo);
-  }
-
-  .blog-article__nav-link--prev:hover .blog-article__nav-arrow {
-    transform: translateX(-4px);
-  }
-
-  .blog-article__nav-link--next:hover .blog-article__nav-arrow {
-    transform: translateX(4px);
-  }
-
-  .blog-article__nav-back {
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--letter-spacing-uppercase);
-    text-transform: uppercase;
-    color: var(--color-text-secondary);
-    transition: color var(--duration-hover) var(--ease-out-expo);
-  }
-
-  .blog-article__nav-back:hover {
-    color: var(--color-text-primary);
-    opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-    .blog-article__nav {
-      flex-direction: column;
-      gap: var(--space-md);
-    }
-    .blog-article__nav-link {
-      max-width: 100%;
-    }
-  }
 </style>
 
 <script>

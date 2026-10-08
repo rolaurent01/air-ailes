@@ -2,9 +2,13 @@
 title: "Réussir ses impressions photo sans mauvaises surprises"
 slug: impression-photo
 date: 2026-02-12
+misAJour: 2026-10-08
 excerpt: "Préparez vos tirages : profil ICC, soft proofing, résolution et contrôles avant envoi. La méthode pour que vos prints ressemblent à votre écran."
-cover_svg: /blog/impression-photo.svg
-tags: ["post-production", "impression", "avancé"]
+module: 5
+ordre: 1
+niveau: avancé
+objectif: "préparer un fichier pour le tirage : épreuvage à l'écran, profil du papier, résolution et contrôles avant l'envoi au labo."
+cover_svg: /formation/impression-photo.svg
 published: true
 ---
 
@@ -154,7 +158,7 @@ Vérifiez la date de votre dernière calibration. Si elle remonte à plus de 4-6
 Chargez le profil ICC du papier choisi. Vérifiez visuellement que le rendu simulé est acceptable. Si les couleurs bougent trop, créez une copie virtuelle et ajustez (débouchez les ombres, augmentez légèrement la saturation, remontez la luminosité).
 
 **3. Espace couleur correct ?**
-sRGB pour les labos grand public. Adobe RGB ou profil ICC spécifique pour le fine art. Si le labo ne précise rien, envoyez du sRGB — c'est le choix le plus sûr. Consultez [mon guide sur la colorimétrie](/blog/colorimetrie-photo) pour approfondir ce sujet.
+sRGB pour les labos grand public. Adobe RGB ou profil ICC spécifique pour le fine art. Si le labo ne précise rien, envoyez du sRGB — c'est le choix le plus sûr. Consultez [mon guide sur la colorimétrie](/formation/colorimetrie-photo) pour approfondir ce sujet.
 
 **4. Format et compression ?**
 TIFF 16 bits pour la meilleure qualité (fichiers lourds). JPEG qualité 100 % comme alternative acceptable. Ne jamais envoyer de JPEG compressé en dessous de 95 % pour l'impression.
@@ -177,5 +181,5 @@ L'impression est l'aboutissement du travail photographique. C'est le moment où 
 
 ## Pour aller plus loin
 
-- [Colorimétrie photo : sRGB, Adobe RGB et profils ICC](/blog/colorimetrie-photo)
-- [Développer ses photos dans Lightroom : workflow en 7 étapes](/blog/lightroom-developpement)
+- [Colorimétrie photo : sRGB, Adobe RGB et profils ICC](/formation/colorimetrie-photo)
+- [Développer ses photos dans Lightroom : workflow en 7 étapes](/formation/lightroom-developpement)

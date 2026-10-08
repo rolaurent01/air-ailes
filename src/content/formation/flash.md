@@ -1,10 +1,14 @@
 ---
 title: "Apprendre le flash : TTL, manuel et nombre-guide"
-slug: flash-debutant
+slug: flash
 date: 2026-03-15
+misAJour: 2026-10-08
 excerpt: "Comprenez le flash sans jargon : TTL vs manuel, nombre-guide, distance et qualité de lumière. Exercices pour progresser en une soirée."
-cover_svg: /blog/flash-debutant.svg
-tags: ["technique", "flash", "portrait"]
+module: 3
+ordre: 3
+niveau: intermédiaire
+objectif: "choisir entre TTL et manuel, calculer une exposition avec le nombre-guide et adoucir la lumière en la faisant rebondir."
+cover_svg: /formation/flash.svg
 published: true
 ---
 
@@ -283,5 +287,5 @@ Cette séparation entre « exposition ambiance » et « exposition flash » est 
 
 ## Pour aller plus loin
 
-- [Maîtriser le triangle d'exposition](/blog/triangle-exposition) — les fondamentaux qui sous-tendent le réglage du flash comme de la lumière ambiante.
-- [Réussir ses photos en basse lumière](/blog/photo-basse-lumiere) — quand le flash n'est pas une option, les techniques pour photographier sans lumière artificielle.
+- [Maîtriser le triangle d'exposition](/formation/triangle-exposition) — les fondamentaux qui sous-tendent le réglage du flash comme de la lumière ambiante.
+- [Réussir ses photos en basse lumière](/formation/photo-basse-lumiere) — quand le flash n'est pas une option, les techniques pour photographier sans lumière artificielle.

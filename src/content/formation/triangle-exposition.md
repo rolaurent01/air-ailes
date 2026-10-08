@@ -2,9 +2,13 @@
 title: "Triangle d'exposition : comprendre ouverture, vitesse et ISO"
 slug: triangle-exposition
 date: 2026-01-15
+misAJour: 2026-10-08
 excerpt: "Comprenez le triangle d'exposition et réglez ouverture, vitesse et ISO sans deviner. Exemples concrets et exercices pour débuter sereinement."
-cover_svg: /blog/triangle-exposition.svg
-tags: ["technique", "exposition", "débutant"]
+module: 1
+ordre: 2
+niveau: débutant
+objectif: "régler ouverture, vitesse et ISO en partant de ce que vous voulez montrer, et compenser l'un par l'autre sans deviner."
+cover_svg: /formation/triangle-exposition.svg
 published: true
 ---
 
@@ -199,5 +203,5 @@ Commencez dès aujourd'hui. Prenez votre appareil, passez en priorité ouverture
 
 ## Pour aller plus loin
 
-- [Lire l'histogramme pour vérifier](/blog/histogramme-photo)
-- [Maîtriser la profondeur de champ](/blog/profondeur-de-champ)
+- [Lire l'histogramme pour vérifier](/formation/histogramme-photo)
+- [Maîtriser la profondeur de champ](/formation/profondeur-de-champ)

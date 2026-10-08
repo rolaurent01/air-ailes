@@ -2,9 +2,13 @@
 title: "Construire un portfolio photo qui montre votre maîtrise"
 slug: portfolio-photo
 date: 2026-01-08
+misAJour: 2026-10-08
 excerpt: "Créez un portfolio clair et convaincant : sélection rigoureuse, cohérence des séries, textes courts et liens vers vos méthodes. Qualité plutôt que quantité."
-cover_svg: /blog/portfolio-photo.svg
-tags: ["portfolio", "créativité", "professionnel"]
+module: 5
+ordre: 2
+niveau: intermédiaire
+objectif: "sélectionner, ordonner et présenter vos images pour qu'un portfolio montre votre regard plutôt que votre volume."
+cover_svg: /formation/portfolio-photo.svg
 published: true
 ---
 
@@ -72,7 +76,7 @@ La sélection est un acte créatif à part entière. Elle demande du recul, de l
 
 **Troisième passage : le coup de cœur.** Il reste une vingtaine d'images ? Parfait. Maintenant, demandez-vous lesquelles vous feriez encadrer. Lesquelles vous montreriez à un photographe que vous admirez sans rougir ? Ce sont celles-là, et uniquement celles-là, qui méritent votre portfolio.
 
-La règle d'or : si vous hésitez, c'est non. Une image qui provoque le doute ne provoquera pas l'admiration. Mieux vaut huit photos exceptionnelles que quarante photos correctes. La maîtrise de la [composition](/blog/composition-photo) se lit dès la première image — ne diluez pas cet impact.
+La règle d'or : si vous hésitez, c'est non. Une image qui provoque le doute ne provoquera pas l'admiration. Mieux vaut huit photos exceptionnelles que quarante photos correctes. La maîtrise de la [composition](/formation/composition-photo) se lit dès la première image — ne diluez pas cet impact.
 
 ## Les projets comme cas d'étude
 
@@ -87,7 +91,7 @@ Un portfolio organisé par projets vaut mille fois mieux qu'un flux chronologiqu
 
 Pensez à vos projets comme des chapitres d'un livre. Chacun doit pouvoir se lire indépendamment, mais l'ensemble doit former un tout cohérent. Un visiteur qui parcourt trois projets doit en ressortir avec une idée précise de qui vous êtes en tant que photographe.
 
-N'hésitez pas à inclure un paragraphe sur votre processus de [développement](/blog/lightroom-developpement). Montrer que vous maîtrisez la chaîne complète — de la prise de vue au traitement — rassure un client potentiel et inspire un photographe en apprentissage.
+N'hésitez pas à inclure un paragraphe sur votre processus de [développement](/formation/lightroom-developpement). Montrer que vous maîtrisez la chaîne complète — de la prise de vue au traitement — rassure un client potentiel et inspire un photographe en apprentissage.
 
 ## Relier portfolio et enseignement
 
@@ -134,5 +138,5 @@ Un portfolio n'est jamais terminé. C'est un document vivant qui grandit avec vo
 
 ## Pour aller plus loin
 
-- [Les fondamentaux de la composition photo](/blog/composition-photo) — pour renforcer la qualité de chaque image de votre portfolio.
-- [Développement Lightroom : tirer le meilleur de vos RAW](/blog/lightroom-developpement) — maîtriser le post-traitement, étape clé avant la publication.
+- [Les fondamentaux de la composition photo](/formation/composition-photo) — pour renforcer la qualité de chaque image de votre portfolio.
+- [Développement Lightroom : tirer le meilleur de vos RAW](/formation/lightroom-developpement) — maîtriser le post-traitement, étape clé avant la publication.

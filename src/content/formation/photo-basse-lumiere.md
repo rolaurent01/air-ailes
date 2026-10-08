@@ -2,9 +2,13 @@
 title: "Réussir ses photos en basse lumière"
 slug: photo-basse-lumiere
 date: 2026-02-22
+misAJour: 2026-10-08
 excerpt: "Réglages, stabilisation et astuces pour réussir vos photos en basse lumière sans flash. Limitez flou et bruit avec une méthode simple en 3 étapes."
-cover_svg: /blog/photo-basse-lumiere.svg
-tags: ["technique", "basse lumière", "nuit"]
+module: 3
+ordre: 2
+niveau: intermédiaire
+objectif: "choisir votre priorité quand la lumière manque, et doser ISO, vitesse et stabilisation pour limiter le flou et le bruit."
+cover_svg: /formation/photo-basse-lumiere.svg
 published: true
 ---
 
@@ -177,5 +181,5 @@ Sur un pont ou un point de vue surplombant une route, installez votre trépied. 
 
 ## Pour aller plus loin
 
-- [Comprendre le triangle d'exposition](/blog/triangle-exposition) — les bases indispensables pour maîtriser l'exposition dans toutes les situations.
-- [Lire et exploiter l'histogramme](/blog/histogramme-photo) — un outil essentiel pour vérifier votre exposition sur le terrain, surtout quand l'écran du boîtier vous trompe dans l'obscurité.
+- [Comprendre le triangle d'exposition](/formation/triangle-exposition) — les bases indispensables pour maîtriser l'exposition dans toutes les situations.
+- [Lire et exploiter l'histogramme](/formation/histogramme-photo) — un outil essentiel pour vérifier votre exposition sur le terrain, surtout quand l'écran du boîtier vous trompe dans l'obscurité.

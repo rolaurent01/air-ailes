@@ -25,15 +25,24 @@ const galeries = defineCollection({
   }),
 });
 
-const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+const formation = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/formation' }),
   schema: z.object({
     title: z.string(),
     slug: z.string(),
+    /** Date de première publication : métadonnées SEO uniquement, plus affichée */
     date: z.coerce.date(),
+    /** Date de mise à jour, affichée sur la leçon */
+    misAJour: z.coerce.date(),
     excerpt: z.string(),
+    /** Numéro du module (voir src/lib/parcours.ts) */
+    module: z.number().int().min(0),
+    /** Position de la leçon dans son module, à partir de 1 */
+    ordre: z.number().int().min(1),
+    niveau: z.enum(['débutant', 'intermédiaire', 'avancé']),
+    /** Suite de la phrase « À la fin de cette leçon, vous saurez… » */
+    objectif: z.string(),
     cover_svg: z.string(),
-    tags: z.array(z.string()).optional(),
     published: z.boolean().default(true),
   }),
 });
@@ -50,4 +59,4 @@ const videos = defineCollection({
   }),
 });
 
-export const collections = { galeries, blog, videos };
+export const collections = { galeries, formation, videos };

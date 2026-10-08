@@ -2,9 +2,13 @@
 title: "Bien débuter en macrophotographie"
 slug: macro-photo
 date: 2026-03-08
+misAJour: 2026-10-08
 excerpt: "Réussissez vos photos macro : mise au point, stabilité, lumière et profondeur de champ. Conseils concrets et exercices pour explorer le monde de l'infiniment petit."
-cover_svg: /blog/macro-photo.svg
-tags: ["technique", "macro", "nature"]
+module: 6
+ordre: 1
+niveau: intermédiaire
+objectif: "obtenir une mise au point précise et une image stable en très gros plan, avec une profondeur de champ de quelques millimètres."
+cover_svg: /formation/macro-photo.svg
 published: true
 ---
 
@@ -187,5 +191,5 @@ C'est le territoire du 1:1. Trouvez un insecte coopératif — une coccinelle, u
 
 ## Pour aller plus loin
 
-- [Comprendre la profondeur de champ](/blog/profondeur-de-champ) — la théorie complète de la PDC appliquée à toutes les situations, pas seulement la macro.
-- [Maîtriser le triangle d'exposition](/blog/triangle-exposition) — les fondamentaux d'exposition qui sous-tendent chaque réglage macro.
+- [Comprendre la profondeur de champ](/formation/profondeur-de-champ) — la théorie complète de la PDC appliquée à toutes les situations, pas seulement la macro.
+- [Maîtriser le triangle d'exposition](/formation/triangle-exposition) — les fondamentaux d'exposition qui sous-tendent chaque réglage macro.

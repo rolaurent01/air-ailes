@@ -13,6 +13,7 @@ interface Props {
   ogImage?: string;
   type?: 'website' | 'article' | 'profile';
   publishedDate?: string;
+  modifiedDate?: string;
   noindex?: boolean;
 }
 
@@ -23,6 +24,7 @@ const {
   ogImage,
   type = 'website',
   publishedDate,
+  modifiedDate,
   noindex = false,
 } = Astro.props;
 ---
@@ -44,6 +46,7 @@ const {
       ogImage={ogImage}
       type={type}
       publishedDate={publishedDate}
+      modifiedDate={modifiedDate}
       noindex={noindex}
     />
     <ClientRouter />

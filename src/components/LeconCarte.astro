@@ -1,0 +1,152 @@
+---
+import type { Lecon } from '../lib/parcours';
+import { libelleNiveau, tempsDeLecture, urlLecon } from '../lib/parcours';
+
+interface Props {
+  lecon: Lecon;
+  /** Numéro affiché, ex. « 1.3 » (module 1, leçon 3) */
+  numero: string;
+  titreBalise?: 'h2' | 'h3';
+}
+
+const { lecon, numero, titreBalise: Titre = 'h3' } = Astro.props;
+const { slug, title, excerpt, niveau, cover_svg } = lecon.data;
+---
+
+<li class="lecon-carte" data-niveau={niveau} data-progression-slug={slug}>
+  <a href={urlLecon(slug)} class="lecon-carte__lien">
+    <span class="lecon-carte__numero">{numero}</span>
+    <div class="lecon-carte__image">
+      <img src={cover_svg} alt="" width="600" height="400" loading="lazy" />
+    </div>
+    <div class="lecon-carte__contenu">
+      <span class="lecon-carte__meta">
+        <span class="lecon-carte__niveau">{libelleNiveau(niveau)}</span>
+        <span>{tempsDeLecture(lecon)} min</span>
+        <span class="lecon-carte__fait">✓ Faite</span>
+      </span>
+      <Titre class="lecon-carte__titre">{title}</Titre>
+      <p class="lecon-carte__resume">{excerpt}</p>
+    </div>
+  </a>
+</li>
+
+<style>
+  .lecon-carte {
+    list-style: none;
+  }
+
+  .lecon-carte.hidden {
+    display: none;
+  }
+
+  .lecon-carte__lien {
+    display: grid;
+    grid-template-columns: 3ch 160px 1fr;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 4px;
+    color: inherit;
+    text-decoration: none;
+    transition: background var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .lecon-carte__lien:hover {
+    background: rgba(255, 255, 255, 0.02);
+    opacity: 1;
+  }
+
+  .lecon-carte__numero {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-secondary);
+  }
+
+  .lecon-carte__image {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: 2px;
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .lecon-carte__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .lecon-carte__lien:hover .lecon-carte__image {
+    transform: scale(1.02);
+  }
+
+  .lecon-carte__contenu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    min-width: 0;
+  }
+
+  .lecon-carte__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .lecon-carte__niveau {
+    padding: 2px 8px;
+    border: 1px solid rgba(240, 237, 232, 0.1);
+    border-radius: 2px;
+    color: var(--color-text-primary);
+  }
+
+  .lecon-carte__fait {
+    display: none;
+    color: var(--color-text-primary);
+  }
+
+  .lecon-carte.is-fait .lecon-carte__fait {
+    display: inline;
+  }
+
+  .lecon-carte__titre {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-tight);
+  }
+
+  .lecon-carte__resume {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .lecon-carte__lien {
+      grid-template-columns: 3ch 1fr;
+      padding: var(--space-sm) 0;
+    }
+    .lecon-carte__image {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lecon-carte__lien:hover .lecon-carte__image {
+      transform: none;
+    }
+  }
+</style>

@@ -2,9 +2,13 @@
 title: "RAW vs JPEG : quel format choisir et quand"
 slug: raw-vs-jpeg
 date: 2026-03-01
+misAJour: 2026-10-08
 excerpt: "RAW ou JPEG ? Comparez avantages, limites et usages réels. Choisissez le bon format selon votre flux de travail avec des exemples concrets."
-cover_svg: /blog/raw-vs-jpeg.svg
-tags: ["technique", "post-production", "workflow"]
+module: 1
+ordre: 7
+niveau: intermédiaire
+objectif: "choisir entre RAW et JPEG selon votre usage, et savoir ce que chaque format vous laisse rattraper ensuite."
+cover_svg: /formation/raw-vs-jpeg.svg
 published: true
 ---
 
@@ -146,5 +150,5 @@ Plutôt que des règles absolues, voici des recommandations fondées sur des cas
 
 ## Pour aller plus loin
 
-- [Développer ses RAW dans Lightroom](/blog/lightroom-developpement) — un guide pas à pas pour tirer le meilleur de vos fichiers bruts.
-- [Maîtriser la balance des blancs](/blog/balance-des-blancs) — comprendre et corriger la température de couleur, en prise de vue comme en post-production.
+- [Développer ses RAW dans Lightroom](/formation/lightroom-developpement) — un guide pas à pas pour tirer le meilleur de vos fichiers bruts.
+- [Maîtriser la balance des blancs](/formation/balance-des-blancs) — comprendre et corriger la température de couleur, en prise de vue comme en post-production.

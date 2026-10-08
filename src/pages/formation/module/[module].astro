@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import EnTeteFormation from '../../../components/EnTeteFormation.astro';
+import LeconCarte from '../../../components/LeconCarte.astro';
+import NavParcours from '../../../components/NavParcours.astro';
+import {
+  getParcours,
+  leconsDuModule,
+  MODULES,
+  urlLecon,
+  urlModule,
+  URL_SOMMAIRE,
+  URL_FIN,
+} from '../../../lib/parcours';
+
+export async function getStaticPaths() {
+  const parcours = await getParcours();
+  const modules = MODULES.filter((m) => leconsDuModule(parcours, m.numero).length > 0);
+
+  return modules.map((module, index) => {
+    const avant = modules[index - 1];
+    const apres = modules[index + 1];
+    return {
+      params: { module: module.slug },
+      props: {
+        module,
+        lecons: leconsDuModule(parcours, module.numero),
+        // Premier module : retour au sommaire. Dernier : page de fin de parcours.
+        precedent: avant
+          ? { href: urlModule(avant), etiquette: `Module ${avant.numero}`, titre: avant.titre }
+          : { href: URL_SOMMAIRE, etiquette: 'Retour', titre: 'Sommaire du parcours' },
+        suivant: apres
+          ? { href: urlModule(apres), etiquette: `Module ${apres.numero}`, titre: apres.titre }
+          : { href: URL_FIN, etiquette: 'Dernière étape', titre: 'Fin du parcours' },
+      },
+    };
+  });
+}
+
+const { module, lecons, precedent, suivant } = Astro.props;
+const premiere = lecons[0];
+---
+
+<BaseLayout
+  title={`Module ${module.numero} · ${module.titre} — Formation photo`}
+  description={`${module.intro} ${lecons.length} leçon${lecons.length > 1 ? 's' : ''} avec exercices pratiques.`}
+  ogImage={`/og/${premiere.data.slug}.png`}
+>
+  <section class="formation">
+    <EnTeteFormation
+      surtitre={`Module ${module.numero}`}
+      titre={module.titre}
+      sousTitre={module.intro}
+      filAriane={[
+        { libelle: 'Accueil', href: '/' },
+        { libelle: 'Formation', href: URL_SOMMAIRE },
+        { libelle: `Module ${module.numero} · ${module.titre}` },
+      ]}
+    >
+      <a href={urlLecon(premiere.data.slug)} class="formation-module__commencer">
+        Commencer le module <span aria-hidden="true">&rarr;</span>
+      </a>
+    </EnTeteFormation>
+
+    <ol class="formation-module__lecons" role="list">
+      {lecons.map((lecon, i) => (
+        <LeconCarte lecon={lecon} numero={`${module.numero}.${i + 1}`} titreBalise="h2" />
+      ))}
+    </ol>
+  </section>
+
+  <NavParcours precedent={precedent} suivant={suivant} ariaLabel="Navigation entre les modules" />
+</BaseLayout>
+
+<style>
+  .formation {
+    padding-block: var(--space-3xl) var(--space-xl);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .formation-module__commencer {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: var(--space-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .formation-module__commencer:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .formation-module__lecons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    max-width: 900px;
+    margin-inline: auto;
+    padding: var(--space-sm) 0 0;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+</style>

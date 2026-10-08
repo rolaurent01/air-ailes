@@ -1,0 +1,129 @@
+---
+// Navigation précédent / sommaire / suivant du parcours de formation.
+// Toujours deux côtés renseignés : jamais de cul-de-sac.
+
+interface Lien {
+  href: string;
+  /** Petite étiquette au-dessus du titre (« Leçon suivante », « Sommaire »…) */
+  etiquette: string;
+  titre: string;
+}
+
+interface Props {
+  precedent: Lien;
+  suivant: Lien;
+  ariaLabel?: string;
+}
+
+const { precedent, suivant, ariaLabel = 'Navigation dans le parcours' } = Astro.props;
+---
+
+<nav class="nav-parcours" aria-label={ariaLabel}>
+  <a href={precedent.href} class="nav-parcours__lien nav-parcours__lien--prec" rel="prev">
+    <span class="nav-parcours__fleche" aria-hidden="true">&larr;</span>
+    <span class="nav-parcours__texte">
+      <span class="nav-parcours__etiquette">{precedent.etiquette}</span>
+      <span class="nav-parcours__titre">{precedent.titre}</span>
+    </span>
+  </a>
+  <a href="/formation" class="nav-parcours__sommaire">Sommaire</a>
+  <a href={suivant.href} class="nav-parcours__lien nav-parcours__lien--suiv" rel="next">
+    <span class="nav-parcours__texte">
+      <span class="nav-parcours__etiquette">{suivant.etiquette}</span>
+      <span class="nav-parcours__titre">{suivant.titre}</span>
+    </span>
+    <span class="nav-parcours__fleche" aria-hidden="true">&rarr;</span>
+  </a>
+</nav>
+
+<style>
+  .nav-parcours {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--space-md);
+    max-width: 65ch;
+    margin-inline: auto;
+    padding: var(--space-2xl) var(--container-padding);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .nav-parcours__lien {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .nav-parcours__lien--suiv {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .nav-parcours__lien:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .nav-parcours__texte {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .nav-parcours__etiquette {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+  }
+
+  .nav-parcours__titre {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nav-parcours__fleche {
+    flex-shrink: 0;
+    transition: transform var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .nav-parcours__lien--prec:hover .nav-parcours__fleche {
+    transform: translateX(-4px);
+  }
+
+  .nav-parcours__lien--suiv:hover .nav-parcours__fleche {
+    transform: translateX(4px);
+  }
+
+  .nav-parcours__sommaire {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .nav-parcours__sommaire:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .nav-parcours {
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+    }
+    .nav-parcours__lien--suiv {
+      order: -1;
+    }
+    .nav-parcours__sommaire {
+      text-align: center;
+    }
+  }
+</style>

@@ -1,0 +1,65 @@
+---
+import { render } from 'astro:content';
+import LeconLayout from '../../layouts/LeconLayout.astro';
+import {
+  getParcours,
+  getModule,
+  libelleNiveau,
+  numeroDansModule,
+  tempsDeLecture,
+  urlLecon,
+  urlModule,
+  URL_SOMMAIRE,
+  URL_FIN,
+} from '../../lib/parcours';
+
+export async function getStaticPaths() {
+  const parcours = await getParcours();
+
+  return parcours.map((lecon, index) => {
+    const avant = parcours[index - 1];
+    const apres = parcours[index + 1];
+
+    return {
+      params: { slug: lecon.data.slug },
+      props: {
+        lecon,
+        numero: numeroDansModule(parcours, lecon),
+        // Première leçon : retour au sommaire. Dernière : page de fin de parcours.
+        precedent: avant
+          ? { href: urlLecon(avant.data.slug), etiquette: 'Leçon précédente', titre: avant.data.title }
+          : { href: URL_SOMMAIRE, etiquette: 'Retour', titre: 'Sommaire du parcours' },
+        suivant: apres
+          ? { href: urlLecon(apres.data.slug), etiquette: 'Leçon suivante', titre: apres.data.title }
+          : { href: URL_FIN, etiquette: 'Dernière étape', titre: 'Fin du parcours' },
+      },
+    };
+  });
+}
+
+const { lecon, numero, precedent, suivant } = Astro.props;
+const { Content } = await render(lecon);
+const module = getModule(lecon.data.module);
+---
+
+<LeconLayout
+  title={lecon.data.title}
+  slug={lecon.data.slug}
+  date={lecon.data.date}
+  misAJour={lecon.data.misAJour}
+  excerpt={lecon.data.excerpt}
+  coverSvg={lecon.data.cover_svg}
+  badge={`Module ${module.numero} · Leçon ${numero}`}
+  niveau={libelleNiveau(lecon.data.niveau)}
+  tempsLecture={tempsDeLecture(lecon)}
+  filAriane={[
+    { libelle: 'Accueil', href: '/' },
+    { libelle: 'Formation', href: URL_SOMMAIRE },
+    { libelle: `Module ${module.numero} · ${module.titre}`, href: urlModule(module) },
+    { libelle: lecon.data.title },
+  ]}
+  precedent={precedent}
+  suivant={suivant}
+>
+  <Content />
+</LeconLayout>

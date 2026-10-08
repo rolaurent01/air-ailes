@@ -2,9 +2,13 @@
 title: "Balance des blancs : obtenir des couleurs justes en toute lumière"
 slug: balance-des-blancs
 date: 2026-02-08
+misAJour: 2026-10-08
 excerpt: "Comprenez la balance des blancs et évitez les dominantes jaune ou bleu. WB auto vs Kelvin vs préréglages, avec exercices rapides."
-cover_svg: /blog/balance-des-blancs.svg
-tags: ["technique", "couleur", "débutant"]
+module: 1
+ordre: 6
+niveau: débutant
+objectif: "repérer une dominante de couleur et la corriger, en automatique, avec un préréglage ou en Kelvin."
+cover_svg: /formation/balance-des-blancs.svg
 published: true
 ---
 
@@ -187,5 +191,5 @@ La balance des blancs compense la couleur de la lumière ambiante pour que le bl
 
 ## Pour aller plus loin
 
-- [Comprendre le format RAW vs JPEG](/blog/raw-vs-jpeg)
-- [Développer ses photos dans Lightroom](/blog/lightroom-developpement)
+- [Comprendre le format RAW vs JPEG](/formation/raw-vs-jpeg)
+- [Développer ses photos dans Lightroom](/formation/lightroom-developpement)

@@ -23,7 +23,7 @@ const showcasePhotos = showcaseIds
   .map((id) => allPhotosMap.get(id))
   .filter((p): p is NonNullable<typeof p> => p != null);
 
-const blogEntries = await getCollection('blog');
+const blogEntries = await getCollection('formation');
 const recentPosts = blogEntries
   .filter((p) => p.data.published)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
@@ -115,7 +115,7 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
       </div>
       <div class="blog-preview__grid">
         {recentPosts.map((post) => (
-          <a href={`/blog/${post.data.slug}`} class="blog-card-link">
+          <a href={`/formation/${post.data.slug}`} class="blog-card-link">
             <article class="blog-card">
               <div class="blog-card__image">
                 <img src={post.data.cover_svg} alt={post.data.title} width="600" height="400" loading="lazy" />
@@ -136,7 +136,7 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
         ))}
       </div>
       <div class="blog-preview__cta">
-        <a href="/blog" class="showcase__link">
+        <a href="/formation" class="showcase__link">
           Voir la formation
           <span class="showcase__arrow">&rarr;</span>
         </a>

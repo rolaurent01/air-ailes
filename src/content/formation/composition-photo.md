@@ -2,9 +2,13 @@
 title: "Composition photo : voir, organiser, raconter"
 slug: composition-photo
 date: 2026-02-15
+misAJour: 2026-10-08
 excerpt: "Améliorez vos photos avec la règle des tiers, les lignes directrices, le cadrage et l'espace négatif. Exercices concrets et erreurs à éviter."
-cover_svg: /blog/composition-photo.svg
-tags: ["composition", "créativité", "débutant"]
+module: 2
+ordre: 1
+niveau: débutant
+objectif: "organiser une image avec la règle des tiers, les lignes, le cadrage et l'espace vide, puis critiquer vos propres cadres."
+cover_svg: /formation/composition-photo.svg
 published: true
 ---
 
@@ -223,5 +227,5 @@ Commencez par la règle des tiers et les lignes directrices. Quand elles devienn
 
 ## Pour aller plus loin
 
-- [Comprendre le triangle d'exposition](/blog/triangle-exposition)
-- [Profondeur de champ : maîtriser le flou et la netteté](/blog/profondeur-de-champ)
+- [Comprendre le triangle d'exposition](/formation/triangle-exposition)
+- [Profondeur de champ : maîtriser le flou et la netteté](/formation/profondeur-de-champ)
