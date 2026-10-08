@@ -108,10 +108,21 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     overflow: hidden;
   }
 
+  /* Plus haute que le bandeau (20 % au-dessus) : la parallaxe ne découvre jamais de vide en haut */
   .about-hero__image {
     position: absolute;
-    inset: 0;
+    inset: -20% 0 0 0;
     will-change: transform;
+  }
+
+  /* Cadrage centré sur la silhouette, à droite au bord de l'eau */
+  .about-hero__image :global(.protected-image) {
+    height: 100%;
+  }
+
+  .about-hero__image :global(.protected-image__main),
+  .about-hero__image :global(.protected-image__lqip) {
+    object-position: 72% 70%;
   }
 
   .about-hero__gradient {
@@ -120,8 +131,9 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     z-index: 1;
     background: linear-gradient(
       to bottom,
-      rgba(5, 5, 5, 0.1) 0%,
-      rgba(5, 5, 5, 0.6) 60%,
+      rgba(5, 5, 5, 0.05) 0%,
+      rgba(5, 5, 5, 0.15) 55%,
+      rgba(5, 5, 5, 0.6) 82%,
       rgba(5, 5, 5, 1) 100%
     );
   }
