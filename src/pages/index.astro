@@ -145,6 +145,17 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
     will-change: transform;
   }
 
+  /* La photo remplit tout le bandeau (sinon, sur mobile, elle garde sa hauteur naturelle
+     et laisse un grand vide noir sous elle) */
+  .hero__bg :global(.protected-image) {
+    height: 100%;
+  }
+
+  .hero__bg :global(.protected-image__main),
+  .hero__bg :global(.protected-image__lqip) {
+    object-fit: cover;
+  }
+
   .hero__gradient {
     position: absolute;
     inset: 0;
@@ -403,7 +414,8 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
           ease: ANIMATION_EASING,
           scrollTrigger: {
             trigger: '.showcase',
-            start: 'top 40%',
+            // Sur mobile, le bandeau d'accueil est court : le titre est visible dès l'arrivée
+            start: window.matchMedia('(max-width: 768px)').matches ? 'top 90%' : 'top 40%',
             once: true,
           },
         });
