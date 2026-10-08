@@ -3,9 +3,10 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PhotoCard from '../../components/PhotoCard.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import { mixGallery } from '../../lib/gallery-mix';
 
 const allPhotos = await getCollection('galeries');
-const photos = allPhotos.sort((a, b) => a.data.display_order - b.data.display_order);
+const photos = mixGallery(allPhotos);
 
 const lightboxPhotos = photos.map((p) => ({
   cloudinary_id: p.data.cloudinary_id,
