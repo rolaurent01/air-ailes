@@ -135,6 +135,9 @@ export function getGridSrcSet(cloudinaryId: string, focalPoint = 'auto'): string
  * Sizes attribute for grid images (masonry columns layout).
  * 1 col mobile / 2 col tablet / 3 col desktop.
  */
+/** Largeurs servies pour la galerie en rangées, où une photo peut occuper toute la largeur. */
+export const ROW_WIDTHS = [480, 800, 1200, 1600, 2000] as const;
+
 export const GRID_SIZES = '(max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) calc(50vw - 2.5rem), calc(33.33vw - 2.5rem)';
 
 // ---------------------------------------------------------------------------
@@ -166,9 +169,10 @@ export function getOrientedGridSrcSet(
   cloudinaryId: string,
   orientation: 'landscape' | 'portrait' = 'landscape',
   focalPoint = 'auto',
+  widths: readonly number[] = GRID_WIDTHS,
 ): string {
   const ratio = orientation === 'portrait' ? 3 / 2 : 2 / 3;
-  return GRID_WIDTHS
+  return widths
     .map((w) => {
       const h = Math.round(w * ratio);
       return `${getImageUrl(cloudinaryId, { width: w, height: h, crop: 'fill', gravity: focalPoint })} ${w}w`;

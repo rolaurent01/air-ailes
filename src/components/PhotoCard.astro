@@ -1,6 +1,6 @@
 ---
 import ProtectedImage from './ProtectedImage.astro';
-import { getOrientedGridImageUrl, getOrientedGridSrcSet, GRID_SIZES } from '../lib/cloudinary';
+import { getOrientedGridSrcSet, GRID_SIZES, ROW_WIDTHS } from '../lib/cloudinary';
 
 interface Props {
   title: string;
@@ -10,6 +10,10 @@ interface Props {
   dominantColor?: string;
   orientation?: 'landscape' | 'portrait';
   index?: number;
+  /** Attribut sizes (galerie en rangées : largeur réelle de la photo dans sa rangée) */
+  sizes?: string;
+  /** Style en ligne de la carte (galerie en rangées : flex selon le format) */
+  style?: string;
 }
 
 const {
@@ -20,6 +24,8 @@ const {
   dominantColor,
   orientation = 'landscape',
   index = 0,
+  sizes,
+  style,
 } = Astro.props;
 
 const aspectRatio = orientation === 'portrait' ? '2 / 3' : '3 / 2';
@@ -29,6 +35,7 @@ const aspectRatio = orientation === 'portrait' ? '2 / 3' : '3 / 2';
   class:list={['photo-card', `photo-card--${orientation}`]}
   data-cloudinary-id={cloudinaryId}
   data-photo-index={index}
+  style={style}
 >
   <button class="photo-card__trigger" type="button" aria-label={`Ouvrir ${title} en plein écran`}>
     <ProtectedImage
@@ -36,8 +43,8 @@ const aspectRatio = orientation === 'portrait' ? '2 / 3' : '3 / 2';
       alt={alt}
       width={600}
       height={orientation === 'portrait' ? 900 : 400}
-      srcset={getOrientedGridSrcSet(cloudinaryId, orientation, focalPoint)}
-      sizes={GRID_SIZES}
+      srcset={getOrientedGridSrcSet(cloudinaryId, orientation, focalPoint, sizes ? ROW_WIDTHS : undefined)}
+      sizes={sizes ?? GRID_SIZES}
       focalPoint={focalPoint}
       dominantColor={dominantColor}
       aspectRatio={aspectRatio}

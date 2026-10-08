@@ -4,9 +4,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PhotoCard from '../../components/PhotoCard.astro';
 import Lightbox from '../../components/Lightbox.astro';
 import { mixGallery } from '../../lib/gallery-mix';
+import { composerRangees, format } from '../../lib/gallery-layout';
 
 const allPhotos = await getCollection('galeries');
 const photos = mixGallery(allPhotos);
+const rangees = composerRangees(photos);
+
+// Hauteur maximale d'une rangée : la même valeur sert au CSS (--hauteur-max) et à l'attribut sizes
+const HAUTEUR_MAX_PX = 820;
+const pourcent = (n: number) => Math.round(n * 94);
+
+/** Largeur réelle d'une photo, pour que le navigateur télécharge la bonne définition */
+function tailles(ratio: number, part: number, mobile: string): string {
+  return `(max-width: 768px) ${mobile}, min(${pourcent(part)}vw, ${Math.round(ratio * HAUTEUR_MAX_PX)}px)`;
+}
 
 const lightboxPhotos = photos.map((p) => ({
   cloudinary_id: p.data.cloudinary_id,
@@ -28,17 +39,49 @@ const lightboxPhotos = photos.map((p) => ({
       <p class="gallery-page__count">{photos.length} photographies</p>
     </div>
 
-    <div class="gallery-page__masonry">
-      {photos.map((photo, index) => (
-        <PhotoCard
-          title={photo.data.title}
-          cloudinaryId={photo.data.cloudinary_id}
-          alt={photo.data.alt}
-          focalPoint={photo.data.focal_point}
-          dominantColor={photo.data.dominant_color}
-          orientation={photo.data.orientation || 'landscape'}
-          index={index}
-        />
+    <div class="galerie" style={`--hauteur-max: min(78vh, ${HAUTEUR_MAX_PX}px);`}>
+      {rangees.map((rangee) => (
+        rangee.type === 'mosaique' ? (
+          <div class="galerie__mosaique">
+            {rangee.photos.map((photo, i) => (
+              <PhotoCard
+                title={photo.data.title}
+                cloudinaryId={photo.data.cloudinary_id}
+                alt={photo.data.alt}
+                focalPoint={photo.data.focal_point}
+                dominantColor={photo.data.dominant_color}
+                orientation={photo.data.orientation === 'portrait' ? 'portrait' : 'landscape'}
+                index={photos.indexOf(photo)}
+                sizes={i === 0
+                  ? tailles(2 / 3, 8 / 17, 'calc(100vw - 3rem)')
+                  : tailles(1.5, 9 / 17, 'calc(100vw - 3rem)')}
+              />
+            ))}
+          </div>
+        ) : (
+          <div
+            class:list={['galerie__rangee', { 'galerie__rangee--seule': rangee.photos.length === 1 }]}
+            style={`--somme: ${rangee.somme.toFixed(3)}; --n: ${rangee.photos.length};`}
+          >
+            {rangee.photos.map((photo) => {
+              const ratio = format(photo.data);
+              const portrait = photo.data.orientation === 'portrait';
+              return (
+                <PhotoCard
+                  title={photo.data.title}
+                  cloudinaryId={photo.data.cloudinary_id}
+                  alt={photo.data.alt}
+                  focalPoint={photo.data.focal_point}
+                  dominantColor={photo.data.dominant_color}
+                  orientation={portrait ? 'portrait' : 'landscape'}
+                  index={photos.indexOf(photo)}
+                  style={`--format: ${ratio.toFixed(3)};`}
+                  sizes={tailles(ratio, ratio / rangee.somme, portrait ? 'calc(50vw - 2rem)' : 'calc(100vw - 3rem)')}
+                />
+              );
+            })}
+          </div>
+        )
       ))}
     </div>
   </section>
@@ -75,29 +118,96 @@ const lightboxPhotos = photos.map((p) => ({
     opacity: 0.6;
   }
 
-  /* --- Masonry layout with CSS columns --- */
-  .gallery-page__masonry {
-    --masonry-gap: 1.25rem;
-    column-count: 3;
-    column-gap: var(--masonry-gap);
+  /* --- Galerie en rangées (découpe : src/lib/gallery-layout.ts) ---
+     Dans une rangée, chaque photo grandit en proportion de son format (flex-grow = largeur / hauteur) :
+     toutes ont la même hauteur, sans recadrage. La largeur maximale de la rangée limite sa hauteur
+     à --hauteur-max ; une rangée qui l'atteint se centre, avec de l'air autour. */
+  .galerie {
+    --galerie-gap: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--galerie-gap);
   }
 
-  /* Tablet: 2 columns */
-  @media (max-width: 1024px) {
-    .gallery-page__masonry {
-      column-count: 2;
+  .galerie__rangee {
+    display: flex;
+    gap: var(--galerie-gap);
+    width: 100%;
+    max-width: calc(var(--somme) * var(--hauteur-max) + (var(--n) - 1) * var(--galerie-gap));
+    margin-inline: auto;
+  }
+
+  .galerie__rangee > :global(.photo-card) {
+    flex: var(--format) 1 0;
+    min-width: 0;
+    margin: 0;
+  }
+
+  /* Mosaïque : un portrait en grand, deux paysages empilés à côté.
+     Colonnes 8 / 9 : la hauteur du portrait égale celle des deux paysages. */
+  .galerie__mosaique {
+    display: grid;
+    grid-template-columns: 8fr 9fr;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: var(--galerie-gap);
+    width: 100%;
+    max-width: calc(var(--hauteur-max) * 2 / 3 * 17 / 8 + var(--galerie-gap));
+    margin-inline: auto;
+  }
+
+  .galerie__mosaique > :global(.photo-card) {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .galerie__mosaique > :global(.photo-card:first-child) {
+    grid-row: span 2;
+  }
+
+  /* Les deux paysages s'alignent sur la hauteur du portrait : leur image n'impose plus sa propre
+     hauteur (position absolue) et remplit sa case, avec un recadrage de quelques pixels. */
+  @media (min-width: 769px) {
+    .galerie__mosaique > :global(.photo-card:not(:first-child)) {
+      min-height: 0;
+    }
+
+    .galerie__mosaique > :global(.photo-card:not(:first-child) .photo-card__trigger),
+    .galerie__mosaique > :global(.photo-card:not(:first-child) .protected-image) {
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .galerie__mosaique > :global(.photo-card:not(:first-child) .protected-image__main) {
+      position: absolute;
+      inset: 0;
     }
   }
 
-  /* Mobile: single column, wider spacing */
+  /* Mobile : paysages en pleine largeur, portraits par deux */
   @media (max-width: 768px) {
     .gallery-page {
       padding-inline: var(--space-md);
     }
 
-    .gallery-page__masonry {
-      column-count: 1;
-      --masonry-gap: 1.5rem;
+    .galerie {
+      --galerie-gap: 1rem;
+    }
+
+    .galerie__rangee,
+    .galerie__mosaique {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: none;
+    }
+
+    .galerie__rangee > :global(.photo-card),
+    .galerie__mosaique > :global(.photo-card) {
+      flex: 1 1 100%;
+    }
+
+    .galerie__rangee > :global(.photo-card--portrait),
+    .galerie__mosaique > :global(.photo-card--portrait) {
+      flex: 1 1 calc(50% - var(--galerie-gap) / 2);
     }
   }
 
