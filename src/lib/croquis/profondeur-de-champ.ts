@@ -3,48 +3,15 @@
 
 import { enregistrerCroquis } from './activation';
 import { curseur, valeurDe, relierCurseurs, creerAnnonce, nombre } from './controles';
+import { zoneNette, flou, ecartType, qualifierFlou, appliquerFlou } from './optique';
 
-// --- Optique (distances en mm) -------------------------------------------
-// Objectif de 50 mm sur plein format, cercle de confusion c = 0,03 mm.
-//   Hyperfocale       H = f² / (N·c) + f
-//   Limite proche     Dp = s·(H − f) / (H + s − 2f)
-//   Limite lointaine  Dl = s·(H − f) / (H − s)   (infinie si s ≥ H)
-//   Flou d'un objet à la distance d, mise au point à s (diamètre sur le capteur) :
-//                     b = f² / (N·(s − f)) × |d − s| / d
-const FOCALE = 50;
-const CERCLE = 0.03;
-const LARGEUR_CAPTEUR = 36;
+// Formules optiques partagées : src/lib/croquis/optique.ts
 const LARGEUR_SCENE = 560; // largeur du cadre de la scène dans le SVG
 const ARRIERE_PLAN = 30000; // les arbres sont à 30 m
-
-function zoneNette(N: number, s: number): { proche: number; loin: number } {
-  const H = (FOCALE * FOCALE) / (N * CERCLE) + FOCALE;
-  const proche = (s * (H - FOCALE)) / (H + s - 2 * FOCALE);
-  const loin = s < H ? (s * (H - FOCALE)) / (H - s) : Infinity;
-  return { proche, loin };
-}
-
-function flou(N: number, s: number, d: number): number {
-  return ((FOCALE * FOCALE) / (N * (s - FOCALE))) * (Math.abs(d - s) / d);
-}
 
 // --- Dessin ----------------------------------------------------------------
 /** Position sur l'axe du schéma : échelle compressée, l'infini tient à droite. */
 const xDistance = (mm: number): number => (mm === Infinity ? 575 : 60 + (515 * (mm / 1000)) / (mm / 1000 + 3));
-
-/** Flou du capteur → écart-type du filtre SVG (0 = net, pas de filtre). */
-function ecartType(b: number): number {
-  if (b <= CERCLE) return 0;
-  const diametre = (b / LARGEUR_CAPTEUR) * LARGEUR_SCENE;
-  return Math.min(12, diametre / 2.5);
-}
-
-function qualifier(b: number): string {
-  if (b <= CERCLE) return 'net';
-  if (b <= 0.1) return 'presque net';
-  if (b <= 0.4) return 'flou';
-  return 'très flou';
-}
 
 function distanceTexte(mm: number): string {
   if (mm === Infinity) return "l'infini";
@@ -77,15 +44,6 @@ enregistrerCroquis('profondeur-de-champ', (racine, signal) => {
   const marqueAvant = el<SVGGElement>('pdci-m-avant');
   const marqueSujet = el<SVGCircleElement>('pdci-m-sujet');
 
-  const appliquerFlou = (groupe: SVGGElement, filtre: Element, id: string, sigma: number): void => {
-    if (sigma === 0) {
-      groupe.removeAttribute('filter');
-    } else {
-      filtre.setAttribute('stdDeviation', sigma.toFixed(2));
-      groupe.setAttribute('filter', `url(#${id})`);
-    }
-  };
-
   const rendu = (): void => {
     const N = valeurDe(ouverture).valeur;
     const s = valeurDe(distance).valeur * 1000;
@@ -95,8 +53,8 @@ enregistrerCroquis('profondeur-de-champ', (racine, signal) => {
     const bArriere = flou(N, s, ARRIERE_PLAN);
     const bAvant = flou(N, s, premierPlan);
 
-    appliquerFlou(arriere, flouArriere, 'pdci-flou-arriere', ecartType(bArriere));
-    appliquerFlou(avant, flouAvant, 'pdci-flou-avant', ecartType(bAvant));
+    appliquerFlou(arriere, flouArriere, 'pdci-flou-arriere', ecartType(bArriere, LARGEUR_SCENE));
+    appliquerFlou(avant, flouAvant, 'pdci-flou-avant', ecartType(bAvant, LARGEUR_SCENE));
 
     const x1 = xDistance(proche);
     const x2 = xDistance(loin);
@@ -114,7 +72,7 @@ enregistrerCroquis('profondeur-de-champ', (racine, signal) => {
     const zoneTxt = loin === Infinity
       ? `zone nette de ${distanceTexte(proche)} jusqu'à l'infini.`
       : `zone nette de ${distanceTexte(proche)} à ${distanceTexte(loin)}, ${profondeurTexte(loin - proche)}.`;
-    const plans = `Premier plan ${qualifier(bAvant)}, arrière-plan ${qualifier(bArriere)}.`;
+    const plans = `Premier plan ${qualifierFlou(bAvant)}, arrière-plan ${qualifierFlou(bArriere)}.`;
     annoncer(`${valeurDe(ouverture).affichage}, sujet à ${valeurDe(distance).affichage} : ${zoneTxt} ${plans}`);
   };
 

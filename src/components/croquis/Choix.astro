@@ -1,0 +1,88 @@
+---
+// Groupe de boutons à choix unique pour les croquis interactifs
+// (scène, mode d'exposition, source de lumière). Styles repris des filtres
+// du sommaire de la formation. Accessible : groupe libellé, aria-pressed.
+
+interface Props {
+  /** Nom utilisé par le script du croquis (data-choix) */
+  nom: string;
+  libelle: string;
+  options: { valeur: string; libelle: string }[];
+  /** Option sélectionnée au départ */
+  index: number;
+}
+
+const { nom, libelle, options, index } = Astro.props;
+const idLibelle = `choix-${nom}`;
+---
+
+<div class="choix">
+  <p class="choix__libelle" id={idLibelle}>{libelle}</p>
+  <div class="choix__options" role="group" aria-labelledby={idLibelle} data-choix={nom}>
+    {options.map((o, i) => (
+      <button
+        type="button"
+        class:list={['choix__option', { active: i === index }]}
+        data-valeur={o.valeur}
+        aria-pressed={i === index ? 'true' : 'false'}
+      >
+        {o.libelle}
+      </button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .choix .choix__libelle {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .choix__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .choix__option {
+    min-height: 44px;
+    background: transparent;
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-secondary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    padding: 6px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition:
+      color var(--duration-hover) var(--ease-out-expo),
+      border-color var(--duration-hover) var(--ease-out-expo),
+      background var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .choix__option:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(240, 237, 232, 0.2);
+  }
+
+  .choix__option.active {
+    color: var(--color-text-primary);
+    border-color: rgba(240, 237, 232, 0.3);
+    background: rgba(240, 237, 232, 0.05);
+  }
+
+  .choix__option:focus-visible {
+    outline: 1px solid var(--color-text-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .choix__option {
+      transition: none;
+    }
+  }
+</style>

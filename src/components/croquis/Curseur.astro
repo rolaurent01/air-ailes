@@ -19,7 +19,7 @@ const { nom, id, libelle, valeurs, affichages, index } = Astro.props;
 
 <div class="curseur">
   <div class="curseur__entete">
-    <label for={id} class="curseur__libelle">{libelle}</label>
+    <label for={id} class="curseur__libelle">{libelle}<span class="curseur__auto"> · réglé par l'appareil</span></label>
     <output for={id} class="curseur__valeur" data-curseur-valeur>{affichages[index]}</output>
   </div>
   <input
@@ -134,6 +134,21 @@ const { nom, id, libelle, valeurs, affichages, index } = Astro.props;
   .curseur__piste:focus-visible::-moz-range-thumb {
     outline: 1px solid var(--color-text-primary);
     outline-offset: 3px;
+  }
+
+  .curseur__auto {
+    display: none;
+    text-transform: none;
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .curseur.is-auto .curseur__auto {
+    display: inline;
+  }
+
+  .curseur__piste:disabled {
+    cursor: default;
+    opacity: 0.45;
   }
 
   .curseur__bornes {

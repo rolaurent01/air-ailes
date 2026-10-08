@@ -3,14 +3,16 @@
 // des <template> invisibles. src/lib/croquis/activation.ts les met à la place
 // des croquis statiques marqués data-croquis="<nom>" (amélioration progressive).
 import ProfondeurDeChamp from './ProfondeurDeChamp.astro';
+import TriangleExposition from './TriangleExposition.astro';
 import ScriptsCroquis from './ScriptsCroquis.astro';
 
 interface Props {
   slug: string;
 }
 
-const CROQUIS_PAR_LECON: Record<string, { nom: string; Composant: typeof ProfondeurDeChamp }[]> = {
+const CROQUIS_PAR_LECON: Record<string, { nom: string; Composant: (props: Record<string, never>) => unknown }[]> = {
   'profondeur-de-champ': [{ nom: 'profondeur-de-champ', Composant: ProfondeurDeChamp }],
+  'triangle-exposition': [{ nom: 'triangle-exposition', Composant: TriangleExposition }],
 };
 
 const croquis = CROQUIS_PAR_LECON[Astro.props.slug] ?? [];

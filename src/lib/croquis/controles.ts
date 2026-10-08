@@ -61,6 +61,49 @@ export function relierCurseurs(inputs: HTMLInputElement[], rendu: () => void, si
 }
 
 /**
+ * Relie un groupe de boutons à choix unique (composant Choix.astro).
+ * Retourne une fonction qui donne la valeur sélectionnée.
+ */
+export function relierChoix(
+  racine: HTMLElement,
+  nom: string,
+  surChangement: (valeur: string) => void,
+  signal: AbortSignal,
+): () => string {
+  const groupe = racine.querySelector<HTMLElement>(`[data-choix="${nom}"]`);
+  if (!groupe) throw new Error(`Choix « ${nom} » introuvable`);
+  const boutons = [...groupe.querySelectorAll<HTMLButtonElement>('button[data-valeur]')];
+  let valeur = boutons.find((b) => b.classList.contains('active'))?.dataset.valeur ?? boutons[0].dataset.valeur ?? '';
+
+  boutons.forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      valeur = bouton.dataset.valeur ?? '';
+      boutons.forEach((b) => {
+        b.classList.toggle('active', b === bouton);
+        b.setAttribute('aria-pressed', String(b === bouton));
+      });
+      surChangement(valeur);
+    }, { signal });
+  });
+
+  return () => valeur;
+}
+
+/** Positionne un curseur sur le cran le plus proche d'une valeur (utilisé par les modes priorité). */
+export function placerCurseur(input: HTMLInputElement, cible: number, distance: (a: number, b: number) => number): void {
+  const valeurs = JSON.parse(input.dataset.valeurs ?? '[]') as number[];
+  let meilleur = 0;
+  valeurs.forEach((v, i) => {
+    if (distance(v, cible) < distance(valeurs[meilleur], cible)) meilleur = i;
+  });
+  input.value = String(meilleur);
+  const affichages = JSON.parse(input.dataset.affichages ?? '[]') as string[];
+  input.setAttribute('aria-valuetext', affichages[meilleur]);
+  const sortie = input.closest('.curseur')?.querySelector('[data-curseur-valeur]');
+  if (sortie) sortie.textContent = affichages[meilleur];
+}
+
+/**
  * Affiche le résultat en clair tout de suite, et l'annonce aux lecteurs d'écran
  * après une courte pause (sinon chaque cran du curseur serait lu à voix haute).
  */

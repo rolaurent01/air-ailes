@@ -1,0 +1,174 @@
+---
+// Croquis interactif : triangle d'exposition (leçon triangle-exposition).
+// Scène (IL fixé), ouverture, vitesse et ISO par tiers de valeur, et mode
+// Manuel / Priorité ouverture / Priorité vitesse. Calculs : src/lib/croquis/triangle-exposition.ts
+import CroquisInteractif from './CroquisInteractif.astro';
+import Curseur from './Curseur.astro';
+import Choix from './Choix.astro';
+
+// Valeurs exactes (puissances de 2 par tiers) et libellés nominaux affichés par les appareils
+const OUVERTURES_LIBELLES = ['1,4', '1,6', '1,8', '2', '2,2', '2,5', '2,8', '3,2', '3,5', '4', '4,5', '5', '5,6', '6,3', '7,1', '8', '9', '10', '11', '13', '14', '16', '18', '20', '22'];
+const OUVERTURES = OUVERTURES_LIBELLES.map((_, i) => 2 ** ((i + 3) / 6)); // f/1.4 = 2^0,5 … f/22 = 2^4,5
+
+const VITESSES_LIBELLES = [
+  '30 s', '25 s', '20 s', '15 s', '13 s', '10 s', '8 s', '6 s', '5 s', '4 s', '3,2 s', '2,5 s', '2 s', '1,6 s', '1,3 s', '1 s',
+  '0,8 s', '0,6 s', '0,5 s', '0,4 s', '0,3 s', '1/4 s', '1/5 s', '1/6 s', '1/8 s', '1/10 s', '1/13 s', '1/15 s', '1/20 s',
+  '1/25 s', '1/30 s', '1/40 s', '1/50 s', '1/60 s', '1/80 s', '1/100 s', '1/125 s', '1/160 s', '1/200 s', '1/250 s',
+  '1/320 s', '1/400 s', '1/500 s', '1/640 s', '1/800 s', '1/1000 s', '1/1250 s', '1/1600 s', '1/2000 s', '1/2500 s',
+  '1/3200 s', '1/4000 s', '1/5000 s', '1/6400 s', '1/8000 s',
+];
+const VITESSES = VITESSES_LIBELLES.map((_, i) => 2 ** (5 - i / 3)); // 30 s ≈ 2^5 … 1/8000 s ≈ 2^−13
+
+const ISO_LIBELLES = ['100', '125', '160', '200', '250', '320', '400', '500', '640', '800', '1000', '1250', '1600', '2000', '2500', '3200', '4000', '5000', '6400', '8000', '10000', '12800'];
+const ISOS = ISO_LIBELLES.map((_, i) => 100 * 2 ** (i / 3));
+const isoAffiche = (l: string) => `ISO ${Number(l).toLocaleString('fr-FR')}`;
+---
+
+<CroquisInteractif
+  nom="triangle-exposition"
+  description="Une rue avec des bâtiments au fond, une personne immobile et un cycliste qui passe, puis une échelle d'exposition de moins 3 à plus 3 IL. Les réglages changent la luminosité, le flou du cycliste, le bruit et le flou de l'arrière-plan ; le résultat est décrit sous le dessin."
+>
+  <svg slot="dessin" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <clipPath id="tri-cadre"><rect x="20" y="10" width="560" height="200" /></clipPath>
+      <!-- Luminosité : pente = 2^écart (un IL = deux fois plus ou moins de lumière) -->
+      <filter id="tri-expo" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feComponentTransfer>
+          <feFuncR type="linear" slope="1" />
+          <feFuncG type="linear" slope="1" />
+          <feFuncB type="linear" slope="1" />
+        </feComponentTransfer>
+      </filter>
+      <filter id="tri-flou-fond" x="-10%" y="-20%" width="120%" height="140%">
+        <feGaussianBlur stdDeviation="0" />
+      </filter>
+      <!-- Flou de mouvement : horizontal uniquement -->
+      <filter id="tri-flou-bouge" x="-40%" y="-10%" width="180%" height="120%">
+        <feGaussianBlur stdDeviation="0 0" />
+      </filter>
+      <!-- Bruit numérique -->
+      <filter id="tri-bruit" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+    </defs>
+    <style>
+      .tri-frame { stroke: #F0EDE8; stroke-width: 1.5; fill: none; }
+      .tri-fond { stroke: #7A7A72; stroke-width: 1.2; fill: none; stroke-linejoin: round; }
+      .tri-fenetre { stroke: #7A7A72; stroke-width: 0.8; fill: none; }
+      .tri-sujet { stroke: #F0EDE8; stroke-width: 1.5; fill: #111111; stroke-linecap: round; stroke-linejoin: round; }
+      .tri-velo { stroke: #F0EDE8; stroke-width: 1.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .tri-sol { stroke: #7A7A72; stroke-width: 1; }
+      .tri-echelle { stroke: #7A7A72; stroke-width: 1; }
+      .tri-zero { stroke: #F0EDE8; stroke-width: 1.2; }
+      .tri-curseur { fill: #F0EDE8; }
+      .tri-label { fill: #F0EDE8; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .tri-tiny { fill: #7A7A72; font-family: system-ui, sans-serif; font-size: 11px; text-anchor: middle; }
+    </style>
+
+    <!-- Scène -->
+    <g clip-path="url(#tri-cadre)">
+      <g id="tri-scene" filter="url(#tri-expo)">
+        <rect x="20" y="10" width="560" height="200" fill="#111111" />
+        <!-- Arrière-plan : bâtiments, flou selon l'ouverture -->
+        <g id="tri-fond">
+          <path d="M20,150 L20,70 L90,70 L90,150 M110,150 L110,40 L190,40 L190,150 M210,150 L210,86 L250,62 L290,86 L290,150 M330,150 L330,50 L420,50 L420,150 M440,150 L440,76 L520,76 L520,150 M540,150 L540,60 L580,60" class="tri-fond" />
+          <path d="M34,84 h14 v14 h-14 z M62,84 h14 v14 h-14 z M34,112 h14 v14 h-14 z M62,112 h14 v14 h-14 z M126,56 h16 v16 h-16 z M158,56 h16 v16 h-16 z M126,88 h16 v16 h-16 z M158,88 h16 v16 h-16 z M126,120 h16 v16 h-16 z M158,120 h16 v16 h-16 z M346,66 h18 v16 h-18 z M386,66 h18 v16 h-18 z M346,98 h18 v16 h-18 z M386,98 h18 v16 h-18 z M456,92 h18 v16 h-18 z M488,92 h18 v16 h-18 z M456,122 h18 v16 h-18 z M488,122 h18 v16 h-18 z" class="tri-fenetre" />
+        </g>
+        <line x1="20" y1="196" x2="580" y2="196" class="tri-sol" />
+        <!-- Sujet immobile : reçoit la mise au point -->
+        <g>
+          <path d="M140,212 Q143,160 180,152 Q217,160 220,212" class="tri-sujet" />
+          <circle cx="180" cy="126" r="20" class="tri-sujet" />
+        </g>
+        <!-- Cycliste : flou de mouvement selon la vitesse -->
+        <g id="tri-velo" class="tri-velo">
+          <circle cx="380" cy="180" r="16" />
+          <circle cx="446" cy="180" r="16" />
+          <path d="M380,180 L404,152 L432,152 L446,180 M404,152 L414,180 L380,180 M414,180 L432,152 M400,146 L410,146 M430,146 L438,140" />
+          <circle cx="420" cy="112" r="8" />
+          <path d="M420,120 L416,142 L412,156 M416,142 L434,140 M412,156 L414,172" />
+        </g>
+      </g>
+      <!-- Bruit : de plus en plus visible quand l'ISO monte -->
+      <rect id="tri-bruit-calque" x="20" y="10" width="560" height="200" filter="url(#tri-bruit)" opacity="0" />
+    </g>
+    <rect x="20" y="10" width="560" height="200" class="tri-frame" />
+
+    <!-- Cellule de mesure : de −3 à +3 IL -->
+    <text x="300" y="238" class="tri-tiny">Exposition</text>
+    <g id="tri-graduations">
+      <line x1="120" y1="258" x2="480" y2="258" class="tri-echelle" />
+      <line x1="120" y1="250" x2="120" y2="266" class="tri-echelle" />
+      <line x1="180" y1="252" x2="180" y2="264" class="tri-echelle" />
+      <line x1="240" y1="252" x2="240" y2="264" class="tri-echelle" />
+      <line x1="300" y1="246" x2="300" y2="270" class="tri-zero" />
+      <line x1="360" y1="252" x2="360" y2="264" class="tri-echelle" />
+      <line x1="420" y1="252" x2="420" y2="264" class="tri-echelle" />
+      <line x1="480" y1="250" x2="480" y2="266" class="tri-echelle" />
+      <text x="120" y="288" class="tri-tiny">−3</text>
+      <text x="180" y="288" class="tri-tiny">−2</text>
+      <text x="240" y="288" class="tri-tiny">−1</text>
+      <text x="300" y="288" class="tri-label">0</text>
+      <text x="360" y="288" class="tri-tiny">+1</text>
+      <text x="420" y="288" class="tri-tiny">+2</text>
+      <text x="480" y="288" class="tri-tiny">+3</text>
+      <text x="80" y="262" class="tri-tiny">sombre</text>
+      <text x="522" y="262" class="tri-tiny">clair</text>
+    </g>
+    <polygon id="tri-aiguille" points="294,244 306,244 300,254" class="tri-curseur" />
+  </svg>
+
+  <Fragment slot="controles">
+    <Choix
+      nom="scene"
+      libelle="Scène"
+      options={[
+        { valeur: '15', libelle: 'Plein soleil' },
+        { valeur: '12', libelle: 'Ciel couvert' },
+        { valeur: '6', libelle: 'Intérieur' },
+        { valeur: '3', libelle: 'Nuit en ville' },
+      ]}
+      index={0}
+    />
+    <Choix
+      nom="mode"
+      libelle="Mode"
+      options={[
+        { valeur: 'M', libelle: 'Manuel' },
+        { valeur: 'A', libelle: 'Priorité ouverture' },
+        { valeur: 'S', libelle: 'Priorité vitesse' },
+      ]}
+      index={0}
+    />
+    <Curseur
+      nom="ouverture"
+      id="tri-ouverture"
+      libelle="Ouverture"
+      valeurs={OUVERTURES}
+      affichages={OUVERTURES_LIBELLES.map((l) => `f/${l}`)}
+      index={15}
+    />
+    <Curseur nom="vitesse" id="tri-vitesse" libelle="Vitesse" valeurs={VITESSES} affichages={VITESSES_LIBELLES} index={42} />
+    <Curseur nom="iso" id="tri-iso" libelle="Sensibilité" valeurs={ISOS} affichages={ISO_LIBELLES.map(isoAffiche)} index={0} />
+  </Fragment>
+
+  <p slot="legende" class="croquis-legende">
+    Le cycliste roule à environ 20 km/h ; la personne immobile reçoit la mise au point (50 mm, à 3 m).
+  </p>
+</CroquisInteractif>
+
+<style>
+  .croquis-legende {
+    margin: var(--space-xs) 0 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-align: center;
+    font-style: italic;
+  }
+
+  :global(.croquis) .croquis-legende {
+    margin-bottom: 0;
+  }
+</style>

@@ -14,7 +14,7 @@ published: true
 
 Quand on débute en photo, on tourne les molettes un peu au hasard. On obtient parfois un bon résultat, parfois une image trop sombre ou complètement cramée, sans comprendre pourquoi. La clé, c'est de saisir comment trois réglages — ouverture, vitesse et ISO — travaillent ensemble. On appelle ça le **triangle d'exposition**. C'est le modèle le plus utile que vous apprendrez jamais.
 
-<div class="svg-illustration" style="max-width: 600px; margin: 2rem auto; display: block;">
+<div class="svg-illustration" data-croquis="triangle-exposition" style="max-width: 600px; margin: 2rem auto; display: block;">
 <svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Triangle d'exposition montrant les trois paramètres : Ouverture en haut, Vitesse en bas à gauche, ISO en bas à droite">
 <style>
   @keyframes pulse {
