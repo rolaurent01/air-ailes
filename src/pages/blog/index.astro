@@ -259,8 +259,8 @@ const categories = Object.entries(categoryMap).filter(([_, tags]) =>
     });
   }
 
-  initBlogIndex();
-  initFilters();
+  // astro:page-load se déclenche au premier chargement et après chaque navigation (view transitions) :
+  // un appel direct en plus installait les écouteurs des filtres deux fois.
   document.addEventListener('astro:page-load', () => {
     initBlogIndex();
     initFilters();

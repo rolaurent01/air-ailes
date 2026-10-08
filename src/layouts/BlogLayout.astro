@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   title: string;
+  slug: string;
   date: Date;
   excerpt: string;
   coverSvg: string;
@@ -11,7 +12,7 @@ interface Props {
   nextPost?: { title: string; slug: string };
 }
 
-const { title, date, excerpt, coverSvg, tags, prevPost, nextPost } = Astro.props;
+const { title, slug, date, excerpt, coverSvg, tags, prevPost, nextPost } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('fr-FR', {
   year: 'numeric',
@@ -23,7 +24,7 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 <BaseLayout
   title={title}
   description={excerpt}
-  image={coverSvg}
+  ogImage={`/og/${slug}.png`}
   type="article"
   publishedDate={date.toISOString()}
 >
@@ -346,10 +347,16 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
 
   gsap.registerPlugin(ScrollTrigger);
 
+  let progressController: AbortController | null = null;
+
   function initBlogArticle(): void {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const titleEl = document.getElementById('blog-title');
-    if (!titleEl) return;
+    if (!titleEl) {
+      progressController?.abort();
+      progressController = null;
+      return;
+    }
     ScrollTrigger.getAll().forEach((t) => t.kill());
     const coverEl = document.getElementById('blog-cover');
     const progressEl = document.getElementById('blog-progress');
@@ -376,8 +383,11 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
       });
     }
 
-    // Barre de progression
+    // Barre de progression : l'écouteur précédent est retiré à chaque navigation
+    progressController?.abort();
+    progressController = null;
     if (progressEl) {
+      progressController = new AbortController();
       const updateProgress = (): void => {
         const scrollTop = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -385,13 +395,11 @@ const formattedDate = date.toLocaleDateString('fr-FR', {
         progressEl.style.width = `${progress}%`;
       };
 
-      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('scroll', updateProgress, { passive: true, signal: progressController.signal });
       updateProgress();
     }
   }
 
-  initBlogArticle();
-  document.addEventListener('astro:page-load', () => {
-    initBlogArticle();
-  });
+  // astro:page-load se déclenche au premier chargement et après chaque navigation (view transitions)
+  document.addEventListener('astro:page-load', initBlogArticle);
 </script>
