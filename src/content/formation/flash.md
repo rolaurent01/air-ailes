@@ -283,7 +283,13 @@ Cette séparation entre « exposition ambiance » et « exposition flash » est 
 
 ---
 
-**Exercice de ce soir** : prenez votre flash, un mur blanc et un sujet patient (un ami, un membre de la famille, ou même une peluche). Commencez en flash direct sur le sujet — observez les ombres dures. Puis orientez le flash vers le plafond. Comparez. Ensuite, orientez-le vers le mur latéral. Comparez encore. En dix minutes et trois séries de photos, vous aurez compris l'essentiel de la direction de lumière au flash.
+<div class="encadre encadre--exercice">
+
+### Exercice de ce soir : trois directions de flash
+
+Prenez votre flash, un mur blanc et un sujet patient (un ami, un membre de la famille, ou même une peluche). Commencez en flash direct sur le sujet — observez les ombres dures. Puis orientez le flash vers le plafond. Comparez. Ensuite, orientez-le vers le mur latéral. Comparez encore. En dix minutes et trois séries de photos, vous aurez compris l'essentiel de la direction de lumière au flash.
+
+</div>
 
 ## Pour aller plus loin
 

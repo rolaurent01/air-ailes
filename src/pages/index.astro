@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProtectedImage from '../components/ProtectedImage.astro';
 import Lightbox from '../components/Lightbox.astro';
+import PortesEntree from '../components/PortesEntree.astro';
 import { getHeroSrcSet, HERO_SIZES } from '../lib/cloudinary';
 import { SITE_NAME, SITE_DESCRIPTION } from '../lib/constants';
 
@@ -23,11 +24,6 @@ const showcasePhotos = showcaseIds
   .map((id) => allPhotosMap.get(id))
   .filter((p): p is NonNullable<typeof p> => p != null);
 
-const blogEntries = await getCollection('formation');
-const recentPosts = blogEntries
-  .filter((p) => p.data.published)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 2);
 
 const lightboxPhotos = showcasePhotos.map((p) => ({
   cloudinary_id: p.data.cloudinary_id,
@@ -107,42 +103,22 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
 
   <hr class="section-separator" />
 
-  <!-- Blog / Formation -->
-  {recentPosts.length > 0 && (
-    <section class="blog-preview" id="blog-preview">
-      <div class="blog-preview__header">
-        <h2 class="blog-preview__title" id="blog-title">Formation Photo</h2>
-      </div>
-      <div class="blog-preview__grid">
-        {recentPosts.map((post) => (
-          <a href={`/formation/${post.data.slug}`} class="blog-card-link">
-            <article class="blog-card">
-              <div class="blog-card__image">
-                <img src={post.data.cover_svg} alt={post.data.title} width="600" height="400" loading="lazy" />
-              </div>
-              <div class="blog-card__content">
-                <time class="blog-card__date" datetime={post.data.date.toISOString()}>
-                  {post.data.date.toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </time>
-                <h3 class="blog-card__heading">{post.data.title}</h3>
-                <p class="blog-card__excerpt">{post.data.excerpt}</p>
-              </div>
-            </article>
-          </a>
-        ))}
-      </div>
-      <div class="blog-preview__cta">
-        <a href="/formation" class="showcase__link">
-          Voir la formation
-          <span class="showcase__arrow">&rarr;</span>
-        </a>
-      </div>
-    </section>
-  )}
+  <!-- Formation : invitation à commencer le parcours -->
+  <section class="blog-preview" id="blog-preview">
+    <div class="blog-preview__header">
+      <h2 class="blog-preview__title" id="blog-title">Formation Photo</h2>
+      <p class="blog-preview__intro">
+        Un parcours gratuit et pas à pas, du mode automatique jusqu'au tirage. Choisissez votre porte d'entrée.
+      </p>
+    </div>
+    <PortesEntree />
+    <div class="blog-preview__cta">
+      <a href="/formation" class="showcase__link">
+        Voir tout le parcours
+        <span class="showcase__arrow">&rarr;</span>
+      </a>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -337,83 +313,12 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
     color: var(--color-text-primary);
   }
 
-  .blog-preview__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-lg);
-  }
-
-  @media (max-width: 768px) {
-    .blog-preview__grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .blog-card-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    opacity: 1;
-  }
-
-  .blog-card-link:hover {
-    opacity: 1;
-  }
-
-  .blog-card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-md);
-    overflow: hidden;
-  }
-
-  @media (max-width: 768px) {
-    .blog-card {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .blog-card__image {
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    border-radius: 2px;
-    transition: transform var(--duration-slow) var(--ease-out-expo);
-  }
-
-  .blog-card__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .blog-card:hover .blog-card__image {
-    transform: scale(1.03);
-  }
-
-  .blog-card__content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-xs);
-  }
-
-  .blog-card__date {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-secondary);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-  }
-
-  .blog-card__heading {
-    font-size: var(--font-size-lg);
-    letter-spacing: var(--letter-spacing-wide);
-    color: var(--color-text-primary);
-  }
-
-  .blog-card__excerpt {
+  .blog-preview__intro {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    max-width: 50ch;
+    margin: var(--space-sm) auto 0;
     line-height: var(--line-height-relaxed);
   }
 
@@ -426,9 +331,6 @@ const lightboxPhotos = showcasePhotos.map((p) => ({
     .hero__scroll-line {
       animation: none;
       opacity: 0.5;
-    }
-    .blog-card:hover .blog-card__image {
-      transform: none;
     }
     .showcase__image-wrap {
       clip-path: none;

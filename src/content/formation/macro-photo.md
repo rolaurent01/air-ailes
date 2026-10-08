@@ -167,11 +167,17 @@ En macro nature, la lumière traverse souvent des feuilles vertes avant d'attein
 
 Ces trois exercices vous font progresser en réduisant graduellement la distance au sujet.
 
+<div class="encadre encadre--exercice">
+
 ### 30 cm — La fleur entière
 
 Trouvez une fleur dans un jardin ou en pot. Photographiez-la en cadrant la fleur entière, avec un arrière-plan flou. Rapport approximatif : 1:4 à 1:3. Travaillez à f/5.6 pour un joli bokeh. La profondeur de champ est encore relativement confortable (~15-20 mm). Concentrez-vous sur la composition : la fleur ne doit pas être centrée systématiquement. Cherchez un angle original — en plongée, en contre-plongée, de profil.
 
 **Objectif de l'exercice** : gérer la composition et l'arrière-plan en macro « douce ».
+
+</div>
+
+<div class="encadre encadre--exercice">
 
 ### 10 cm — Le détail de la feuille
 
@@ -179,11 +185,17 @@ Rapprochez-vous. Cadrez une portion de feuille ou de pétale — pas la plante e
 
 **Objectif de l'exercice** : maîtriser la mise au point manuelle et accepter le taux de déchet élevé.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### 3 cm — L'œil de l'insecte
 
 C'est le territoire du 1:1. Trouvez un insecte coopératif — une coccinelle, une mouche au repos, une araignée dans sa toile. Approchez très lentement. La PDC est de 2 mm. Vous allez rater neuf photos sur dix. C'est normal. Montez les ISO à 800 ou 1600, passez la vitesse à 1/250 s minimum, ouvrez à f/5.6 ou f/8. Déclenchez en rafale courte à chaque tentative de mise au point.
 
 **Objectif de l'exercice** : apprendre à travailler vite, accepter l'imprévisibilité du vivant, et développer le réflexe de la mise au point corporelle en situation réelle.
+
+</div>
 
 ---
 

@@ -190,17 +190,29 @@ Pour aller plus loin sur la gestion des espaces couleur, consultez [mon guide su
 
 ## Exercices et presets
 
+<div class="encadre encadre--exercice">
+
 ### Exercice 1 : Le développement en 3 minutes
 
 Prenez une photo RAW au hasard dans votre catalogue. Réglez un chronomètre sur 3 minutes et faites un développement complet. L'objectif n'est pas la perfection — c'est de vous forcer à prioriser. Vous découvrirez que la balance des blancs + l'exposition + les hautes lumières/ombres font 90 % du travail. Le reste est de la finition.
+
+</div>
+
+<div class="encadre encadre--exercice">
 
 ### Exercice 2 : Avant / Après en aveugle
 
 Développez une image, exportez-la. Attendez 24 heures. Ouvrez l'image exportée et la version RAW non développée côte à côte. Êtes-vous allé trop loin ? Pas assez ? Le recul temporel est le meilleur outil d'auto-évaluation.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Exercice 3 : Créer votre preset de base
 
 Une fois que vous avez trouvé vos réglages récurrents — probablement un léger débouchage des ombres, une vibrance modérée, une netteté calibrée — sauvegardez-les en preset. Appliquez-le à l'import et vous partirez toujours d'une base cohérente. Ce n'est pas de la flemme, c'est de l'efficacité.
+
+</div>
 
 ### À propos des presets achetés
 

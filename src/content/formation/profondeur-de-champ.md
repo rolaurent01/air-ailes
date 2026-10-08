@@ -143,6 +143,8 @@ Des applications comme PhotoPills ou HyperFocal Pro calculent l'hyperfocale pour
 
 ## Exercices portrait et paysage
 
+<div class="encadre encadre--exercice">
+
 ### Exercice portrait : le fond qui disparaît
 
 Matériel : un objectif de 50 mm ou plus, ouverture f/2.8 ou plus grande.
@@ -153,6 +155,10 @@ Matériel : un objectif de 50 mm ou plus, ouverture f/2.8 ou plus grande.
 4. Variez la distance : reculez à 4 mètres, puis rapprochez-vous à 1 mètre. Observez l'impact sur le flou.
 
 Cet exercice vous donnera un **repère mental** : vous saurez, sans calculer, quel résultat attendre selon votre distance et votre ouverture.
+
+</div>
+
+<div class="encadre encadre--exercice">
 
 ### Exercice paysage : premier plan net
 
@@ -165,11 +171,17 @@ Matériel : grand-angle (14–35 mm), trépied.
 
 L'objectif est de sentir la différence entre « faire le point sur le sujet » et « faire le point au bon endroit pour maximiser la netteté globale ». En paysage, l'endroit optimal n'est presque jamais l'infini.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Exercice avancé : le focus stacking
 
 Si votre profondeur de champ est insuffisante (macro, architecture très proche), vous pouvez prendre plusieurs images avec des points de mise au point différents, puis les fusionner en post-production. Photoshop, Helicon Focus ou Zerene Stacker font ça très bien.
 
 Prenez 5 photos de la même scène en déplaçant le point de mise au point du premier plan vers l'arrière-plan. Chaque image couvre une « tranche » de netteté. Le logiciel combine les zones nettes pour créer une image avec une profondeur de champ impossible à obtenir en une seule prise.
+
+</div>
 
 ## L'essentiel à retenir
 

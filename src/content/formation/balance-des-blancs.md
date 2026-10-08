@@ -160,6 +160,8 @@ Parfois, la « mauvaise » balance est la bonne. L'essentiel, c'est que le choix
 
 ## Exercices : mêmes couleurs, lumières différentes
 
+<div class="encadre encadre--exercice">
+
 ### Exercice 1 : la charte maison
 
 Prenez un objet blanc (feuille de papier, mug blanc) et photographiez-le dans quatre situations :
@@ -170,11 +172,19 @@ Prenez un objet blanc (feuille de papier, mug blanc) et photographiez-le dans qu
 
 Pour chaque situation, faites trois photos : AWB, préréglage correspondant, et Kelvin ajusté manuellement. Comparez les résultats. Vous verrez rapidement dans quels cas l'AWB se débrouille et dans quels cas il faut intervenir.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Exercice 2 : la série cohérente
 
 Choisissez une scène d'intérieur avec un éclairage stable (salon, cuisine). Photographiez le même sujet dix fois avec l'AWB. Puis dix fois avec un Kelvin fixe (estimez la température, ajustez, puis gardez cette valeur).
 
 Importez les deux séries dans Lightroom. Affichez-les en grille. Vous remarquerez que la série AWB a de légères variations de teinte d'une image à l'autre, tandis que la série Kelvin fixe est parfaitement uniforme. Pour un usage ponctuel, ça ne compte pas. Pour un book, un reportage ou un feed Instagram, la cohérence fait toute la différence.
+
+</div>
+
+<div class="encadre encadre--exercice">
 
 ### Exercice 3 : jouer avec l'ambiance
 
@@ -184,6 +194,8 @@ Photographiez la même scène à trois balances volontairement « fausses » :
 3. Kelvin très haut (8000 K) → dominante chaude dorée
 
 Regardez comment l'ambiance change radicalement. Certaines scènes gagnent en émotion avec une légère dominante froide (scènes mélancoliques, urbaines). D'autres prennent vie avec une teinte chaude (portraits, couchers de soleil, cuisine). Cet exercice développe votre sensibilité chromatique et vous aide à choisir consciemment vos couleurs.
+
+</div>
 
 ## L'essentiel en trois phrases
 

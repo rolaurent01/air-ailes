@@ -2,6 +2,9 @@
 import BaseLayout from './BaseLayout.astro';
 import FilAriane from '../components/FilAriane.astro';
 import NavParcours from '../components/NavParcours.astro';
+import OuJenSuis from '../components/OuJenSuis.astro';
+import type { Lecon } from '../lib/parcours';
+import { SOCIAL_LINKS } from '../lib/constants';
 
 interface Lien {
   href: string;
@@ -15,6 +18,8 @@ interface Props {
   date: Date;
   misAJour: Date;
   excerpt: string;
+  /** Suite de « À la fin de cette leçon, vous saurez… » */
+  objectif: string;
   coverSvg: string;
   /** Ex. « Module 1 · Leçon 3 » */
   badge: string;
@@ -23,10 +28,12 @@ interface Props {
   filAriane: { libelle: string; href?: string }[];
   precedent: Lien;
   suivant: Lien;
+  parcours: Lecon[];
 }
 
 const {
-  title, slug, date, misAJour, excerpt, coverSvg, badge, niveau, tempsLecture, filAriane, precedent, suivant,
+  title, slug, date, misAJour, excerpt, objectif, coverSvg, badge, niveau, tempsLecture, filAriane, precedent, suivant,
+  parcours,
 } = Astro.props;
 
 const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -63,10 +70,25 @@ const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', mo
     </header>
 
     <div class="blog-article__prose">
+      <aside class="encadre encadre--objectif">
+        <p class="encadre__label">Objectif</p>
+        <p>À la fin de cette leçon, vous saurez {objectif}</p>
+      </aside>
+
       <slot />
     </div>
 
     <NavParcours precedent={precedent} suivant={suivant} ariaLabel="Navigation entre les leçons" />
+
+    <OuJenSuis parcours={parcours} slugCourant={slug} />
+
+    <aside class="lecon-fin" aria-label="Pour continuer">
+      <a href="/galeries">Voir où ça mène : les galeries</a>
+      <span aria-hidden="true">·</span>
+      <a href="/a-propos#contact">Un tirage d'art</a>
+      <span aria-hidden="true">·</span>
+      <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+    </aside>
   </article>
 </BaseLayout>
 
@@ -248,6 +270,70 @@ const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', mo
     letter-spacing: var(--letter-spacing-wide);
     margin-top: var(--space-xs);
     font-style: italic;
+  }
+
+  /* --- Encadrés : Objectif, À retenir, Exercice --- */
+  .blog-article__prose :global(.encadre) {
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 2px;
+    background: rgba(240, 237, 232, 0.02);
+    padding: var(--space-md) var(--space-lg);
+    margin-block: var(--space-xl);
+  }
+
+  .blog-article__prose :global(.encadre--objectif) {
+    margin-top: 0;
+  }
+
+  .blog-article__prose :global(.encadre + .encadre) {
+    margin-top: calc(var(--space-md) - var(--space-xl));
+  }
+
+  .blog-article__prose :global(.encadre__label) {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .blog-article__prose :global(.encadre > :first-child) {
+    margin-top: 0;
+  }
+
+  .blog-article__prose :global(.encadre > :last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .blog-article__prose :global(.encadre) {
+      padding: var(--space-sm) var(--space-md);
+    }
+  }
+
+  /* --- Fin de leçon --- */
+  .lecon-fin {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 12px;
+    max-width: 65ch;
+    margin-inline: auto;
+    padding: 0 var(--container-padding) var(--space-2xl);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .lecon-fin a {
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .lecon-fin a:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
   }
 
   /* --- Pour aller plus loin links --- */

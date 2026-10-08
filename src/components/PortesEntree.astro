@@ -1,0 +1,145 @@
+---
+// Les deux portes d'entrée du parcours (« Je débute » / « J'ai les bases »).
+// Utilisé sur la page d'accueil et le sommaire. Markup et styles repris
+// à l'identique des cartes du bloc « Formation Photo » de l'accueil.
+import { PORTES, getModule, urlModule } from '../lib/parcours';
+
+interface Props {
+  titreBalise?: 'h2' | 'h3';
+}
+
+const { titreBalise: Titre = 'h3' } = Astro.props;
+---
+
+<div class="portes">
+  {PORTES.map((porte) => {
+    const module = getModule(porte.module);
+    return (
+      <a href={urlModule(module)} class="blog-card-link">
+        <article class="blog-card">
+          <div class="blog-card__image">
+            <img src={porte.croquis} alt="" width="600" height="400" loading="lazy" />
+          </div>
+          <div class="blog-card__content">
+            <span class="blog-card__date">Module {module.numero} · {module.titre}</span>
+            <Titre class="blog-card__heading">{porte.titre}</Titre>
+            <p class="blog-card__excerpt">{porte.texte}</p>
+            <span class="blog-card__suite">Commencer <span class="blog-card__fleche">&rarr;</span></span>
+          </div>
+        </article>
+      </a>
+    );
+  })}
+</div>
+
+<style>
+  .portes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  @media (max-width: 768px) {
+    .portes {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .blog-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    opacity: 1;
+  }
+
+  .blog-card-link:hover {
+    opacity: 1;
+  }
+
+  .blog-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .blog-card {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .blog-card__image {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 2px;
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .blog-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .blog-card:hover .blog-card__image {
+    transform: scale(1.03);
+  }
+
+  .blog-card__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-xs);
+  }
+
+  .blog-card__date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+  }
+
+  .blog-card__heading {
+    font-size: var(--font-size-lg);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+  }
+
+  .blog-card__excerpt {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .blog-card__suite {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-top: var(--space-xs);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .blog-card:hover .blog-card__suite {
+    color: var(--color-text-primary);
+  }
+
+  .blog-card__fleche {
+    transition: transform var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .blog-card:hover .blog-card__fleche {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-card:hover .blog-card__image {
+      transform: none;
+    }
+  }
+</style>

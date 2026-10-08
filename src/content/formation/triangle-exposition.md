@@ -165,6 +165,8 @@ Le mode manuel devient utile quand les conditions de lumière sont stables et qu
 
 La théorie sans pratique, ça ne sert à rien. Voici deux exercices qui vont ancrer ces concepts dans vos doigts et votre regard.
 
+<div class="encadre encadre--exercice">
+
 ### Exercice : une scène, neuf variantes
 
 Choisissez un sujet simple — une tasse sur une table, un objet près d'une fenêtre. Photographiez-le **neuf fois** en changeant uniquement les réglages :
@@ -183,6 +185,10 @@ Choisissez un sujet simple — une tasse sur une table, un objet près d'une fen
 
 Comparez les résultats sur votre écran. Regardez la profondeur de champ (lignes 1–3), le flou de mouvement si quelque chose bouge (lignes 4–6), et le bruit (lignes 7–9). C'est le meilleur cours accéléré que vous puissiez vous donner.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Exercice : priorité intention
 
 Sortez avec un seul objectif et imposez-vous **trois intentions** en 30 minutes :
@@ -192,6 +198,8 @@ Sortez avec un seul objectif et imposez-vous **trois intentions** en 30 minutes 
 3. **Cinq photos « mouvement »** : voitures, passants, eau. Mode S, variez entre 1/15 s et 1/500 s. Comparez les rendus.
 
 L'objectif n'est pas de faire de belles images (ça viendra). C'est de **sentir physiquement** l'effet de chaque réglage, de créer un lien entre la molette que vous tournez et le résultat à l'écran.
+
+</div>
 
 ## Aller au-delà des réglages
 

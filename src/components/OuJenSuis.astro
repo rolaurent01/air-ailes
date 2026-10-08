@@ -1,0 +1,114 @@
+---
+// Rappel discret « Où j'en suis dans le parcours » en bas de chaque leçon :
+// un point par leçon, la leçon courante marquée, les leçons faites remplies.
+import type { Lecon } from '../lib/parcours';
+import { getModule, urlLecon, URL_SOMMAIRE } from '../lib/parcours';
+
+interface Props {
+  parcours: Lecon[];
+  slugCourant: string;
+}
+
+const { parcours, slugCourant } = Astro.props;
+const position = parcours.findIndex((l) => l.data.slug === slugCourant) + 1;
+const tousLesSlugs = parcours.map((l) => l.data.slug).join(',');
+---
+
+<aside class="ou-jen-suis" aria-labelledby="ou-jen-suis-titre">
+  <p class="ou-jen-suis__titre" id="ou-jen-suis-titre">Où j'en suis dans le parcours</p>
+  <p class="ou-jen-suis__texte">
+    Leçon {position} sur {parcours.length}
+    <span class="ou-jen-suis__faites">· <span data-progression-compte={tousLesSlugs}>0</span> faite(s)</span>
+  </p>
+  <ol class="ou-jen-suis__points" role="list">
+    {parcours.map((lecon) => {
+      const courante = lecon.data.slug === slugCourant;
+      const module = getModule(lecon.data.module);
+      return (
+        <li
+          class:list={['ou-jen-suis__point', { 'is-courante': courante }]}
+          data-progression-slug={lecon.data.slug}
+        >
+          <a
+            href={urlLecon(lecon.data.slug)}
+            title={`Module ${module.numero} · ${lecon.data.title}`}
+            aria-label={lecon.data.title}
+            aria-current={courante ? 'page' : undefined}
+          ></a>
+        </li>
+      );
+    })}
+  </ol>
+  <a href={URL_SOMMAIRE} class="ou-jen-suis__sommaire">Voir le sommaire</a>
+</aside>
+
+<style>
+  .ou-jen-suis {
+    max-width: 65ch;
+    margin-inline: auto;
+    padding: 0 var(--container-padding) var(--space-xl);
+    text-align: center;
+  }
+
+  .ou-jen-suis__titre {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .ou-jen-suis__texte {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .ou-jen-suis__points {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-sm);
+  }
+
+  .ou-jen-suis__point a {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(240, 237, 232, 0.3);
+    transition: border-color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .ou-jen-suis__point a:hover {
+    border-color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .ou-jen-suis__point.is-fait a {
+    background: var(--color-text-secondary);
+    border-color: var(--color-text-secondary);
+  }
+
+  .ou-jen-suis__point.is-courante a {
+    background: var(--color-text-primary);
+    border-color: var(--color-text-primary);
+  }
+
+  .ou-jen-suis__sommaire {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .ou-jen-suis__sommaire:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+</style>

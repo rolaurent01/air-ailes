@@ -147,33 +147,61 @@ L'autofocus souffre dans l'obscurité. Quelques parades simples : visez une zone
 
 La théorie ne vaut rien sans la pratique. Voici sept exercices progressifs pour ancrer ces principes dans vos réflexes.
 
+<div class="encadre encadre--exercice">
+
 ### Exercice 1 — La bougie (intérieur)
 
 Placez une bougie allumée sur une table dans une pièce sombre. Éteignez tout. Photographiez à main levée : ouvrez au maximum, montez les ISO, cherchez la vitesse la plus basse qui reste nette. Objectif : une image chaude, intime, avec une zone nette sur la flamme. Cet exercice vous apprend à exploiter une source ponctuelle.
+
+</div>
+
+<div class="encadre encadre--exercice">
 
 ### Exercice 2 — La fenêtre au crépuscule (intérieur)
 
 Trente minutes avant la nuit totale, placez un objet devant une fenêtre. Photographiez en contre-jour partiel. Travaillez la mesure d'exposition : exposez pour l'objet, puis pour le ciel. Comparez. Cet exercice développe votre lecture de la lumière ambiante.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Exercice 3 — La lampe de bureau (intérieur)
 
 Créez un portrait avec une seule lampe de bureau comme source. Déplacez la lampe : au-dessus, sur le côté, en plongée. Observez comment les ombres sculptent le visage. À main levée, ISO moyen, vitesse à 1/60 s minimum. L'objectif est de comprendre la direction de la lumière.
+
+</div>
+
+<div class="encadre encadre--exercice">
 
 ### Exercice 4 — Le réverbère (rue)
 
 Sortez à la tombée de la nuit. Trouvez un réverbère isolé. Photographiez un passant qui traverse le halo lumineux. Travaillez en priorité vitesse à 1/125 s minimum. Laissez les ISO monter. Acceptez les ombres profondes et les hautes lumières brûlées — c'est le caractère de la photo nocturne urbaine.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Exercice 5 — Les vitrines (rue)
 
 Les vitrines de magasin sont des sources de lumière colorée et diffuse. Photographiez les reflets, les silhouettes des passants découpées par la lumière des vitrines. Travaillez à f/2.8 ou plus ouvert, ISO 1600-3200. Cherchez les contrastes entre zones éclairées et ombres profondes.
+
+</div>
+
+<div class="encadre encadre--exercice">
 
 ### Exercice 6 — L'heure bleue (crépuscule)
 
 L'heure bleue — les 20 à 30 minutes après le coucher du soleil — offre un ciel d'un bleu profond qui éclaire encore suffisamment la scène. Installez un trépied. ISO 200, f/8, vitesse entre 2 et 15 secondes selon la lumière restante. C'est l'exercice parfait pour découvrir la pose longue sans aller dans le noir total.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Exercice 7 — Les traînées lumineuses (crépuscule/nuit)
 
 Sur un pont ou un point de vue surplombant une route, installez votre trépied. ISO 100, f/11, vitesse entre 10 et 30 secondes. Les phares des voitures dessinent des lignes continues. Variez les durées d'exposition pour contrôler la densité des traînées. Si vous n'avez pas de trépied, posez l'appareil sur un muret et utilisez le retardateur 2 secondes.
+
+</div>
 
 ---
 

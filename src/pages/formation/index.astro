@@ -2,7 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EnTeteFormation from '../../components/EnTeteFormation.astro';
 import LeconCarte from '../../components/LeconCarte.astro';
-import { getParcours, leconsDuModule, MODULES, urlModule } from '../../lib/parcours';
+import PortesEntree from '../../components/PortesEntree.astro';
+import { getParcours, leconsDuModule, MODULES, NIVEAUX, urlModule } from '../../lib/parcours';
 
 const parcours = await getParcours();
 const modules = MODULES.map((module) => ({ module, lecons: leconsDuModule(parcours, module.numero) }))
@@ -20,7 +21,21 @@ const modules = MODULES.map((module) => ({ module, lecons: leconsDuModule(parcou
       sousTitre="Un parcours pas à pas, du mode automatique jusqu'au tirage. Chaque leçon se termine par un exercice à faire appareil en main."
     />
 
-    <div class="formation__compte">
+    <section class="formation__portes" aria-labelledby="portes-titre">
+      <h2 class="formation__section-titre" id="portes-titre">Par où commencer ?</h2>
+      <PortesEntree titreBalise="h3" />
+    </section>
+
+    <h2 class="formation__section-titre">Le parcours</h2>
+
+    <nav class="formation__filtres" aria-label="Filtrer les leçons par niveau">
+      <button class="formation__filtre active" type="button" data-niveau="tous" aria-pressed="true">Tous</button>
+      {NIVEAUX.map(({ valeur, libelle }) => (
+        <button class="formation__filtre" type="button" data-niveau={valeur} aria-pressed="false">{libelle}</button>
+      ))}
+    </nav>
+
+    <div class="formation__compte" aria-live="polite">
       <span id="lecon-compte">{parcours.length}</span> leçons
     </div>
 
@@ -51,6 +66,60 @@ const modules = MODULES.map((module) => ({ module, lecons: leconsDuModule(parcou
     max-width: var(--container-max);
     margin-inline: auto;
     padding-inline: var(--container-padding);
+  }
+
+  /* --- Portes d'entrée --- */
+  .formation__portes {
+    max-width: 900px;
+    margin: 0 auto var(--space-2xl);
+  }
+
+  .formation__section-titre {
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-uppercase);
+    text-transform: uppercase;
+    margin-bottom: var(--space-lg);
+  }
+
+  /* --- Filtres (styles repris de l'ancienne page /blog) --- */
+  .formation__filtres {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: var(--space-md);
+    padding-inline: var(--space-sm);
+  }
+
+  .formation__filtre {
+    background: transparent;
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-secondary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    padding: 6px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition:
+      color var(--duration-hover) var(--ease-out-expo),
+      border-color var(--duration-hover) var(--ease-out-expo),
+      background var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .formation__filtre:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(240, 237, 232, 0.2);
+  }
+
+  .formation__filtre.active {
+    color: var(--color-text-primary);
+    border-color: rgba(240, 237, 232, 0.3);
+    background: rgba(240, 237, 232, 0.05);
   }
 
   /* --- Compte --- */
@@ -143,9 +212,42 @@ const modules = MODULES.map((module) => ({ module, lecons: leconsDuModule(parcou
     });
   }
 
+  // Filtres par niveau : s'appliquent à toutes les leçons ; un module sans leçon visible est masqué.
+  function initFiltres(): void {
+    const boutons = document.querySelectorAll<HTMLButtonElement>('.formation__filtre');
+    const lecons = document.querySelectorAll<HTMLElement>('.formation-module .lecon-carte');
+    const modules = document.querySelectorAll<HTMLElement>('.formation-module');
+    const compte = document.getElementById('lecon-compte');
+
+    boutons.forEach((bouton) => {
+      bouton.addEventListener('click', () => {
+        const niveau = bouton.dataset.niveau;
+        boutons.forEach((b) => {
+          b.classList.toggle('active', b === bouton);
+          b.setAttribute('aria-pressed', String(b === bouton));
+        });
+
+        let visibles = 0;
+        lecons.forEach((lecon) => {
+          const afficher = niveau === 'tous' || lecon.dataset.niveau === niveau;
+          lecon.classList.toggle('hidden', !afficher);
+          if (afficher) visibles++;
+        });
+        modules.forEach((module) => {
+          const vide = !module.querySelector('.lecon-carte:not(.hidden)');
+          module.classList.toggle('hidden', vide);
+        });
+
+        if (compte) compte.textContent = String(visibles);
+        ScrollTrigger.refresh();
+      });
+    });
+  }
+
   document.addEventListener('astro:page-load', () => {
     if (!document.querySelector('.formation__modules')) return;
     ScrollTrigger.getAll().forEach((t) => t.kill());
     animerModules();
+    initFiltres();
   });
 </script>

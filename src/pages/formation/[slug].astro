@@ -24,6 +24,7 @@ export async function getStaticPaths() {
       params: { slug: lecon.data.slug },
       props: {
         lecon,
+        parcours,
         numero: numeroDansModule(parcours, lecon),
         // Première leçon : retour au sommaire. Dernière : page de fin de parcours.
         precedent: avant
@@ -37,7 +38,7 @@ export async function getStaticPaths() {
   });
 }
 
-const { lecon, numero, precedent, suivant } = Astro.props;
+const { lecon, parcours, numero, precedent, suivant } = Astro.props;
 const { Content } = await render(lecon);
 const module = getModule(lecon.data.module);
 ---
@@ -48,6 +49,7 @@ const module = getModule(lecon.data.module);
   date={lecon.data.date}
   misAJour={lecon.data.misAJour}
   excerpt={lecon.data.excerpt}
+  objectif={lecon.data.objectif}
   coverSvg={lecon.data.cover_svg}
   badge={`Module ${module.numero} · Leçon ${numero}`}
   niveau={libelleNiveau(lecon.data.niveau)}
@@ -60,6 +62,7 @@ const module = getModule(lecon.data.module);
   ]}
   precedent={precedent}
   suivant={suivant}
+  parcours={parcours}
 >
   <Content />
 </LeconLayout>

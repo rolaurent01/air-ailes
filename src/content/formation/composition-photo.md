@@ -189,6 +189,8 @@ Les meilleures photos ont souvent un seul sujet, un seul message. Pas deux, pas 
 
 ## Exercices « 15 cadres » et grille d'auto-critique
 
+<div class="encadre encadre--exercice">
+
 ### Exercice : 15 cadres, un seul lieu
 
 Choisissez un lieu ordinaire — un coin de votre quartier, un parc, même votre salon. Imposez-vous exactement 15 photos, pas une de plus. À chaque déclenchement, appliquez consciemment une technique :
@@ -203,6 +205,10 @@ Choisissez un lieu ordinaire — un coin de votre quartier, un parc, même votre
 
 La contrainte de 15 images vous force à réfléchir avant de déclencher, au lieu de mitrailler en espérant.
 
+</div>
+
+<div class="encadre encadre--exercice">
+
 ### Grille d'auto-critique
 
 Après l'exercice, évaluez chaque image avec ces cinq questions :
@@ -216,6 +222,8 @@ Après l'exercice, évaluez chaque image avec ces cinq questions :
 | La composition crée-t-elle une émotion ou raconte-t-elle quelque chose ? | |
 
 Soyez honnête. Les « non » ne sont pas des échecs — ce sont des pistes de progression. Refaites l'exercice un mois plus tard et comparez : vous verrez la différence.
+
+</div>
 
 ## Les « règles » ne sont que des outils
 
