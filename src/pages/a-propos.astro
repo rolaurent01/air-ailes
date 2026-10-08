@@ -13,8 +13,8 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
   <section class="about-hero">
     <div class="about-hero__image" id="about-hero-image">
       <ProtectedImage
-        cloudinaryId="portrait/lumiere-naturelle"
-        alt="Portrait du photographe"
+        cloudinaryId="paysage/dsc00108"
+        alt="Soleil bas et doré au-dessus de la mer à marée basse, une silhouette au loin sur l'horizon"
         width={1200}
         dominantColor="#1A1A1A"
       />
@@ -204,6 +204,7 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
   .about-contact__text {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
+    margin-inline: auto;
     margin-bottom: var(--space-lg);
   }
 
@@ -306,13 +307,5 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
 </script>
 
 <script>
-  // Bouton « Écrire un e-mail » : l'adresse est assemblée ici, jamais écrite en clair dans la page
-  function activerCourriel(): void {
-    document.querySelectorAll<HTMLAnchorElement>('a[data-courriel-nom]').forEach((lien) => {
-      lien.href = `mailto:${lien.dataset.courrielNom}@${lien.dataset.courrielDomaine}`;
-      lien.hidden = false;
-    });
-  }
-
-  document.addEventListener('astro:page-load', activerCourriel);
+  import '../lib/courriel';
 </script>

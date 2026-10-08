@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SOCIAL_LINKS } from '../lib/constants';
+
+// Nom du site tiré de `site` dans astro.config : suit automatiquement le passage à air-ailes.com
+const domaine = Astro.site?.host;
 ---
 
 <BaseLayout
@@ -13,9 +17,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="legal__content">
       <h2>Éditeur du site</h2>
       <p>
-        Le site air-ailes.com est édité par Air-Ailes.<br />
+        Le site {domaine} est édité par Air-Ailes.<br />
         Responsable de la publication : Air-Ailes<br />
-        Contact : contact@air-ailes.com
+        Contact :
+        {/* Adresse jamais écrite en clair dans la page : assemblée par src/lib/courriel.ts */}
+        <a href="#" data-courriel-nom="romain" data-courriel-domaine="donkey-corp.fr" hidden>écrire un e-mail</a>
+        <noscript><a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer">par Instagram</a></noscript>
       </p>
 
       <h2>Hébergeur</h2>
@@ -103,4 +110,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: var(--space-sm);
     max-width: none;
   }
+
+  .legal__content a {
+    color: var(--color-text-primary);
+    border-bottom: 1px solid rgba(240, 237, 232, 0.3);
+    transition: border-color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .legal__content a:hover {
+    border-color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .legal__content a[hidden] {
+    display: none;
+  }
 </style>
+
+<script>
+  import '../lib/courriel';
+</script>
