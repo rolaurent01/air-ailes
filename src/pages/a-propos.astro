@@ -72,11 +72,15 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
       Pour une collaboration, une commande de tirage ou simplement échanger sur la photographie.
     </p>
 
-    <a href="mailto:contact@air-ailes.com" class="about-contact__email">
-      contact@air-ailes.com
-    </a>
-
     <div class="about-contact__socials">
+      {/* Adresse jamais écrite en entier dans la page : assemblée par le script au chargement (anti-robots) */}
+      <a href="#contact" class="about-contact__social" data-courriel-nom="romain" data-courriel-domaine="donkey-corp.fr" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
+          <polyline points="22,6 12,13 2,6" />
+        </svg>
+        Écrire un e-mail
+      </a>
       <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" class="about-contact__social">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -86,6 +90,9 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
         Instagram
       </a>
     </div>
+    <noscript>
+      <p class="about-contact__text about-contact__repli">Pour m'écrire, passez par Instagram.</p>
+    </noscript>
   </section>
 </BaseLayout>
 
@@ -200,22 +207,6 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     margin-bottom: var(--space-lg);
   }
 
-  .about-contact__email {
-    display: inline-block;
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-light);
-    letter-spacing: var(--letter-spacing-wide);
-    color: var(--color-text-primary);
-    border-bottom: 1px solid rgba(240, 237, 232, 0.2);
-    padding-bottom: 4px;
-    transition: border-color var(--duration-hover) var(--ease-out-expo);
-  }
-
-  .about-contact__email:hover {
-    border-color: var(--color-text-primary);
-    opacity: 1;
-  }
-
   .about-contact__socials {
     display: flex;
     justify-content: center;
@@ -237,6 +228,15 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
     color: var(--color-text-secondary);
     transition: color var(--duration-hover) var(--ease-out-expo),
                 border-color var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .about-contact__social[hidden] {
+    display: none;
+  }
+
+  .about-contact__repli {
+    margin-top: var(--space-md);
+    margin-bottom: 0;
   }
 
   .about-contact__social:hover {
@@ -303,4 +303,16 @@ import { SOCIAL_LINKS, SITE_NAME } from '../lib/constants';
   document.addEventListener('astro:page-load', () => {
     initAbout();
   });
+</script>
+
+<script>
+  // Bouton « Écrire un e-mail » : l'adresse est assemblée ici, jamais écrite en clair dans la page
+  function activerCourriel(): void {
+    document.querySelectorAll<HTMLAnchorElement>('a[data-courriel-nom]').forEach((lien) => {
+      lien.href = `mailto:${lien.dataset.courrielNom}@${lien.dataset.courrielDomaine}`;
+      lien.hidden = false;
+    });
+  }
+
+  document.addEventListener('astro:page-load', activerCourriel);
 </script>
