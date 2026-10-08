@@ -282,6 +282,17 @@ const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', mo
     font-style: italic;
   }
 
+  /* --- Tableaux et chemins longs : jamais plus larges que l'écran --- */
+  .blog-article__prose :global(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .blog-article__prose :global(code) {
+    overflow-wrap: anywhere;
+  }
+
   /* --- Encadrés : Objectif, À retenir, Exercice --- */
   .blog-article__prose :global(.encadre) {
     border: 1px solid var(--color-border-subtle);
