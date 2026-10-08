@@ -259,13 +259,25 @@ function getPosterUrl(cloudinaryId: string): string {
       // ============================================
       if (isFirst) {
         // src is already set in HTML for the first video
-        video.addEventListener('canplay', () => {
+        const reveal = (): void => {
+          if (wrap!.classList.contains('is-playing')) return;
           wrap!.classList.add('is-playing');
           video!.play().catch(() => {});
           if (meta && !reducedMotion) {
             gsap.to(meta, { opacity: 1, duration: 0.6, delay: 0.8, ease: ANIMATION_EASING });
           }
-        }, { once: true });
+        };
+
+        if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+          reveal();
+        } else {
+          video.addEventListener('canplay', reveal, { once: true });
+          // After a ClientRouter navigation, Chromium leaves the swapped-in <video>
+          // in an error state (it tried to load inside the detached parsed document).
+          if (video.error || video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+            video.load();
+          }
+        }
 
         // Pause when off-screen
         if (!reducedMotion) {
