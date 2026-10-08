@@ -50,9 +50,10 @@ function qualifierMouvement(longueur: number): string {
 }
 
 function qualifierBruit(iso: number): string {
-  if (iso <= 200) return 'bruit très faible';
-  if (iso <= 800) return 'bruit faible';
-  if (iso <= 3200) return 'bruit visible';
+  // Repères cohérents avec les leçons : un boîtier récent reste propre jusqu'à ISO 3200, voire 6400
+  if (iso <= 400) return 'bruit très faible';
+  if (iso <= 1600) return 'bruit faible';
+  if (iso <= 6400) return 'bruit visible';
   return 'bruit fort';
 }
 
@@ -110,8 +111,8 @@ enregistrerCroquis('triangle-exposition', (racine, signal) => {
     const longueur = t * VITESSE_IMAGE_CYCLISTE;
     appliquerFlou(velo, flouBouge, 'tri-flou-bouge', longueur < 1 ? 0 : `${Math.min(40, longueur / 3).toFixed(2)} 0`);
 
-    // Bruit : invisible à ISO 100, de plus en plus marqué jusqu'à ISO 12 800
-    bruit.setAttribute('opacity', (Math.min(1, log2(s / 100) / 7) * 0.55).toFixed(3));
+    // Bruit : invisible jusqu'à ISO 400, puis de plus en plus marqué jusqu'à ISO 12 800
+    bruit.setAttribute('opacity', (Math.max(0, Math.min(1, (log2(s / 100) - 2) / 5)) * 0.5).toFixed(3));
 
     // Flou d'arrière-plan selon l'ouverture
     const bFond = flou(N, DISTANCE_SUJET, DISTANCE_FOND);

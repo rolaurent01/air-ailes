@@ -161,8 +161,12 @@ const { nom, id, libelle, valeurs, affichages, index } = Astro.props;
     letter-spacing: var(--letter-spacing-wide);
   }
 
+  /* Deux règles séparées : un navigateur ignore toute règle contenant un pseudo-élément qu'il ne connaît pas */
   @media (prefers-reduced-motion: reduce) {
-    .curseur__piste::-webkit-slider-thumb,
+    .curseur__piste::-webkit-slider-thumb {
+      transition: none;
+    }
+
     .curseur__piste::-moz-range-thumb {
       transition: none;
     }
