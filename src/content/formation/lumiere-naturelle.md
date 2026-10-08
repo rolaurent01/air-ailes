@@ -168,7 +168,7 @@ La lumière du jour change de couleur au fil des heures. Votre œil s'adapte et 
 
 ### La golden hour, évidemment
 
-Tout photographe connaît l'heure dorée : ce moment juste après le lever ou juste avant le coucher du soleil où la lumière devient chaude, rasante, flatteuse. Les ombres s'allongent, les peaux s'illuminent, et même le décor le plus banal se transforme en toile de fond cinématographique. Sa durée varie avec la saison et la latitude : courte en été dans le nord de la France, plus longue en hiver.
+Tout photographe connaît l'heure dorée : ce moment juste après le lever ou juste avant le coucher du soleil où la lumière devient chaude, rasante, flatteuse. Les ombres s'allongent, les peaux s'illuminent, et même le décor le plus banal se transforme en toile de fond cinématographique. Sa durée varie avec la saison et la latitude : plus le soleil monte lentement au-dessus de l'horizon, plus elle dure. Une application d'éphémérides vous donne les horaires du jour pour votre lieu.
 
 ### Mais pas seulement
 
