@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EnTeteFormation from '../../components/EnTeteFormation.astro';
 import NavParcours from '../../components/NavParcours.astro';
+import Progression from '../../components/Progression.astro';
 import { getParcours, urlLecon, URL_SOMMAIRE } from '../../lib/parcours';
 
 const parcours = await getParcours();
@@ -25,6 +26,11 @@ const derniere = parcours[parcours.length - 1];
     />
 
     <div class="formation-fin">
+      <p class="formation-fin__bilan">
+        Exercices cochés : <span data-progression-compte={parcours.map((l) => l.data.slug).join(',')}>0</span> sur {parcours.length}.
+        Les leçons faites sont cochées dans le <a href={URL_SOMMAIRE}>sommaire</a>.
+      </p>
+
       <ol class="formation-fin__pistes">
         <li>
           <strong>Refaites un exercice d'il y a un mois.</strong> Le même lieu, les mêmes consignes. La comparaison
@@ -46,6 +52,7 @@ const derniere = parcours[parcours.length - 1];
     precedent={{ href: urlLecon(derniere.data.slug), etiquette: 'Dernière leçon', titre: derniere.data.title }}
     suivant={{ href: '/galeries', etiquette: 'Voir où ça mène', titre: 'Les galeries' }}
   />
+  <Progression />
 </BaseLayout>
 
 <style>
@@ -62,6 +69,13 @@ const derniere = parcours[parcours.length - 1];
     font-size: 1.125rem;
     line-height: 1.8;
     color: var(--color-text-primary);
+  }
+
+  .formation-fin__bilan {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xl);
   }
 
   .formation-fin__pistes {

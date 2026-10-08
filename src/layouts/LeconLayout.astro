@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import FilAriane from '../components/FilAriane.astro';
 import NavParcours from '../components/NavParcours.astro';
 import OuJenSuis from '../components/OuJenSuis.astro';
+import Progression from '../components/Progression.astro';
 import type { Lecon } from '../lib/parcours';
 import { SOCIAL_LINKS } from '../lib/constants';
 
@@ -78,6 +79,14 @@ const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', mo
       <slot />
     </div>
 
+    <div class="lecon-fait">
+      <label class="lecon-fait__case">
+        <input type="checkbox" data-progression-case={slug} />
+        <span>J'ai fait l'exercice</span>
+      </label>
+      <p class="lecon-fait__aide">Mémorisé dans ce navigateur uniquement, sans compte à créer.</p>
+    </div>
+
     <NavParcours precedent={precedent} suivant={suivant} ariaLabel="Navigation entre les leçons" />
 
     <OuJenSuis parcours={parcours} slugCourant={slug} />
@@ -90,6 +99,7 @@ const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', mo
       <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
     </aside>
   </article>
+  <Progression />
 </BaseLayout>
 
 <style>
@@ -309,6 +319,81 @@ const misAJourTexte = misAJour.toLocaleDateString('fr-FR', { year: 'numeric', mo
     .blog-article__prose :global(.encadre) {
       padding: var(--space-sm) var(--space-md);
     }
+  }
+
+  /* --- Case « J'ai fait l'exercice » --- */
+  .lecon-fait {
+    max-width: 65ch;
+    margin-inline: auto;
+    padding: 0 var(--container-padding) var(--space-xl);
+    text-align: center;
+  }
+
+  .lecon-fait__case {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 2px;
+    font-size: var(--font-size-sm);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: border-color var(--duration-hover) var(--ease-out-expo), background var(--duration-hover) var(--ease-out-expo);
+  }
+
+  .lecon-fait__case:hover {
+    border-color: rgba(240, 237, 232, 0.3);
+  }
+
+  .lecon-fait__case:has(input:checked) {
+    border-color: rgba(240, 237, 232, 0.3);
+    background: rgba(240, 237, 232, 0.05);
+  }
+
+  .lecon-fait__case input {
+    appearance: none;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: 1px solid rgba(240, 237, 232, 0.4);
+    border-radius: 2px;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+  }
+
+  .lecon-fait__case input::after {
+    content: '';
+    width: 8px;
+    height: 4px;
+    border-left: 1.5px solid var(--color-bg-primary);
+    border-bottom: 1.5px solid var(--color-bg-primary);
+    transform: translateY(-1px) rotate(-45deg);
+    opacity: 0;
+  }
+
+  .lecon-fait__case input:checked {
+    background: var(--color-text-primary);
+    border-color: var(--color-text-primary);
+  }
+
+  .lecon-fait__case input:checked::after {
+    opacity: 1;
+  }
+
+  .lecon-fait__case input:focus-visible {
+    outline: 1px solid var(--color-text-primary);
+    outline-offset: 2px;
+  }
+
+  .lecon-fait__aide {
+    margin-top: var(--space-xs);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--letter-spacing-wide);
   }
 
   /* --- Fin de leçon --- */

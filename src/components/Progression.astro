@@ -1,0 +1,10 @@
+---
+// Active le suivi de progression (cases « J'ai fait l'exercice », leçons cochées
+// dans le sommaire). Relancé à chaque navigation (view transitions).
+---
+
+<script>
+  import { initProgression } from '../lib/progression';
+
+  document.addEventListener('astro:page-load', initProgression);
+</script>

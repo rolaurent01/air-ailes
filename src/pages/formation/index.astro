@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import EnTeteFormation from '../../components/EnTeteFormation.astro';
 import LeconCarte from '../../components/LeconCarte.astro';
 import PortesEntree from '../../components/PortesEntree.astro';
+import Progression from '../../components/Progression.astro';
 import { getParcours, leconsDuModule, MODULES, NIVEAUX, urlModule } from '../../lib/parcours';
 
 const parcours = await getParcours();
@@ -58,6 +59,7 @@ const modules = MODULES.map((module) => ({ module, lecons: leconsDuModule(parcou
       ))}
     </div>
   </section>
+  <Progression />
 </BaseLayout>
 
 <style>

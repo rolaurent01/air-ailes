@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import EnTeteFormation from '../../../components/EnTeteFormation.astro';
 import LeconCarte from '../../../components/LeconCarte.astro';
 import NavParcours from '../../../components/NavParcours.astro';
+import Progression from '../../../components/Progression.astro';
 import {
   getParcours,
   leconsDuModule,
@@ -70,6 +71,7 @@ const premiere = lecons[0];
   </section>
 
   <NavParcours precedent={precedent} suivant={suivant} ariaLabel="Navigation entre les modules" />
+  <Progression />
 </BaseLayout>
 
 <style>
